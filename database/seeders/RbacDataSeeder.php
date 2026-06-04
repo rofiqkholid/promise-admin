@@ -272,16 +272,31 @@ class RbacDataSeeder extends Seeder
                         'can_delete' => 'delete',
                     ];
 
-                    foreach ($perms as $col => $permName) {
-                        if (isset($irm->$col) && $irm->$col) {
-                            $permId = $permissionIds[$permName] ?? null;
-                            if ($permId) {
-                                DB::table('role_scope_permissions')->updateOrInsert([
-                                    'role_id' => $mappedRoleId,
-                                    'scope_id' => 'app_inventory',
-                                    'menu_id' => $irm->menu_id,
-                                    'permission_id' => $permId,
-                                ]);
+                    $hasSpecificCols = isset($irm->can_view) || isset($irm->can_create) || isset($irm->can_edit) || isset($irm->can_delete);
+
+                    if (!$hasSpecificCols) {
+                        // Fallback: If no permission columns are present, treat mapping as 'view' access
+                        $permId = $permissionIds['view'] ?? null;
+                        if ($permId) {
+                            DB::table('role_scope_permissions')->updateOrInsert([
+                                'role_id' => $mappedRoleId,
+                                'scope_id' => 'app_inventory',
+                                'menu_id' => $irm->menu_id,
+                                'permission_id' => $permId,
+                            ]);
+                        }
+                    } else {
+                        foreach ($perms as $col => $permName) {
+                            if (isset($irm->$col) && $irm->$col) {
+                                $permId = $permissionIds[$permName] ?? null;
+                                if ($permId) {
+                                    DB::table('role_scope_permissions')->updateOrInsert([
+                                        'role_id' => $mappedRoleId,
+                                        'scope_id' => 'app_inventory',
+                                        'menu_id' => $irm->menu_id,
+                                        'permission_id' => $permId,
+                                    ]);
+                                }
                             }
                         }
                     }
