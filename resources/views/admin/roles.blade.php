@@ -374,7 +374,7 @@
 
                 searchRoles() {
                     this.isSearching = true;
-                    fetch(`/admin/roles?search=${encodeURIComponent(this.searchQuery)}`, {
+                    fetch(`{{ url('/admin/roles') }}?search=${encodeURIComponent(this.searchQuery)}`, {
                         headers: { 'Accept': 'application/json' }
                     })
                     .then(r => r.json())
@@ -416,7 +416,7 @@
                 fetchRolePermissions() {
                     if (!this.selectedRole) return;
                     this.isLoadingPermissions = true;
-                    fetch(`/admin/roles/${this.selectedRole.id}/permissions/${this.currentScopeId}`)
+                    fetch(`{{ url('/admin/roles') }}/${this.selectedRole.id}/permissions/${this.currentScopeId}`)
                         .then(r => r.json()).then(data => { 
                             this.rolePermissions = data.role_permissions; 
                             this.isLoadingPermissions = false;
@@ -439,7 +439,7 @@
                 savePermissions() {
                     if (!this.selectedRole) return;
                     this.saving = true;
-                    fetch('/admin/roles/permissions', {
+                    fetch('{{ url('/admin/roles/permissions') }}', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
                         body: JSON.stringify({ role_id: this.selectedRole.id, scope_id: this.currentScopeId, permissions: this.rolePermissions })
@@ -462,7 +462,7 @@
                     const isCreate = this.roleModal.mode === 'create';
                     
                     this.savingForm = true;
-                    fetch(isCreate ? '/admin/roles' : `/admin/roles/${this.roleModal.form.id}`, {
+                    fetch(isCreate ? '{{ url('/admin/roles') }}' : `{{ url('/admin/roles') }}/${this.roleModal.form.id}`, {
                         method: isCreate ? 'POST' : 'PUT',
                         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
                         body: JSON.stringify({ role_name: this.roleModal.form.role_name })
@@ -500,7 +500,7 @@
                 confirmDelete() {
                     const type = this.deleteModal.type;
                     const id = this.deleteModal.id;
-                    const url = type === 'role' ? `/admin/roles/${id}` : `/admin/permissions/${id}`;
+                    const url = type === 'role' ? `{{ url('/admin/roles') }}/${id}` : `{{ url('/admin/permissions') }}/${id}`;
                     fetch(url, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content } })
                         .then(r => r.json()).then(data => {
                             if (data.success) { this.showToast(data.message); this.deleteModal.open = false; window.location.reload(); }
@@ -510,7 +510,7 @@
 
                 submitPermissionForm() {
                     this.savingForm = true;
-                    fetch('/admin/permissions', {
+                    fetch('{{ url('/admin/permissions') }}', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
                         body: JSON.stringify(this.permissionModal.form)

@@ -346,7 +346,7 @@
                             processing: false,
                             dom: '<"top"lf>r<"overflow-x-auto w-full"t><"bottom"ip>',
                             ajax: {
-                                url: '/admin/departments/ajax',
+                                url: '{{ url('/admin/departments/ajax') }}',
                                 dataSrc: 'data'
                             },
                             columns: [
@@ -399,7 +399,7 @@
                             processing: false,
                             dom: '<"top"lf>r<"overflow-x-auto w-full"t><"bottom"ip>',
                             ajax: {
-                                url: '/admin/scopes/ajax',
+                                url: '{{ url('/admin/scopes/ajax') }}',
                                 dataSrc: 'data'
                             },
                             columns: [
@@ -461,7 +461,7 @@
                             processing: false,
                             dom: '<"top"lf>r<"overflow-x-auto w-full"t><"bottom"ip>',
                             ajax: {
-                                url: '/admin/permissions/ajax',
+                                url: '{{ url('/admin/permissions/ajax') }}',
                                 dataSrc: 'data'
                             },
                             columns: [
@@ -548,9 +548,9 @@
                     const id = this.deleteModal.id;
                     let url = '';
 
-                    if (type === 'department') url = `/admin/departments/${id}`;
-                    else if (type === 'scope') url = `/admin/scopes/${id}`;
-                    else if (type === 'permission') url = `/admin/permissions/${id}`;
+                    if (type === 'department') url = `{{ url('/admin/departments') }}/${id}`;
+                    else if (type === 'scope') url = `{{ url('/admin/scopes') }}/${id}`;
+                    else if (type === 'permission') url = `{{ url('/admin/permissions') }}/${id}`;
 
                     fetch(url, {
                         method: 'DELETE',
@@ -583,7 +583,7 @@
                 },
                 submitDept() {
                     const isCreate = this.deptModal.mode === 'create';
-                    const url = isCreate ? '/admin/departments' : `/admin/departments/${this.deptModal.form.id}`;
+                    const url = isCreate ? '{{ url('/admin/departments') }}' : `{{ url('/admin/departments') }}/${this.deptModal.form.id}`;
                     const method = isCreate ? 'POST' : 'PUT';
 
                     this.saving = true;
@@ -620,7 +620,7 @@
                 },
                 submitScope() {
                     const isCreate = this.scopeModal.mode === 'create';
-                    const url = isCreate ? '/admin/scopes' : `/admin/scopes/${this.scopeModal.form.id}`;
+                    const url = isCreate ? '{{ url('/admin/scopes') }}' : `{{ url('/admin/scopes') }}/${this.scopeModal.form.id}`;
                     const method = isCreate ? 'POST' : 'PUT';
 
                     this.saving = true;
@@ -661,7 +661,7 @@
                 },
                 submitPerm() {
                     const isCreate = this.permModal.mode === 'create';
-                    const url = isCreate ? '/admin/permissions' : `/admin/permissions/${this.permModal.form.id}`;
+                    const url = isCreate ? '{{ url('/admin/permissions') }}' : `{{ url('/admin/permissions') }}/${this.permModal.form.id}`;
                     const method = isCreate ? 'POST' : 'PUT';
 
                     this.saving = true;

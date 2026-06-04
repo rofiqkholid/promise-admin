@@ -490,7 +490,7 @@
 
                 searchUsers() {
                     this.isSearching = true;
-                    fetch(`/admin/users?search=${encodeURIComponent(this.searchQuery)}`, {
+                    fetch(`{{ url('/admin/users') }}?search=${encodeURIComponent(this.searchQuery)}`, {
                         headers: { 'Accept': 'application/json' }
                     })
                     .then(r => r.json())
@@ -531,7 +531,7 @@
 
                 submitUserForm() {
                     this.saving = true;
-                    fetch('/admin/users', {
+                    fetch('{{ url('/admin/users') }}', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                         body: JSON.stringify(this.userModal.form)
@@ -563,7 +563,7 @@
 
                 confirmDeleteUser() {
                     const userId = this.deleteModal.userId;
-                    fetch(`/admin/users/${userId}`, {
+                    fetch(`{{ url('/admin/users') }}/${userId}`, {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
                     })
@@ -586,7 +586,7 @@
                     this.profileForm = { user_id: user.id, name: user.name || '', email: user.email || '', nik: user.nik || '', id_dept: user.id_dept || '', password: '', is_active: user.is_active ? 1 : 0 };
                     this.expandedScope = null;
                     this.isLoadingPermissions = true;
-                    fetch(`/admin/user-permissions/${user.id}`)
+                    fetch(`{{ url('/admin/user-permissions') }}/${user.id}`)
                         .then(res => res.json())
                         .then(data => {
                             this.availableMenus = data.menus;
@@ -650,9 +650,6 @@
                 // --- Permission Override Helpers ---
                 getMenusForScope(scopeId) {
                     if (!this.availableMenus) return [];
-                    if (scopeId === 'app_inventory') return this.availableMenus.filter(m => m.id >= 1487);
-                    if (scopeId === 'app_drawing') return this.availableMenus.filter(m => m.id < 1487 && m.id !== 28);
-                    if (scopeId === 'app_dashboard') return this.availableMenus.filter(m => m.id === 28 || m.id === 1);
                     return this.availableMenus.filter(m => m.scope_id === scopeId);
                 },
                 hasRolePermission(scopeId, menuId, permissionId) {
@@ -675,7 +672,7 @@
 
                 saveProfile() {
                     this.saving = true;
-                    fetch('/admin/update-profile', {
+                    fetch('{{ url('/admin/update-profile') }}', {
                         method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                         body: JSON.stringify(this.profileForm)
                     }).then(r => r.json()).then(data => {
@@ -695,12 +692,12 @@
                 toggleScopeAccess(scopeId, checked) { this.sendScopeRoleUpdate(scopeId, null, checked); },
                 sendScopeRoleUpdate(scopeId, roleId, status) {
                     const userId = this.selectedUser.id;
-                    fetch('/admin/update-scope-role', {
+                    fetch('{{ url('/admin/update-scope-role') }}', {
                         method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                         body: JSON.stringify({ user_id: userId, scope_id: scopeId, role_id: roleId, status: status ? 1 : 0 })
                     }).then(r => r.json()).then(data => {
                         if (data.success) {
-                            fetch(`/admin/user-permissions/${userId}`).then(r => r.json()).then(d => {
+                            fetch(`{{ url('/admin/user-permissions') }}/${userId}`).then(r => r.json()).then(d => {
                                 this.userRolePermissions = d.role_permissions;
                                 this.userOverrides = d.overrides;
                                 this.userRolesMap[userId] = d.assignments;
@@ -710,7 +707,7 @@
                     });
                 },
                 updateOverride(scopeId, menuId, permissionId, accessType) {
-                    fetch('/admin/update-user-permission', {
+                    fetch('{{ url('/admin/update-user-permission') }}', {
                         method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                         body: JSON.stringify({ user_id: this.selectedUser.id, scope_id: scopeId, menu_id: menuId, permission_id: permissionId, access_type: accessType })
                     }).then(r => r.json()).then(data => {

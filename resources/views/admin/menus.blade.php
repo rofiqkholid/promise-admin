@@ -314,7 +314,7 @@
 
                     this.$watch('currentScopeId', value => {
                         if (this.dataTable) {
-                            this.dataTable.ajax.url(`/admin/menus/ajax?scope_id=${value}`).load();
+                            this.dataTable.ajax.url(`{{ url('/admin/menus/ajax') }}?scope_id=${value}`).load();
                         }
                     });
                 },
@@ -329,7 +329,7 @@
                             processing: false,
                             dom: '<"top"lf>r<"overflow-x-auto w-full"t><"bottom"ip>',
                             ajax: {
-                                url: `/admin/menus/ajax?scope_id=${this.currentScopeId}`,
+                                url: `{{ url('/admin/menus/ajax') }}?scope_id=${this.currentScopeId}`,
                                 dataSrc: 'data'
                             },
                         columns: [
@@ -458,7 +458,7 @@
                     const formData = { ...this.menuModal.form, is_active: this.menuModal.form.is_active ? 1 : 0, is_visible: this.menuModal.form.is_visible ? 1 : 0 };
                     
                     this.saving = true;
-                    fetch(isCreate ? '/admin/menus' : `/admin/menus/${this.menuModal.form.id}`, {
+                    fetch(isCreate ? '{{ url('/admin/menus') }}' : `{{ url('/admin/menus') }}/${this.menuModal.form.id}`, {
                         method: isCreate ? 'POST' : 'PUT',
                         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
                         body: JSON.stringify(formData)
@@ -483,7 +483,7 @@
                     const formData = { ...this.scopeModal.form, is_active: this.scopeModal.form.is_active ? 1 : 0 };
                     
                     this.saving = true;
-                    fetch('/admin/scopes', {
+                    fetch('{{ url('/admin/scopes') }}', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
                         body: JSON.stringify(formData)
@@ -507,7 +507,7 @@
                 confirmDelete() {
                     const type = this.deleteModal.type;
                     const id = this.deleteModal.id;
-                    const url = type === 'menu' ? `/admin/menus/${id}` : `/admin/scopes/${id}`;
+                    const url = type === 'menu' ? `{{ url('/admin/menus') }}/${id}` : `{{ url('/admin/scopes') }}/${id}`;
                     fetch(url, {
                         method: 'DELETE',
                         headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
