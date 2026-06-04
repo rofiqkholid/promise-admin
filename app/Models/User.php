@@ -23,6 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'nik',
+        'id_dept',
+        'is_active',
     ];
 
     public function access()
