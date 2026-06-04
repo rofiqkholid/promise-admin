@@ -122,6 +122,138 @@
 
             <!-- Left Panel: User List -->
             <div class="lg:col-span-4 border-r border-slate-300 bg-white flex flex-col h-[350px] lg:h-[calc(100vh-120px)]">
+                <!-- Filters Row -->
+                <div class="px-3 py-2 border-b border-slate-300 bg-slate-100 flex items-center justify-between gap-1.5 shrink-0">
+                    <div class="flex items-center gap-1.5 flex-1 min-w-0">
+                        <!-- Title Label -->
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider shrink-0 flex items-center gap-1 mr-1">
+                            <i class="fa-solid fa-filter text-[9px]"></i> Filter:
+                        </span>
+
+                        <!-- Department Filter -->
+                        <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+                            <button @click="open = !open" 
+                                    class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
+                                    :class="selectedDepts.length > 0 ? 'bg-sky-50 border-sky-300 text-sky-700 font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
+                                    title="Filter by Department">
+                                <i class="fa-solid fa-building text-[10px]"></i>
+                                <span class="font-medium">Dept</span>
+                                <template x-if="selectedDepts.length > 0">
+                                    <span class="ml-0.5 bg-sky-200 text-sky-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedDepts.length"></span>
+                                </template>
+                            </button>
+                            <div x-show="open" 
+                                 class="absolute left-0 mt-1 w-48 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
+                                 style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
+                                <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-200 flex justify-between items-center">
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase">Dept Filter</span>
+                                    <button @click="selectedDepts = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
+                                </div>
+                                <template x-for="dept in departments" :key="dept.id">
+                                    <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
+                                        <input type="checkbox" :value="dept.id" x-model="selectedDepts" @change="filterUsers()" class="rounded border-gray-300 text-sky-600 focus:ring-sky-500 h-3.5 w-3.5 mr-2">
+                                        <span class="text-[11px] text-gray-700 truncate" x-text="dept.code"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Role Filter -->
+                        <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+                            <button @click="open = !open" 
+                                    class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
+                                    :class="selectedRoles.length > 0 ? 'bg-sky-50 border-sky-300 text-sky-700 font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
+                                    title="Filter by Role">
+                                <i class="fa-solid fa-user-shield text-[10px]"></i>
+                                <span class="font-medium">Role</span>
+                                <template x-if="selectedRoles.length > 0">
+                                    <span class="ml-0.5 bg-sky-200 text-sky-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedRoles.length"></span>
+                                </template>
+                            </button>
+                            <div x-show="open" 
+                                 class="absolute left-0 mt-1 w-48 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
+                                 style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
+                                <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-200 flex justify-between items-center">
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase">Role Filter</span>
+                                    <button @click="selectedRoles = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
+                                </div>
+                                <template x-for="role in roles" :key="role.id">
+                                    <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
+                                        <input type="checkbox" :value="role.id" x-model="selectedRoles" @change="filterUsers()" class="rounded border-gray-300 text-sky-600 focus:ring-sky-500 h-3.5 w-3.5 mr-2">
+                                        <span class="text-[11px] text-gray-700 truncate" x-text="role.role_name"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Status Filter -->
+                        <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+                            <button @click="open = !open" 
+                                    class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
+                                    :class="selectedStatuses.length > 0 ? 'bg-sky-50 border-sky-300 text-sky-700 font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
+                                    title="Filter by Status">
+                                <i class="fa-solid fa-toggle-on text-[10px]"></i>
+                                <span class="font-medium">Status</span>
+                                <template x-if="selectedStatuses.length > 0">
+                                    <span class="ml-0.5 bg-sky-200 text-sky-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedStatuses.length"></span>
+                                </template>
+                            </button>
+                            <div x-show="open" 
+                                 class="absolute left-0 mt-1 w-40 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
+                                 style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
+                                <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-200 flex justify-between items-center">
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase">Status Filter</span>
+                                    <button @click="selectedStatuses = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
+                                </div>
+                                <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
+                                    <input type="checkbox" value="active" x-model="selectedStatuses" @change="filterUsers()" class="rounded border-gray-300 text-sky-600 focus:ring-sky-500 h-3.5 w-3.5 mr-2">
+                                    <span class="text-[11px] text-gray-700">Active</span>
+                                </label>
+                                <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
+                                    <input type="checkbox" value="inactive" x-model="selectedStatuses" @change="filterUsers()" class="rounded border-gray-300 text-sky-600 focus:ring-sky-500 h-3.5 w-3.5 mr-2">
+                                    <span class="text-[11px] text-gray-700">Inactive</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Scope Filter -->
+                        <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+                            <button @click="open = !open" 
+                                    class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
+                                    :class="selectedScopes.length > 0 ? 'bg-sky-50 border-sky-300 text-sky-700 font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
+                                    title="Filter by Scope">
+                                <i class="fa-solid fa-cubes text-[10px]"></i>
+                                <span class="font-medium">Scope</span>
+                                <template x-if="selectedScopes.length > 0">
+                                    <span class="ml-0.5 bg-sky-200 text-sky-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedScopes.length"></span>
+                                </template>
+                            </button>
+                            <div x-show="open" 
+                                 class="absolute right-0 mt-1 w-44 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
+                                 style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
+                                <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-200 flex justify-between items-center">
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase">Scope Filter</span>
+                                    <button @click="selectedScopes = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
+                                </div>
+                                <template x-for="scope in scopes" :key="scope.id">
+                                    <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
+                                        <input type="checkbox" :value="scope.id" x-model="selectedScopes" @change="filterUsers()" class="rounded border-gray-300 text-sky-600 focus:ring-sky-500 h-3.5 w-3.5 mr-2">
+                                        <span class="text-[11px] text-gray-700 truncate" x-text="scope.scope_name"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reset Button -->
+                    <button @click="selectedDepts = []; selectedRoles = []; selectedStatuses = []; selectedScopes = []; filterUsers();"
+                            x-show="selectedDepts.length > 0 || selectedRoles.length > 0 || selectedStatuses.length > 0 || selectedScopes.length > 0"
+                            class="h-7 w-7 border border-slate-300 rounded-sm bg-white text-rose-600 hover:bg-rose-50 flex items-center justify-center transition-colors shrink-0" 
+                            title="Clear All Filters"
+                            style="display: none;">
+                        <i class="fa-solid fa-filter-circle-xmark text-[11px]"></i>
+                    </button>
+                </div>
                 <!-- Search & Action -->
                 <div class="p-3 border-b border-slate-300 bg-slate-50 flex items-center gap-2">
                     <div class="flex-1 flex items-center gap-2 border border-slate-300 bg-white px-3 h-8">
@@ -144,6 +276,12 @@
                             title="Add New User">
                         <i class="fa-solid fa-user-plus text-[10px]"></i> Add
                     </button>
+                </div>
+
+                <!-- Count Header -->
+                <div class="px-4 py-1.5 bg-slate-50 border-b border-slate-200 flex justify-between items-center text-[10px] text-gray-500 font-bold uppercase tracking-wider select-none shrink-0">
+                    <span>User List</span>
+                    <span class="text-slate-400 lowercase normal-case font-medium" x-text="'Showing ' + filteredUsers.length + ' of ' + totalFiltered + ' (' + totalOverall + ' total)'"></span>
                 </div>
 
                 <!-- User List -->
@@ -414,17 +552,31 @@
                                                                     <span x-text="menu.title"></span>
                                                                 </div>
                                                             </td>
-                                                            <template x-for="perm in availablePermissions" :key="perm.id">
+                                                                                                                                                                                                                                                <template x-for="perm in availablePermissions" :key="perm.id">
                                                                 <td class="py-2 px-3 text-center">
-                                                                    <label class="inline-flex items-center cursor-pointer">
-                                                                        <div class="relative">
-                                                                            <input type="checkbox"
-                                                                                   :checked="getEffectivePermission(scope.id, menu.id, perm.id) === 'ALLOW'"
-                                                                                   @change="updateOverride(scope.id, menu.id, perm.id, $event.target.checked ? 'ALLOW' : 'DENY')"
-                                                                                   class="sr-only peer">
-                                                                            <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-sky-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
-                                                                        </div>
-                                                                    </label>
+                                                                    <div class="flex items-center justify-center">
+                                                                        <template x-if="hasRolePermission(scope.id, menu.id, perm.id)">
+                                                                            <!-- Inherited permission: Always checked & disabled -->
+                                                                            <div class="inline-flex items-center cursor-not-allowed">
+                                                                                <div class="relative">
+                                                                                    <input type="checkbox" checked disabled class="sr-only peer">
+                                                                                    <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-sky-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-200 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4 opacity-75" title="Inherited from Role (Cannot be disabled)"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </template>
+                                                                        <template x-if="!hasRolePermission(scope.id, menu.id, perm.id)">
+                                                                            <!-- Toggleable override permission -->
+                                                                            <label class="inline-flex items-center cursor-pointer">
+                                                                                <div class="relative">
+                                                                                    <input type="checkbox"
+                                                                                           :checked="getOverrideStatus(scope.id, menu.id, perm.id) === 'ALLOW'"
+                                                                                           @change="updateOverride(scope.id, menu.id, perm.id, $event.target.checked ? 'ALLOW' : 'INHERIT')"
+                                                                                           class="sr-only peer">
+                                                                                    <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-sky-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
+                                                                                </div>
+                                                                            </label>
+                                                                        </template>
+                                                                    </div>
                                                                 </td>
                                                             </template>
                                                         </tr>
@@ -453,10 +605,16 @@
 
     <script>
         function adminConsole() {
-            return {
+                        return {
                 searchQuery: '',
+                selectedDepts: [],
+                selectedRoles: [],
+                selectedStatuses: [],
+                selectedScopes: [],
                 users: @json($users->items()),
                 filteredUsers: [],
+                totalFiltered: {{ $users->total() }},
+                totalOverall: {{ $totalOverall }},
                 nextPageUrl: '{{ $users->nextPageUrl() }}',
                 isLoadingMore: false,
                 isSearching: false,
@@ -488,9 +646,16 @@
                     }, 300);
                 },
 
-                searchUsers() {
+                                searchUsers() {
                     this.isSearching = true;
-                    fetch(`{{ url('/admin/users') }}?search=${encodeURIComponent(this.searchQuery)}`, {
+                    let params = new URLSearchParams();
+                    if (this.searchQuery) params.append('search', this.searchQuery);
+                    if (this.selectedDepts.length > 0) params.append('depts', this.selectedDepts.join(','));
+                    if (this.selectedRoles.length > 0) params.append('roles', this.selectedRoles.join(','));
+                    if (this.selectedStatuses.length > 0) params.append('statuses', this.selectedStatuses.join(','));
+                    if (this.selectedScopes.length > 0) params.append('scopes', this.selectedScopes.join(','));
+
+                    fetch(`{{ url('/admin/users') }}?${params.toString()}`, {
                         headers: { 'Accept': 'application/json' }
                     })
                     .then(r => r.json())
@@ -498,6 +663,8 @@
                         this.users = data.users;
                         this.filteredUsers = data.users;
                         this.nextPageUrl = data.next_page_url;
+                        this.totalFiltered = data.total;
+                        this.totalOverall = data.total_overall;
                         Object.assign(this.userRolesMap, data.user_scope_roles);
                         this.isSearching = false;
                     })
@@ -507,7 +674,12 @@
                 loadMoreUsers() {
                     if (!this.nextPageUrl || this.isLoadingMore) return;
                     this.isLoadingMore = true;
-                    fetch(this.nextPageUrl, {
+                    let url = this.nextPageUrl;
+                    try {
+                        const parsedUrl = new URL(url);
+                        url = parsedUrl.pathname + parsedUrl.search;
+                    } catch (e) {}
+                    fetch(url, {
                         headers: { 'Accept': 'application/json' }
                     })
                     .then(r => r.json())
@@ -515,6 +687,8 @@
                         this.users = [...this.users, ...data.users];
                         this.filteredUsers = this.users;
                         this.nextPageUrl = data.next_page_url;
+                        this.totalFiltered = data.total;
+                        this.totalOverall = data.total_overall;
                         Object.assign(this.userRolesMap, data.user_scope_roles);
                         this.isLoadingMore = false;
                     })
@@ -542,6 +716,8 @@
                         if (data.success) {
                             this.users.unshift(data.user);
                             this.filteredUsers = this.users;
+                            this.totalFiltered++;
+                            this.totalOverall++;
                             this.userModal.open = false;
                             this.showToast('User created successfully');
                             this.selectUser(data.user);
@@ -572,6 +748,8 @@
                         if (data.success) {
                             this.users = this.users.filter(u => u.id != userId);
                             this.filteredUsers = this.users;
+                            this.totalFiltered--;
+                            this.totalOverall--;
                             this.selectedUser = null;
                             this.deleteModal.open = false;
                             this.showToast('User deleted successfully');
@@ -606,17 +784,7 @@
                 getUserAssignments(userId) { return this.userRolesMap[userId] || []; },
                 getUserScopeBadges(user) {
                     let assignments = this.getUserAssignments(user.id);
-                    if (assignments.length > 0) {
-                        return assignments.map(a => a.scope_id).filter((v, i, self) => self.indexOf(v) === i);
-                    }
-                    let badges = [];
-                    if (user.access) {
-                        if (user.access.app_drawing) badges.push('app_drawing');
-                        if (user.access.app_inventory) badges.push('app_inventory');
-                        if (user.access.app_npc) badges.push('app_npc');
-                        if (user.access.app_dashboard) badges.push('app_dashboard');
-                    }
-                    return badges;
+                    return assignments.map(a => a.scope_id).filter((v, i, self) => self.indexOf(v) === i);
                 },
                 isScopeAssigned(scopeId) {
                     if (!this.selectedUser) return false;

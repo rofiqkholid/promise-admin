@@ -546,15 +546,21 @@
                 confirmDelete() {
                     const type = this.deleteModal.type;
                     const id = this.deleteModal.id;
-                    let url = '';
+                    let baseUrl = '';
 
-                    if (type === 'department') url = `{{ url('/admin/departments') }}/${id}`;
-                    else if (type === 'scope') url = `{{ url('/admin/scopes') }}/${id}`;
-                    else if (type === 'permission') url = `{{ url('/admin/permissions') }}/${id}`;
+                    if (type === 'department') baseUrl = `{{ url('/admin/departments') }}/${id}`;
+                    else if (type === 'scope') baseUrl = `{{ url('/admin/scopes') }}/${id}`;
+                    else if (type === 'permission') baseUrl = `{{ url('/admin/permissions') }}/${id}`;
+
+                    const url = `${baseUrl}?_method=DELETE`;
 
                     fetch(url, {
-                        method: 'DELETE',
-                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-HTTP-Method-Override': 'DELETE'
+                        }
                     })
                     .then(r => r.json())
                     .then(data => {
@@ -583,13 +589,22 @@
                 },
                 submitDept() {
                     const isCreate = this.deptModal.mode === 'create';
-                    const url = isCreate ? '{{ url('/admin/departments') }}' : `{{ url('/admin/departments') }}/${this.deptModal.form.id}`;
-                    const method = isCreate ? 'POST' : 'PUT';
+                    const url = isCreate 
+                        ? '{{ url('/admin/departments') }}' 
+                        : `{{ url('/admin/departments') }}/${this.deptModal.form.id}?_method=PUT`;
+                    
+                    const headers = { 
+                        'Content-Type': 'application/json', 
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                    };
+                    if (!isCreate) {
+                        headers['X-HTTP-Method-Override'] = 'PUT';
+                    }
 
                     this.saving = true;
                     fetch(url, {
-                        method: method,
-                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                        method: 'POST',
+                        headers: headers,
                         body: JSON.stringify(this.deptModal.form)
                     })
                     .then(r => r.json())
@@ -620,13 +635,22 @@
                 },
                 submitScope() {
                     const isCreate = this.scopeModal.mode === 'create';
-                    const url = isCreate ? '{{ url('/admin/scopes') }}' : `{{ url('/admin/scopes') }}/${this.scopeModal.form.id}`;
-                    const method = isCreate ? 'POST' : 'PUT';
+                    const url = isCreate 
+                        ? '{{ url('/admin/scopes') }}' 
+                        : `{{ url('/admin/scopes') }}/${this.scopeModal.form.id}?_method=PUT`;
+                    
+                    const headers = { 
+                        'Content-Type': 'application/json', 
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                    };
+                    if (!isCreate) {
+                        headers['X-HTTP-Method-Override'] = 'PUT';
+                    }
 
                     this.saving = true;
                     fetch(url, {
-                        method: method,
-                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                        method: 'POST',
+                        headers: headers,
                         body: JSON.stringify({
                             id: this.scopeModal.form.id,
                             scope_name: this.scopeModal.form.scope_name,
@@ -661,13 +685,22 @@
                 },
                 submitPerm() {
                     const isCreate = this.permModal.mode === 'create';
-                    const url = isCreate ? '{{ url('/admin/permissions') }}' : `{{ url('/admin/permissions') }}/${this.permModal.form.id}`;
-                    const method = isCreate ? 'POST' : 'PUT';
+                    const url = isCreate 
+                        ? '{{ url('/admin/permissions') }}' 
+                        : `{{ url('/admin/permissions') }}/${this.permModal.form.id}?_method=PUT`;
+                    
+                    const headers = { 
+                        'Content-Type': 'application/json', 
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                    };
+                    if (!isCreate) {
+                        headers['X-HTTP-Method-Override'] = 'PUT';
+                    }
 
                     this.saving = true;
                     fetch(url, {
-                        method: method,
-                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                        method: 'POST',
+                        headers: headers,
                         body: JSON.stringify(this.permModal.form)
                     })
                     .then(r => r.json())

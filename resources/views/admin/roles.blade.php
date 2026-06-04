@@ -389,7 +389,12 @@
                 loadMoreRoles() {
                     if (!this.nextPageUrl || this.isLoadingMore) return;
                     this.isLoadingMore = true;
-                    fetch(this.nextPageUrl, {
+                    let url = this.nextPageUrl;
+                    try {
+                        const parsedUrl = new URL(url);
+                        url = parsedUrl.pathname + parsedUrl.search;
+                    } catch (e) {}
+                    fetch(url, {
                         headers: { 'Accept': 'application/json' }
                     })
                     .then(r => r.json())
@@ -462,9 +467,20 @@
                     const isCreate = this.roleModal.mode === 'create';
                     
                     this.savingForm = true;
-                    fetch(isCreate ? '{{ url('/admin/roles') }}' : `{{ url('/admin/roles') }}/${this.roleModal.form.id}`, {
-                        method: isCreate ? 'POST' : 'PUT',
-                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+                    const url = isCreate 
+                        ? '{{ url('/admin/roles') }}' 
+                        : `{{ url('/admin/roles') }}/${this.roleModal.form.id}?_method=PUT`;
+                    const headers = { 
+                        'Content-Type': 'application/json', 
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content 
+                    };
+                    if (!isCreate) {
+                        headers['X-HTTP-Method-Override'] = 'PUT';
+                    }
+
+                    fetch(url, {
+                        method: 'POST',
+                        headers: headers,
                         body: JSON.stringify({ role_name: this.roleModal.form.role_name })
                     }).then(r => r.json()).then(data => {
                         this.savingForm = false;
@@ -500,8 +516,16 @@
                 confirmDelete() {
                     const type = this.deleteModal.type;
                     const id = this.deleteModal.id;
-                    const url = type === 'role' ? `{{ url('/admin/roles') }}/${id}` : `{{ url('/admin/permissions') }}/${id}`;
-                    fetch(url, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content } })
+                    const baseUrl = type === 'role' ? `{{ url('/admin/roles') }}/${id}` : `{{ url('/admin/permissions') }}/${id}`;
+                    const url = `${baseUrl}?_method=DELETE`;
+                    fetch(url, { 
+                        method: 'POST', 
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'X-HTTP-Method-Override': 'DELETE'
+                        } 
+                    })
                         .then(r => r.json()).then(data => {
                             if (data.success) { this.showToast(data.message); this.deleteModal.open = false; window.location.reload(); }
                             else this.showToast(data.message, 'error');

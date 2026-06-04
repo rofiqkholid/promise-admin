@@ -27,43 +27,47 @@
         <div class="min-h-screen flex">
             
             <!-- Left Side: Branding and Hero Panel (Visible on lg screens) -->
-            <div class="hidden lg:flex lg:w-[55%] xl:w-[60%] bg-[#081a30] relative overflow-hidden flex-col justify-between p-12 text-white">
+            <div class="hidden lg:flex lg:w-[55%] xl:w-[60%] relative overflow-hidden flex-col justify-between p-12 text-white">
                 <!-- Decorative background elements -->
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(12,77,162,0.15),transparent_50%)]"></div>
-                <div class="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-[#0c4da2]/5 blur-3xl"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-[#123b96] to-[#0f2f7a]"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.18),transparent_18rem),radial-gradient(circle_at_80%_85%,rgba(14,165,233,0.16),transparent_16rem)]"></div>
+                <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.07)_1px,transparent_1px)] bg-[size:52px_52px] opacity-55"></div>
+                <div class="absolute right-[5.5rem] top-[2.8rem] h-[52px] w-[52px] bg-white/8"></div>
+                <div class="absolute right-[8.75rem] top-[5.95rem] h-[52px] w-[52px] bg-white/8"></div>
+                <div class="absolute bottom-24 left-[6.25rem] h-[52px] w-[52px] bg-white/8"></div>
+                <div class="absolute bottom-[2.8rem] left-[9.5rem] h-[52px] w-[52px] bg-white/8"></div>
                 
                 <!-- Top Brand Logo/Name -->
                 <div class="relative z-10 flex items-center gap-3">
-                    <img src="/assets/image/logo-promise.png" alt="Promise Logo" class="h-8 w-auto filter brightness-0 invert object-contain">
+                    <img src="{{ asset('assets/image/logo-promise.png') }}" alt="Promise Logo" class="h-8 w-auto filter brightness-0 invert object-contain">
                     <div class="w-px h-5 bg-white/20"></div>
                     <span class="text-xs font-bold tracking-wider uppercase text-white/80">Promise Console</span>
                 </div>
 
                 <!-- Center Quote/Tagline -->
-                <div class="relative z-10 my-auto max-w-lg space-y-6">
+                <div class="relative z-10 my-auto max-w-xl space-y-6">
                     <div class="space-y-2">
-                        <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Next-Generation Admin</span>
-                        <h2 class="text-3xl xl:text-4xl font-extrabold leading-tight tracking-tight">
-                            Streamline Enterprise Operations with Precision
+                        <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Promise Admin Console</span>
+                        <h2 class="text-3xl xl:text-4xl font-extrabold leading-tight tracking-tight text-white">
+                            Promise Admin
                         </h2>
+                        <p class="text-sm text-slate-200/80 leading-relaxed font-light">
+                            Centralized administrator panel for managing users, scopes, departments, and role-based permissions across Summit Adyawinsa internal applications.
+                        </p>
                     </div>
-                    <p class="text-sm text-slate-300/90 leading-relaxed font-light">
-                        Access unified drawing management, inventory control, and role-based permissions in one secure dashboard.
-                    </p>
-                    <div class="flex items-center gap-6 pt-4">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-sky-400">01</span>
-                            <span class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Role Matrix</span>
+
+                    <div class="mt-8 grid grid-cols-3 gap-4 pt-4">
+                        <div class="rounded-xs border border-white/10 bg-white/7 p-4 text-left">
+                            <strong class="block text-[1.05rem] font-bold text-white">01</strong>
+                            <span class="mt-1 block text-[10px] sm:text-xs leading-normal text-slate-200/75 font-light">Unified RBAC & user permission matrix configuration.</span>
                         </div>
-                        <div class="w-1.5 h-1.5 rounded-full bg-slate-600"></div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-sky-400">02</span>
-                            <span class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Inventory Control</span>
+                        <div class="rounded-xs border border-white/10 bg-white/7 p-4 text-left">
+                            <strong class="block text-[1.05rem] font-bold text-white">02</strong>
+                            <span class="mt-1 block text-[10px] sm:text-xs leading-normal text-slate-200/75 font-light">Manage active application scopes and departments.</span>
                         </div>
-                        <div class="w-1.5 h-1.5 rounded-full bg-slate-600"></div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-sky-400">03</span>
-                            <span class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider">Drawing Logs</span>
+                        <div class="rounded-xs border border-white/10 bg-white/7 p-4 text-left">
+                            <strong class="block text-[1.05rem] font-bold text-white">03</strong>
+                            <span class="mt-1 block text-[10px] sm:text-xs leading-normal text-slate-200/75 font-light">Monitor application stats and system logs in real-time.</span>
                         </div>
                     </div>
                 </div>
@@ -79,7 +83,7 @@
                 
                 <!-- Floating Mobile Header (visible only on smaller screens) -->
                 <div class="lg:hidden absolute top-8 left-8 right-8 flex justify-between items-center">
-                    <img src="/assets/image/logo-promise.png" alt="Promise Logo" class="h-6 w-auto object-contain">
+                    <img src="{{ asset('assets/image/logo-promise.png') }}" alt="Promise Logo" class="h-6 w-auto object-contain">
                     <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Admin Console</span>
                 </div>
 

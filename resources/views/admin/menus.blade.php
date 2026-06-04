@@ -458,9 +458,20 @@
                     const formData = { ...this.menuModal.form, is_active: this.menuModal.form.is_active ? 1 : 0, is_visible: this.menuModal.form.is_visible ? 1 : 0 };
                     
                     this.saving = true;
-                    fetch(isCreate ? '{{ url('/admin/menus') }}' : `{{ url('/admin/menus') }}/${this.menuModal.form.id}`, {
-                        method: isCreate ? 'POST' : 'PUT',
-                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+                    const url = isCreate 
+                        ? '{{ url('/admin/menus') }}' 
+                        : `{{ url('/admin/menus') }}/${this.menuModal.form.id}?_method=PUT`;
+                    const headers = { 
+                        'Content-Type': 'application/json', 
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content 
+                    };
+                    if (!isCreate) {
+                        headers['X-HTTP-Method-Override'] = 'PUT';
+                    }
+
+                    fetch(url, {
+                        method: 'POST',
+                        headers: headers,
                         body: JSON.stringify(formData)
                     }).then(r => r.json()).then(data => {
                         this.saving = false;
@@ -507,10 +518,15 @@
                 confirmDelete() {
                     const type = this.deleteModal.type;
                     const id = this.deleteModal.id;
-                    const url = type === 'menu' ? `{{ url('/admin/menus') }}/${id}` : `{{ url('/admin/scopes') }}/${id}`;
+                    const baseUrl = type === 'menu' ? `{{ url('/admin/menus') }}/${id}` : `{{ url('/admin/scopes') }}/${id}`;
+                    const url = `${baseUrl}?_method=DELETE`;
                     fetch(url, {
-                        method: 'DELETE',
-                        headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'X-HTTP-Method-Override': 'DELETE'
+                        }
                     }).then(r => r.json()).then(data => {
                         if (data.success) {
                             this.showToast(data.message);

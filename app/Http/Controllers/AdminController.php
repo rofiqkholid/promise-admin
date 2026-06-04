@@ -11,12 +11,52 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $selectedDepts = $request->input('depts', []);
+        $selectedRoles = $request->input('roles', []);
+        $selectedStatuses = $request->input('statuses', []);
+        $selectedScopes = $request->input('scopes', []);
+
+        if (is_string($selectedDepts)) $selectedDepts = array_filter(explode(',', $selectedDepts));
+        if (is_string($selectedRoles)) $selectedRoles = array_filter(explode(',', $selectedRoles));
+        if (is_string($selectedStatuses)) $selectedStatuses = array_filter(explode(',', $selectedStatuses));
+        if (is_string($selectedScopes)) $selectedScopes = array_filter(explode(',', $selectedScopes));
 
         $users = User::with('access')
             ->when($search, function ($query, $search) {
-                return $query->where('name', 'like', "%{$search}%")
-                             ->orWhere('nik', 'like', "%{$search}%")
-                             ->orWhere('email', 'like', "%{$search}%");
+                return $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('nik', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->when(!empty($selectedDepts), function ($query) use ($selectedDepts) {
+                return $query->whereIn('id_dept', $selectedDepts);
+            })
+            ->when(!empty($selectedStatuses), function ($query) use ($selectedStatuses) {
+                return $query->where(function ($q) use ($selectedStatuses) {
+                    if (in_array('active', $selectedStatuses)) {
+                        $q->orWhere('is_active', 1);
+                    }
+                    if (in_array('inactive', $selectedStatuses)) {
+                        $q->orWhere('is_active', 0);
+                    }
+                });
+            })
+            ->when(!empty($selectedRoles), function ($query) use ($selectedRoles) {
+                return $query->whereExists(function ($q) use ($selectedRoles) {
+                    $q->select(\DB::raw(1))
+                      ->from('user_scope_roles')
+                      ->whereColumn('user_scope_roles.user_id', 'users.id')
+                      ->whereIn('user_scope_roles.role_id', $selectedRoles);
+                });
+            })
+            ->when(!empty($selectedScopes), function ($query) use ($selectedScopes) {
+                return $query->whereExists(function ($sq) use ($selectedScopes) {
+                    $sq->select(\DB::raw(1))
+                      ->from('user_scope_roles')
+                      ->whereColumn('user_scope_roles.user_id', 'users.id')
+                      ->whereIn('user_scope_roles.scope_id', $selectedScopes);
+                });
             })
             ->paginate(15)
             ->withQueryString();
@@ -30,19 +70,28 @@ class AdminController extends Controller
             ->get()
             ->groupBy('user_id');
 
+        $totalOverall = User::count();
+
         if ($request->wantsJson()) {
             return response()->json([
                 'users' => $users->items(),
                 'next_page_url' => $users->nextPageUrl(),
                 'user_scope_roles' => $userScopeRoles,
+                'total' => $users->total(),
+                'total_overall' => $totalOverall,
             ]);
         }
 
         $scopes = \DB::table('scopes')->where('is_active', 1)->get();
-        $roles = \DB::table('roles')->get();
+        $roles = \DB::table('roles')
+            ->leftJoin('role_scope_permissions', 'roles.id', '=', 'role_scope_permissions.role_id')
+            ->select('roles.id', 'roles.role_name')
+            ->selectRaw('MIN(role_scope_permissions.scope_id) as scope_id')
+            ->groupBy('roles.id', 'roles.role_name')
+            ->get();
         $departments = \DB::table('departments')->get();
 
-        return view('admin.index', compact('users', 'scopes', 'roles', 'userScopeRoles', 'departments'));
+        return view('admin.index', compact('users', 'scopes', 'roles', 'userScopeRoles', 'departments', 'totalOverall'));
     }
 
     public function updateProfile(Request $request)
@@ -149,9 +198,8 @@ class AdminController extends Controller
                         ->where('scope_id', $scopeId)
                         ->exists();
                     if (!$exists) {
-                        $defaultRoleId = ($scopeId === 'app_inventory')
-                            ? (\DB::table('roles')->where('role_name', 'like', 'Inv%')->value('id') ?? 1)
-                            : (\DB::table('roles')->where('role_name', 'not like', 'Inv%')->value('id') ?? 1);
+                        $defaultRoleId = \DB::table('roles')->where('role_name', 'Viewer')->value('id')
+                            ?? 22;
 
                         \DB::table('user_scope_roles')->insert([
                             'user_id' => $userId,
@@ -480,10 +528,10 @@ class AdminController extends Controller
         $stats = [
             'total_users' => User::count(),
             'active_users' => User::where('is_active', 1)->count(),
-            'inactive_users' => User::where('is_active', 0)->count(),
             'total_roles' => \DB::table('roles')->count(),
-            'total_scopes' => \DB::table('scopes')->count(),
+            'total_scopes' => \DB::table('scopes')->where('is_active', 1)->count(),
             'total_departments' => \DB::table('departments')->count(),
+            'total_overrides' => \DB::table('user_scope_permissions')->distinct('user_id')->count('user_id'),
         ];
 
         // 1. User allocation per application scope
@@ -495,6 +543,7 @@ class AdminController extends Controller
                 ->distinct('user_id')
                 ->count();
             $scopeChartData[] = [
+                'id' => $scope->id,
                 'label' => $scope->scope_name,
                 'count' => $userCount
             ];
@@ -509,13 +558,45 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
+        // 3. Role distribution breakdown
+        $roleBreakdown = \DB::table('user_scope_roles')
+            ->join('roles', 'roles.id', '=', 'user_scope_roles.role_id')
+            ->select('roles.role_name', \DB::raw('count(distinct user_id) as user_count'))
+            ->groupBy('roles.id', 'roles.role_name')
+            ->orderBy('user_count', 'desc')
+            ->take(6)
+            ->get();
+
+        // 4. Users with custom overrides
+        $overrideUsers = \DB::table('user_scope_permissions')
+            ->join('users', 'users.id', '=', 'user_scope_permissions.user_id')
+            ->leftJoin('departments', 'departments.id', '=', 'users.id_dept')
+            ->select('users.name', 'users.nik', 'departments.code as dept_code', \DB::raw('count(*) as override_count'))
+            ->groupBy('users.id', 'users.name', 'users.nik', 'departments.code')
+            ->orderBy('override_count', 'desc')
+            ->take(5)
+            ->get();
+
+        // 5. Active online users (last 15 minutes)
+        $activeTime = time() - (15 * 60);
+        $onlineUsers = \DB::table('sessions')
+            ->join('users', 'users.nik', '=', 'sessions.user_id')
+            ->leftJoin('departments', 'departments.id', '=', 'users.id_dept')
+            ->where('sessions.last_activity', '>=', $activeTime)
+            ->select('users.name', 'users.nik', 'departments.code as dept_code', 'departments.name as dept_name', \DB::raw('MAX(sessions.last_activity) as last_activity'))
+            ->groupBy('users.name', 'users.nik', 'departments.code', 'departments.name')
+            ->orderBy('last_activity', 'desc')
+            ->get();
+
+        $stats['online_users'] = $onlineUsers->count();
+
         $recentUsers = User::leftJoin('departments', 'departments.id', '=', 'users.id_dept')
             ->select('users.*', 'departments.name as dept_name', 'departments.code as dept_code')
             ->orderBy('users.created_at', 'desc')
             ->take(5)
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'scopeChartData', 'departmentBreakdown', 'recentUsers'));
+        return view('admin.dashboard', compact('stats', 'scopeChartData', 'departmentBreakdown', 'roleBreakdown', 'overrideUsers', 'recentUsers', 'onlineUsers'));
     }
 }
 

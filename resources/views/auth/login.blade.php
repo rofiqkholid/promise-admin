@@ -3,7 +3,7 @@
     <!-- Title / Logo Header (Desktop) -->
     <div class="mb-8">
         <div class="hidden lg:block mb-4">
-            <img src="/assets/image/logo-promise.png" alt="Promise Logo" class="h-10 w-auto object-contain">
+            <img src="{{ asset('assets/image/logo-promise.png') }}" alt="Promise Logo" class="h-10 w-auto object-contain">
         </div>
         <h2 class="text-xl font-bold text-slate-800 tracking-tight">Sign In</h2>
         <p class="text-xs text-gray-400 mt-1">Please enter your enterprise credentials to access the console.</p>
