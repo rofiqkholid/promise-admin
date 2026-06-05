@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <div class="w-1 h-5 bg-sky-500"></div>
-            <h2 class="text-sm font-semibold text-gray-800 tracking-wide uppercase">Menus Master Catalog</h2>
+            <h2 class="text-sm font-semibold text-gray-800 tracking-wide ">Menus Master Catalog</h2>
         </div>
     </x-slot>
 
@@ -31,7 +31,7 @@
              style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-sm" @click.away="deleteModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600">Confirm Delete</h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600">Confirm Delete</h3>
                     <button @click="deleteModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
@@ -54,7 +54,7 @@
              style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-lg max-h-[90vh] flex flex-col" @click.away="menuModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600" x-text="menuModal.mode === 'create' ? 'Add New Menu Item' : 'Edit Menu Item'"></h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600" x-text="menuModal.mode === 'create' ? 'Add New Menu Item' : 'Edit Menu Item'"></h3>
                     <button @click="menuModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
@@ -62,12 +62,12 @@
                 <form @submit.prevent="submitMenuForm()" class="p-5 overflow-y-auto flex-1">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="sm:col-span-2">
-                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Menu Title</label>
+                            <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Menu Title</label>
                             <input type="text" x-model="menuModal.form.title" required placeholder="e.g. Stock Opname"
                                    class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Application Scope</label>
+                            <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Application Scope</label>
                             <select id="scope-select" x-model="menuModal.form.scope_id" required
                                     x-init="
                                         $watch('menuModal.open', open => {
@@ -90,7 +90,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Parent Menu</label>
+                            <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Parent Menu</label>
                             <select id="parent-menu-select" x-model="menuModal.form.parent_id"
                                     x-init="
                                         $watch('menuModal.open', open => {
@@ -114,17 +114,17 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Route / URL</label>
+                            <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Route / URL</label>
                             <input type="text" x-model="menuModal.form.route" placeholder="e.g. inventory.stock.index"
                                    class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Icon Class</label>
+                            <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Icon Class</label>
                             <input type="text" x-model="menuModal.form.icon" placeholder="e.g. fa-solid fa-box"
                                    class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Sort Order</label>
+                            <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Sort Order</label>
                             <input type="number" x-model="menuModal.form.sort_order" required
                                    class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
                         </div>
@@ -162,7 +162,7 @@
              style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-xl flex flex-col" style="max-height: 85vh;" @click.away="scopeModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between shrink-0">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600">Manage Application Scopes</h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600">Manage Application Scopes</h3>
                     <button @click="scopeModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
@@ -171,9 +171,9 @@
                     <table class="w-full text-xs border-collapse">
                         <thead>
                             <tr class="bg-gray-50 border-b border-gray-200">
-                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Scope ID</th>
-                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Name</th>
-                                <th class="px-4 py-2.5 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500">Status</th>
+                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Scope ID</th>
+                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Name</th>
+                                <th class="px-4 py-2.5 text-center text-[10px] font-semibold tracking-wider text-gray-500">Status</th>
                                 <th class="px-4 py-2.5"></th>
                             </tr>
                         </thead>
@@ -198,7 +198,7 @@
                     </table>
                 </div>
                 <div class="border-t border-gray-200 p-4 shrink-0">
-                    <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-2.5">Register New Scope</p>
+                    <p class="text-[10px] font-semibold tracking-wider text-gray-500 mb-2.5">Register New Scope</p>
                     <form @submit.prevent="submitScopeForm()" class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
                         <input type="text" x-model="scopeModal.form.id" required placeholder="app_billing"
                                class="flex-1 text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors">
@@ -244,7 +244,7 @@
             <div class="border-b border-gray-200 flex overflow-x-auto bg-white">
                 <template x-for="sc in scopes" :key="sc.id">
                     <button @click="currentScopeId = sc.id"
-                            class="px-5 py-2.5 text-[10px] font-semibold uppercase tracking-wider border-b-2 transition-colors whitespace-nowrap"
+                            class="px-5 py-2.5 text-[10px] font-semibold tracking-wider border-b-2 transition-colors whitespace-nowrap"
                             :class="currentScopeId === sc.id
                                 ? 'text-sky-600 border-sky-500 bg-sky-50/30'
                                 : 'text-gray-500 border-transparent hover:text-gray-800 hover:border-gray-300'"
@@ -265,14 +265,14 @@
                 <table id="menus-table" class="w-full border-collapse text-xs display cell-border hover stripe" style="width: 100%;">
                     <thead class="bg-gray-50 border-b border-slate-300">
                         <tr>
-                            <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-12">No</th>
-                            <th class="text-left px-5 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Title</th>
-                            <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Route</th>
-                            <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Icon</th>
-                            <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Order</th>
-                            <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Status</th>
-                            <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Visible</th>
-                            <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Actions</th>
+                            <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-12">No</th>
+                            <th class="text-left px-5 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Title</th>
+                            <th class="text-left px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Route</th>
+                            <th class="text-left px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Icon</th>
+                            <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Order</th>
+                            <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Status</th>
+                            <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Visible</th>
+                            <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">

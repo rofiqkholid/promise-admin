@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <div class="w-1 h-5 bg-sky-500"></div>
-            <h2 class="text-sm font-semibold text-gray-800 tracking-wide uppercase">Master Data Configurations</h2>
+            <h2 class="text-sm font-semibold text-gray-800 tracking-wide ">Master Data Configurations</h2>
         </div>
     </x-slot>
 
@@ -31,7 +31,7 @@
              style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-sm" @click.away="deleteModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600">Confirm Delete</h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600">Confirm Delete</h3>
                     <button @click="deleteModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
@@ -52,19 +52,19 @@
         <div x-show="deptModal.open" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50" style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-sm max-h-[90vh] flex flex-col" @click.away="deptModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600" x-text="deptModal.mode === 'create' ? 'Add Department' : 'Edit Department'"></h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600" x-text="deptModal.mode === 'create' ? 'Add Department' : 'Edit Department'"></h3>
                     <button @click="deptModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
                 <form @submit.prevent="submitDept()" class="p-5 space-y-4 overflow-y-auto flex-1">
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Code</label>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Code</label>
                         <input type="text" x-model="deptModal.form.code" required placeholder="e.g. ICT" :disabled="deptModal.mode === 'edit' ? false : false"
                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Name</label>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Name</label>
                         <input type="text" x-model="deptModal.form.name" required placeholder="e.g. Information Technology"
                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
                     </div>
@@ -87,19 +87,19 @@
         <div x-show="scopeModal.open" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50" style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-sm max-h-[90vh] flex flex-col" @click.away="scopeModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600" x-text="scopeModal.mode === 'create' ? 'Add Scope' : 'Edit Scope'"></h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600" x-text="scopeModal.mode === 'create' ? 'Add Scope' : 'Edit Scope'"></h3>
                     <button @click="scopeModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
                 <form @submit.prevent="submitScope()" class="p-5 space-y-4 overflow-y-auto flex-1">
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Scope ID</label>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Scope ID</label>
                         <input type="text" x-model="scopeModal.form.id" required placeholder="e.g. app_billing" :disabled="scopeModal.mode === 'edit'"
                                class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors disabled:bg-gray-50">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Scope Name</label>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Scope Name</label>
                         <input type="text" x-model="scopeModal.form.scope_name" required placeholder="e.g. Billing App"
                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
                     </div>
@@ -131,19 +131,19 @@
         <div x-show="permModal.open" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50" style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-sm max-h-[90vh] flex flex-col" @click.away="permModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600" x-text="permModal.mode === 'create' ? 'Add Permission Action' : 'Edit Permission Action'"></h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600" x-text="permModal.mode === 'create' ? 'Add Permission Action' : 'Edit Permission Action'"></h3>
                     <button @click="permModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
                 <form @submit.prevent="submitPerm()" class="p-5 space-y-4 overflow-y-auto flex-1">
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Action Name</label>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Action Name</label>
                         <input type="text" x-model="permModal.form.permission_name" required placeholder="e.g. approve"
                                class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Description</label>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Description</label>
                         <input type="text" x-model="permModal.form.description" placeholder="e.g. Can approve documents"
                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
                     </div>
@@ -168,17 +168,17 @@
             <!-- Tab Headers -->
             <div class="border-b border-gray-200 flex overflow-x-auto bg-gray-50 shrink-0">
                 <button @click="activeTab = 'departments'"
-                        class="px-6 py-3.5 text-xs font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2"
+                        class="px-6 py-3.5 text-xs font-bold tracking-wider border-b-2 transition-all flex items-center gap-2"
                         :class="activeTab === 'departments' ? 'text-sky-600 border-sky-500 bg-white' : 'text-gray-500 border-transparent hover:bg-gray-100/50 hover:text-gray-800'">
                     <i class="fa-solid fa-building text-slate-400"></i> Departments
                 </button>
                 <button @click="activeTab = 'scopes'"
-                        class="px-6 py-3.5 text-xs font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2"
+                        class="px-6 py-3.5 text-xs font-bold tracking-wider border-b-2 transition-all flex items-center gap-2"
                         :class="activeTab === 'scopes' ? 'text-sky-600 border-sky-500 bg-white' : 'text-gray-500 border-transparent hover:bg-gray-100/50 hover:text-gray-800'">
                     <i class="fa-solid fa-layer-group text-slate-400"></i> Application Scopes
                 </button>
                 <button @click="activeTab = 'permissions'"
-                        class="px-6 py-3.5 text-xs font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2"
+                        class="px-6 py-3.5 text-xs font-bold tracking-wider border-b-2 transition-all flex items-center gap-2"
                         :class="activeTab === 'permissions' ? 'text-sky-600 border-sky-500 bg-white' : 'text-gray-500 border-transparent hover:bg-gray-100/50 hover:text-gray-800'">
                     <i class="fa-solid fa-key text-slate-400"></i> Action Permissions
                 </button>
@@ -188,7 +188,7 @@
             <div x-show="activeTab === 'departments'" class="p-5 flex-1 flex flex-col">
                 <div class="flex items-center justify-between mb-4 shrink-0">
                     <div>
-                        <h3 class="text-xs font-bold text-gray-800 uppercase tracking-wider">Master Departments</h3>
+                        <h3 class="text-xs font-bold text-gray-800 tracking-wider">Master Departments</h3>
                         <p class="text-[10px] text-gray-400 mt-0.5">Manage user organization structure groups and codes.</p>
                     </div>
                     <button @click="openAddDept()" class="px-3.5 py-1.5 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors flex items-center gap-1.5 rounded-xs">
@@ -206,11 +206,11 @@
                     <table id="departments-table" class="w-full border-collapse text-xs display cell-border hover stripe" style="width: 100%;">
                         <thead class="bg-gray-50 border-b border-slate-300">
                             <tr>
-                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-12">No</th>
-                                <th class="text-left px-5 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-24">ID</th>
-                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-40">Code</th>
-                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Department Name</th>
-                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-32">Actions</th>
+                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-12">No</th>
+                                <th class="text-left px-5 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-24">ID</th>
+                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-40">Code</th>
+                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Department Name</th>
+                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-32">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -224,7 +224,7 @@
             <div x-show="activeTab === 'scopes'" class="p-5 flex-1 flex flex-col" style="display: none;">
                 <div class="flex items-center justify-between mb-4 shrink-0">
                     <div>
-                        <h3 class="text-xs font-bold text-gray-800 uppercase tracking-wider">Master Application Scopes</h3>
+                        <h3 class="text-xs font-bold text-gray-800 tracking-wider">Master Application Scopes</h3>
                         <p class="text-[10px] text-gray-400 mt-0.5">Configure system modules, sub-apps, and scope bindings.</p>
                     </div>
                     <button @click="openAddScope()" class="px-3.5 py-1.5 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors flex items-center gap-1.5 rounded-xs">
@@ -242,11 +242,11 @@
                     <table id="scopes-table" class="w-full border-collapse text-xs display cell-border hover stripe" style="width: 100%;">
                         <thead class="bg-gray-50 border-b border-slate-300">
                             <tr>
-                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-12">No</th>
-                                <th class="text-left px-5 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-48">Scope ID</th>
-                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Scope Name</th>
-                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-40">Status</th>
-                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-32">Actions</th>
+                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-12">No</th>
+                                <th class="text-left px-5 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-48">Scope ID</th>
+                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Scope Name</th>
+                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-40">Status</th>
+                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-32">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -260,7 +260,7 @@
             <div x-show="activeTab === 'permissions'" class="p-5 flex-1 flex flex-col" style="display: none;">
                 <div class="flex items-center justify-between mb-4 shrink-0">
                     <div>
-                        <h3 class="text-xs font-bold text-gray-800 uppercase tracking-wider">Master Action Permissions</h3>
+                        <h3 class="text-xs font-bold text-gray-800 tracking-wider">Master Action Permissions</h3>
                         <p class="text-[10px] text-gray-400 mt-0.5">Manage action keywords used across permission assignment matrices.</p>
                     </div>
                     <button @click="openAddPerm()" class="px-3.5 py-1.5 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors flex items-center gap-1.5 rounded-xs">
@@ -278,11 +278,11 @@
                     <table id="permissions-table" class="w-full border-collapse text-xs display cell-border hover stripe" style="width: 100%;">
                         <thead class="bg-gray-50 border-b border-slate-300">
                             <tr>
-                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-12">No</th>
-                                <th class="text-left px-5 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-24">ID</th>
-                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-48">Action / Key</th>
-                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Description</th>
-                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-32">Actions</th>
+                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-12">No</th>
+                                <th class="text-left px-5 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-24">ID</th>
+                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-48">Action / Key</th>
+                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Description</th>
+                                <th class="text-center px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500 w-32">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -420,7 +420,7 @@
                                     render: function(data) {
                                         const badgeClass = data ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-gray-100 text-gray-500 border-gray-200';
                                         const text = data ? 'Active' : 'Inactive';
-                                        return `<span class="text-[9px] font-bold px-2 py-0.5 border rounded-xs uppercase tracking-wider ${badgeClass}">${text}</span>`;
+                                        return `<span class="text-[9px] font-bold px-2 py-0.5 border rounded-xs tracking-wider ${badgeClass}">${text}</span>`;
                                     }
                                 },
                                 {

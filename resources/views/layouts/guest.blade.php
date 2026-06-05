@@ -37,17 +37,11 @@
                 <div class="absolute bottom-24 left-[6.25rem] h-[52px] w-[52px] bg-white/8"></div>
                 <div class="absolute bottom-[2.8rem] left-[9.5rem] h-[52px] w-[52px] bg-white/8"></div>
                 
-                <!-- Top Brand Logo/Name -->
-                <div class="relative z-10 flex items-center gap-3">
-                    <img src="{{ asset('assets/image/logo-promise.png') }}" alt="Promise Logo" class="h-8 w-auto filter brightness-0 invert object-contain">
-                    <div class="w-px h-5 bg-white/20"></div>
-                    <span class="text-xs font-bold tracking-wider uppercase text-white/80">Promise Console</span>
-                </div>
+
 
                 <!-- Center Quote/Tagline -->
                 <div class="relative z-10 my-auto max-w-xl space-y-6">
                     <div class="space-y-2">
-                        <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Promise Admin Console</span>
                         <h2 class="text-3xl xl:text-4xl font-extrabold leading-tight tracking-tight text-white">
                             Promise Admin
                         </h2>
@@ -81,11 +75,7 @@
             <!-- Right Side: Login Form Panel -->
             <div class="w-full lg:w-[45%] xl:w-[40%] flex flex-col justify-center bg-white p-8 md:p-12 xl:p-16 relative">
                 
-                <!-- Floating Mobile Header (visible only on smaller screens) -->
-                <div class="lg:hidden absolute top-8 left-8 right-8 flex justify-between items-center">
-                    <img src="{{ asset('assets/image/logo-promise.png') }}" alt="Promise Logo" class="h-6 w-auto object-contain">
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Admin Console</span>
-                </div>
+
 
                 <!-- Inner Form Container -->
                 <div class="w-full max-w-[360px] mx-auto">

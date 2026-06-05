@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <div class="w-1.5 h-5 bg-[#0c4da2]"></div>
-            <h2 class="text-sm font-semibold text-gray-800 tracking-wide uppercase">User Management Dashboard</h2>
+            <h2 class="text-sm font-semibold text-gray-800 tracking-wide ">User Management Dashboard</h2>
         </div>
     </x-slot>
 
@@ -19,7 +19,7 @@
                     <i class="fa-solid fa-users text-sm"></i>
                 </div>
                 <div>
-                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Total Users</span>
+                    <span class="text-[9px] font-bold text-gray-400 tracking-wider block">Total Users</span>
                     <span class="text-sm font-bold text-gray-900 mt-0.5 block" x-text="stats.total_users"></span>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     <i class="fa-solid fa-user-check text-sm"></i>
                 </div>
                 <div>
-                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Active Users</span>
+                    <span class="text-[9px] font-bold text-gray-400 tracking-wider block">Active Users</span>
                     <span class="text-sm font-bold text-gray-900 mt-0.5 block" x-text="stats.active_users"></span>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                     <i class="fa-solid fa-user-gear text-sm"></i>
                 </div>
                 <div>
-                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Custom Overrides</span>
+                    <span class="text-[9px] font-bold text-gray-400 tracking-wider block">Custom Overrides</span>
                     <span class="text-sm font-bold text-gray-900 mt-0.5 block" x-text="stats.total_overrides"></span>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                     <i class="fa-solid fa-cubes text-sm"></i>
                 </div>
                 <div>
-                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Active Scopes</span>
+                    <span class="text-[9px] font-bold text-gray-400 tracking-wider block">Active Scopes</span>
                     <span class="text-sm font-bold text-gray-900 mt-0.5 block" x-text="stats.total_scopes"></span>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                     <i class="fa-solid fa-shield-halved text-sm"></i>
                 </div>
                 <div>
-                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Access Roles</span>
+                    <span class="text-[9px] font-bold text-gray-400 tracking-wider block">Access Roles</span>
                     <span class="text-sm font-bold text-gray-900 mt-0.5 block" x-text="stats.total_roles"></span>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                     <i class="fa-solid fa-building text-sm"></i>
                 </div>
                 <div>
-                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block">Departments</span>
+                    <span class="text-[9px] font-bold text-gray-400 tracking-wider block">Departments</span>
                     <span class="text-sm font-bold text-gray-900 mt-0.5 block" x-text="stats.total_departments"></span>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                 <div class="bg-white border border-gray-200 flex-1 min-h-0 flex flex-col rounded-sm shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
                     <div class="px-4 py-2.5 border-b border-gray-200 bg-gray-50 flex items-center gap-2 shrink-0">
                         <div class="w-1 h-3.5 bg-[#0c4da2]"></div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">User Scope Access Allocations</span>
+                        <span class="text-[10px] font-bold tracking-wider text-slate-500">User Scope Access Allocations</span>
                     </div>
                     <div class="flex-1 min-h-0 py-2.5 px-4 flex flex-col sm:flex-row items-center gap-6 justify-center">
                         <!-- Doughnut Container -->
@@ -98,7 +98,7 @@
                             <canvas id="scopeDistributionChart"></canvas>
                             <!-- Center Label inside Doughnut -->
                             <div class="absolute flex flex-col items-center justify-center pointer-events-none" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                                <span class="text-[8px] font-bold text-slate-400 uppercase tracking-wider leading-none">Total Access</span>
+                                <span class="text-[8px] font-bold text-slate-400 tracking-wider leading-none">Total Access</span>
                                 <span class="text-lg font-extrabold text-slate-800 font-mono mt-0.5" x-text="scopeChartData.reduce((acc, curr) => acc + curr.count, 0)"></span>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                     <div class="bg-white border border-gray-200 rounded-sm shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
                         <div class="px-4 py-2.5 border-b border-gray-200 bg-gray-50 flex items-center gap-2">
                             <div class="w-1 h-3.5 bg-[#0c4da2]"></div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Top Departments</span>
+                            <span class="text-[10px] font-bold tracking-wider text-slate-500">Top Departments</span>
                         </div>
                         <div class="p-4 space-y-3.5">
                             <template x-for="dept in departmentBreakdown">
@@ -145,7 +145,7 @@
                     <div class="bg-white border border-gray-200 rounded-sm shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
                         <div class="px-4 py-2.5 border-b border-gray-200 bg-gray-50 flex items-center gap-2">
                             <div class="w-1 h-3.5 bg-[#0c4da2]"></div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Popular Roles</span>
+                            <span class="text-[10px] font-bold tracking-wider text-slate-500">Popular Roles</span>
                         </div>
                         <div class="p-4 space-y-3.5">
                             <template x-for="role in roleBreakdown">
@@ -174,13 +174,13 @@
                             <!-- Tab 1: Enrollments -->
                             <button @click="rightTab = 'enrollments'" 
                                     :class="rightTab === 'enrollments' ? 'border-[#0c4da2] text-[#0c4da2]' : 'border-transparent text-slate-400 hover:text-slate-600'" 
-                                    class="py-2.5 border-b-2 font-bold uppercase tracking-wider text-[10px] focus:outline-none transition-all">
+                                    class="py-2.5 border-b-2 font-bold tracking-wider text-[10px] focus:outline-none transition-all">
                                 Latest Enrollments
                             </button>
                             <!-- Tab 2: Online Users -->
                             <button @click="rightTab = 'online'" 
                                     :class="rightTab === 'online' ? 'border-[#0c4da2] text-[#0c4da2]' : 'border-transparent text-slate-400 hover:text-slate-600'" 
-                                    class="py-2.5 border-b-2 font-bold uppercase tracking-wider text-[10px] focus:outline-none flex items-center gap-1.5 transition-all">
+                                    class="py-2.5 border-b-2 font-bold tracking-wider text-[10px] focus:outline-none flex items-center gap-1.5 transition-all">
                                 <span>Online Users</span>
                                 <span class="relative flex h-1.5 w-1.5">
                                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -195,7 +195,7 @@
                         <div x-show="rightTab === 'enrollments'">
                             <table class="w-full text-xs text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-gray-50/50 border-b border-gray-200 text-[9px] font-bold text-gray-400 uppercase tracking-wider sticky top-0 backdrop-blur-xs">
+                                    <tr class="bg-gray-50/50 border-b border-gray-200 text-[9px] font-bold text-gray-400 tracking-wider sticky top-0 backdrop-blur-xs">
                                         <th class="py-2.5 px-4">User Details</th>
                                         <th class="py-2.5 px-3">NIK</th>
                                         <th class="py-2.5 px-4 text-right">Registered</th>
@@ -206,7 +206,7 @@
                                         <tr class="hover:bg-slate-50/70 transition-colors">
                                             <td class="py-3 px-4 font-medium text-slate-700">
                                                 <div class="flex items-center gap-2">
-                                                    <div class="w-6 h-6 bg-[#0c4da2] text-white flex items-center justify-center font-bold text-[9px] uppercase rounded-xs">
+                                                    <div class="w-6 h-6 bg-[#0c4da2] text-white flex items-center justify-center font-bold text-[9px] rounded-xs">
                                                         {{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}
                                                     </div>
                                                     <div class="min-w-0">
@@ -229,7 +229,7 @@
                         <div x-show="rightTab === 'online'" x-cloak>
                             <table class="w-full text-xs text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-gray-50/50 border-b border-gray-200 text-[9px] font-bold text-gray-400 uppercase tracking-wider sticky top-0 backdrop-blur-xs">
+                                    <tr class="bg-gray-50/50 border-b border-gray-200 text-[9px] font-bold text-gray-400 tracking-wider sticky top-0 backdrop-blur-xs">
                                         <th class="py-2.5 px-4">User Details</th>
                                         <th class="py-2.5 px-3">NIK</th>
                                         <th class="py-2.5 px-4 text-right">Last Active</th>
@@ -247,7 +247,7 @@
                                         <tr class="hover:bg-slate-50/70 transition-colors">
                                             <td class="py-3 px-4 font-medium text-slate-700">
                                                 <div class="flex items-center gap-2">
-                                                    <div class="w-6 h-6 bg-emerald-500 text-white flex items-center justify-center font-bold text-[9px] uppercase rounded-xs">
+                                                    <div class="w-6 h-6 bg-emerald-500 text-white flex items-center justify-center font-bold text-[9px] rounded-xs">
                                                         <span x-text="user.name.substring(0, 1).toUpperCase()"></span>
                                                     </div>
                                                     <div class="min-w-0">
@@ -272,12 +272,12 @@
                 <div class="bg-white border border-gray-200 flex-1 flex flex-col min-h-0 rounded-sm shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
                     <div class="px-4 py-2.5 border-b border-gray-200 bg-gray-50 flex items-center gap-2 shrink-0">
                         <div class="w-1 h-3.5 bg-[#0c4da2]"></div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Active Custom Overrides</span>
+                        <span class="text-[10px] font-bold tracking-wider text-slate-500">Active Custom Overrides</span>
                     </div>
                     <div class="flex-1 overflow-y-auto custom-scrollbar">
                         <table class="w-full text-xs text-left border-collapse">
                             <thead>
-                                <tr class="bg-gray-50/50 border-b border-gray-200 text-[9px] font-bold text-gray-400 uppercase tracking-wider sticky top-0 backdrop-blur-xs">
+                                <tr class="bg-gray-50/50 border-b border-gray-200 text-[9px] font-bold text-gray-400 tracking-wider sticky top-0 backdrop-blur-xs">
                                     <th class="py-2.5 px-4">User Details</th>
                                     <th class="py-2.5 px-3">NIK</th>
                                     <th class="py-2.5 px-4 text-right">Overrides</th>
@@ -295,7 +295,7 @@
                                     <tr class="hover:bg-slate-50/70 transition-colors">
                                         <td class="py-3 px-4 font-medium text-slate-700">
                                             <div class="flex items-center gap-2">
-                                                <div class="w-6 h-6 bg-rose-500 text-white flex items-center justify-center font-bold text-[9px] uppercase rounded-xs">
+                                                <div class="w-6 h-6 bg-rose-500 text-white flex items-center justify-center font-bold text-[9px] rounded-xs">
                                                     <span x-text="user.name.substring(0, 1).toUpperCase()"></span>
                                                 </div>
                                                 <div class="min-w-0">

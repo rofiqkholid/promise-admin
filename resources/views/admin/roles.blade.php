@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <div class="w-1 h-5 bg-sky-500"></div>
-            <h2 class="text-sm font-semibold text-gray-800 tracking-wide uppercase">Roles & Permission Matrix</h2>
+            <h2 class="text-sm font-semibold text-gray-800 tracking-wide ">Roles & Permission Matrix</h2>
         </div>
     </x-slot>
 
@@ -31,7 +31,7 @@
              style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-sm" @click.away="deleteModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600">Confirm Delete</h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600">Confirm Delete</h3>
                     <button @click="deleteModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
@@ -54,13 +54,13 @@
              style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-sm max-h-[90vh] flex flex-col" @click.away="roleModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600" x-text="roleModal.mode === 'create' ? 'Add New Role' : 'Edit Role'"></h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600" x-text="roleModal.mode === 'create' ? 'Add New Role' : 'Edit Role'"></h3>
                     <button @click="roleModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
                 <form @submit.prevent="submitRoleForm()" class="p-5 overflow-y-auto flex-1">
-                    <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Role Name</label>
+                    <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Role Name</label>
                     <input type="text" x-model="roleModal.form.role_name" required placeholder="e.g. Inv Operator"
                            class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors mb-4">
                     <div class="flex justify-end gap-2">
@@ -84,7 +84,7 @@
              style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-lg flex flex-col" style="max-height: 85vh;" @click.away="permissionModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between shrink-0">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600">Manage Permission Actions</h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600">Manage Permission Actions</h3>
                     <button @click="permissionModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
@@ -93,9 +93,9 @@
                     <table class="w-full text-xs border-collapse">
                         <thead>
                             <tr class="bg-gray-50 border-b border-gray-200">
-                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Name</th>
-                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Description</th>
-                                <th class="px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500"></th>
+                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Name</th>
+                                <th class="text-left px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Description</th>
+                                <th class="px-4 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500"></th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
@@ -114,7 +114,7 @@
                     </table>
                 </div>
                 <div class="border-t border-gray-200 p-4 shrink-0">
-                    <p class="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-2.5">Add New Permission</p>
+                    <p class="text-[10px] font-semibold tracking-wider text-gray-500 mb-2.5">Add New Permission</p>
                     <form @submit.prevent="submitPermissionForm()" class="flex flex-col sm:flex-row gap-2">
                         <input type="text" x-model="permissionModal.form.permission_name" required placeholder="e.g. approve" :disabled="savingForm"
                                class="flex-1 text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors disabled:opacity-50">
@@ -137,7 +137,7 @@
             <!-- Left Panel: Roles List -->
             <div class="lg:col-span-4 border-r border-gray-200 flex flex-col bg-white h-[350px] lg:h-[calc(100vh-120px)]">
                 <div class="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between shrink-0">
-                    <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Roles Catalog</span>
+                    <span class="text-[10px] font-semibold tracking-wider text-gray-500">Roles Catalog</span>
                     <div class="flex items-center gap-1.5">
                         <button @click="openManagePermissionsModal()"
                                 class="px-2.5 py-1.5 text-[10px] font-medium border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors">
@@ -182,7 +182,7 @@
                                     <p class="text-xs font-semibold text-gray-900" x-text="role.role_name"></p>
                                     <div class="flex items-center gap-2 mt-1">
                                         <span class="text-[9px] text-gray-400 font-mono" x-text="'ID: ' + role.id"></span>
-                                        <span class="text-[8px] font-bold px-1.5 py-0.5 border border-slate-200 rounded-xs uppercase tracking-wider bg-slate-100 text-slate-600"
+                                        <span class="text-[8px] font-bold px-1.5 py-0.5 border border-slate-200 rounded-xs tracking-wider bg-slate-100 text-slate-600"
                                               x-text="role.total_scopes + (role.total_scopes === 1 ? ' Scope' : ' Scopes')"></span>
                                     </div>
                                 </div>
@@ -245,7 +245,7 @@
                     <div class="border-b border-gray-200 flex items-center bg-white shrink-0 overflow-x-auto">
                         <template x-for="sc in scopes" :key="sc.id">
                             <button @click="changeScope(sc.id)"
-                                    class="px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider border-b-2 transition-colors whitespace-nowrap flex items-center gap-1.5"
+                                    class="px-4 py-2.5 text-[10px] font-semibold tracking-wider border-b-2 transition-colors whitespace-nowrap flex items-center gap-1.5"
                                     :class="currentScopeId === sc.id
                                         ? 'text-sky-600 border-sky-500 bg-sky-50/50'
                                         : 'text-gray-500 border-transparent hover:text-gray-800 hover:border-gray-300'">
@@ -269,9 +269,9 @@
                             <table class="w-full border-collapse text-xs">
                                 <thead class="sticky top-0 bg-gray-50 border-b border-gray-200 z-10">
                                     <tr>
-                                        <th class="text-left px-5 py-2.5 text-[10px] font-semibold uppercase tracking-wider text-gray-500">Menu / Page</th>
+                                        <th class="text-left px-5 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Menu / Page</th>
                                         <template x-for="p in permissions" :key="p.id">
-                                            <th class="px-3 py-2.5 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500" x-text="p.permission_name"></th>
+                                            <th class="px-3 py-2.5 text-center text-[10px] font-semibold tracking-wider text-gray-500" x-text="p.permission_name"></th>
                                         </template>
                                     </tr>
                                 </thead>

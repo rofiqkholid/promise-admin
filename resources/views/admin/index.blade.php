@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <div class="w-1 h-5 bg-sky-500"></div>
-            <h2 class="text-sm font-semibold text-gray-800 tracking-wide uppercase">User Management Console</h2>
+            <h2 class="text-sm font-semibold text-gray-800 tracking-wide ">User Management Console</h2>
         </div>
     </x-slot>
 
@@ -22,7 +22,7 @@
              style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-sm" @click.away="deleteModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600">Confirm Delete</h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600">Confirm Delete</h3>
                     <button @click="deleteModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
@@ -45,30 +45,30 @@
              style="display: none;">
             <div class="bg-white border border-gray-300 w-full max-w-md max-h-[90vh] flex flex-col" @click.away="userModal.open = false">
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600">Add New User</h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-600">Add New User</h3>
                     <button @click="userModal.open = false" class="text-gray-400 hover:text-gray-600">
                         <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
                 <form @submit.prevent="submitUserForm()" class="p-5 space-y-4 overflow-y-auto flex-1">
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Full Name</label>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Full Name</label>
                         <input type="text" x-model="userModal.form.name" required placeholder="e.g. John Doe"
                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Email Address</label>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Email Address</label>
                         <input type="email" x-model="userModal.form.email" required placeholder="e.g. johndoe@promise.com"
                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">NIK / Employee ID</label>
+                            <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">NIK / Employee ID</label>
                             <input type="text" x-model="userModal.form.nik" required placeholder="e.g. NIK123"
                                    class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Department</label>
+                            <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Department</label>
                             <select id="modal-dept-select" x-model="userModal.form.id_dept"
                                     x-init="
                                         $watch('userModal.open', open => {
@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Password</label>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Password</label>
                         <input type="password" x-model="userModal.form.password" required placeholder="••••••••"
                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
                     </div>
@@ -126,7 +126,7 @@
                 <div class="px-3 py-2 border-b border-slate-300 bg-slate-100 flex items-center justify-between gap-1.5 shrink-0">
                     <div class="flex items-center gap-1.5 flex-1 min-w-0">
                         <!-- Title Label -->
-                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider shrink-0 flex items-center gap-1 mr-1">
+                        <span class="text-[10px] font-bold text-slate-500 tracking-wider shrink-0 flex items-center gap-1 mr-1">
                             <i class="fa-solid fa-filter text-[9px]"></i> Filter:
                         </span>
 
@@ -146,7 +146,7 @@
                                  class="absolute left-0 mt-1 w-48 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
                                  style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
                                 <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-200 flex justify-between items-center">
-                                    <span class="text-[9px] font-bold text-slate-400 uppercase">Dept Filter</span>
+                                    <span class="text-[9px] font-bold text-slate-400 ">Dept Filter</span>
                                     <button @click="selectedDepts = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
                                 </div>
                                 <template x-for="dept in departments" :key="dept.id">
@@ -174,7 +174,7 @@
                                  class="absolute left-0 mt-1 w-48 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
                                  style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
                                 <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-200 flex justify-between items-center">
-                                    <span class="text-[9px] font-bold text-slate-400 uppercase">Role Filter</span>
+                                    <span class="text-[9px] font-bold text-slate-400 ">Role Filter</span>
                                     <button @click="selectedRoles = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
                                 </div>
                                 <template x-for="role in roles" :key="role.id">
@@ -202,7 +202,7 @@
                                  class="absolute left-0 mt-1 w-40 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
                                  style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
                                 <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-200 flex justify-between items-center">
-                                    <span class="text-[9px] font-bold text-slate-400 uppercase">Status Filter</span>
+                                    <span class="text-[9px] font-bold text-slate-400 ">Status Filter</span>
                                     <button @click="selectedStatuses = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
                                 </div>
                                 <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
@@ -232,7 +232,7 @@
                                  class="absolute right-0 mt-1 w-44 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
                                  style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
                                 <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-200 flex justify-between items-center">
-                                    <span class="text-[9px] font-bold text-slate-400 uppercase">Scope Filter</span>
+                                    <span class="text-[9px] font-bold text-slate-400 ">Scope Filter</span>
                                     <button @click="selectedScopes = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
                                 </div>
                                 <template x-for="scope in scopes" :key="scope.id">
@@ -279,7 +279,7 @@
                 </div>
 
                 <!-- Count Header -->
-                <div class="px-4 py-1.5 bg-slate-50 border-b border-slate-200 flex justify-between items-center text-[10px] text-gray-500 font-bold uppercase tracking-wider select-none shrink-0">
+                <div class="px-4 py-1.5 bg-slate-50 border-b border-slate-200 flex justify-between items-center text-[10px] text-gray-500 font-bold tracking-wider select-none shrink-0">
                     <span>User List</span>
                     <span class="text-slate-400 lowercase normal-case font-medium" x-text="'Showing ' + filteredUsers.length + ' of ' + totalFiltered + ' (' + totalOverall + ' total)'"></span>
                 </div>
@@ -292,7 +292,7 @@
                              class="px-4 py-3 cursor-pointer transition-all flex items-start gap-3 border-l-4 border-y"
                              :class="selectedUser && selectedUser.id === user.id ? 'bg-sky-50 border-l-sky-600 border-y-sky-200 relative z-10' : 'border-l-transparent border-y-transparent hover:bg-gray-50/50'">
                             <!-- Profile alphabet initial -->
-                            <div class="w-8 h-8 bg-[#0c4da2] text-white flex items-center justify-center shrink-0 font-bold text-xs uppercase rounded-xs" x-text="user.name ? user.name.charAt(0) : 'U'">
+                            <div class="w-8 h-8 bg-[#0c4da2] text-white flex items-center justify-center shrink-0 font-bold text-xs rounded-xs" x-text="user.name ? user.name.charAt(0) : 'U'">
                             </div>
                             <div class="flex-1 min-w-0" :class="!user.is_active ? 'opacity-70' : ''">
                                 <div class="flex justify-between items-start">
@@ -300,14 +300,14 @@
                                         <div class="flex flex-wrap items-center gap-1.5">
                                             <p class="text-xs font-semibold text-gray-900 truncate" x-text="user.name"></p>
                                             <template x-if="!user.is_active">
-                                                <span class="text-[8px] font-bold bg-rose-50 text-rose-600 border border-rose-200 px-1.5 py-0.5 shrink-0 uppercase tracking-wider rounded-xs">Inactive</span>
+                                                <span class="text-[8px] font-bold bg-rose-50 text-rose-600 border border-rose-200 px-1.5 py-0.5 shrink-0 tracking-wider rounded-xs">Inactive</span>
                                             </template>
                                         </div>
                                         <p class="text-[10px] text-gray-500 truncate mt-0.5" x-text="user.email"></p>
                                     </div>
                                     <div class="flex flex-col items-end gap-1 shrink-0 ml-3">
                                         <span class="text-[9px] font-mono bg-gray-100 text-gray-600 px-1.5 py-0.5 border border-slate-300 shrink-0" x-text="user.nik || '-'"></span>
-                                        <span class="text-[9px] font-bold bg-sky-50 text-sky-700 border border-sky-200 px-1.5 py-0.5 shrink-0 uppercase tracking-wider" x-text="getDepartmentName(user.id_dept)"></span>
+                                        <span class="text-[9px] font-bold bg-sky-50 text-sky-700 border border-sky-200 px-1.5 py-0.5 shrink-0 tracking-wider" x-text="getDepartmentName(user.id_dept)"></span>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap gap-1 mt-2">
@@ -361,7 +361,7 @@
                     <div class="px-6 py-4 border-b border-slate-300 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0">
                         <div class="flex items-center gap-4">
                             <!-- Avatar / Initial -->
-                            <div class="w-12 h-12 bg-[#0c4da2] text-white flex items-center justify-center shrink-0 font-bold text-base rounded-xs border border-[#083c80] uppercase" x-text="selectedUser ? selectedUser.name.charAt(0) : ''">
+                            <div class="w-12 h-12 bg-[#0c4da2] text-white flex items-center justify-center shrink-0 font-bold text-base rounded-xs border border-[#083c80] " x-text="selectedUser ? selectedUser.name.charAt(0) : ''">
                             </div>
                             <div>
                                 <h3 class="text-sm font-bold text-slate-900 tracking-tight" x-text="selectedUser ? selectedUser.name : ''"></h3>
@@ -374,7 +374,7 @@
                                         <i class="fa-solid fa-id-card text-slate-400"></i>
                                         <span x-text="selectedUser ? selectedUser.nik : ''"></span>
                                     </span>
-                                    <span class="inline-flex items-center gap-1.5 text-[9px] font-bold bg-sky-50 text-sky-700 border border-sky-200 px-2.5 py-0.5 rounded-xs uppercase tracking-wider" title="Department">
+                                    <span class="inline-flex items-center gap-1.5 text-[9px] font-bold bg-sky-50 text-sky-700 border border-sky-200 px-2.5 py-0.5 rounded-xs tracking-wider" title="Department">
                                         <i class="fa-solid fa-building text-sky-500"></i>
                                         <span x-text="getDepartmentName(selectedUser ? selectedUser.id_dept : null)"></span>
                                     </span>
@@ -398,27 +398,27 @@
                         <div class="bg-white border border-gray-200">
                             <div class="px-5 py-3 bg-gray-50/75 border-b border-gray-200 flex items-center gap-2">
                                 <div class="w-1 h-4 bg-sky-500"></div>
-                                <h4 class="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Profile Information</h4>
+                                <h4 class="text-[10px] font-semibold tracking-wider text-gray-500">Profile Information</h4>
                             </div>
                             <form @submit.prevent="saveProfile()" class="p-5">
                                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
                                     <div class="md:col-span-6">
-                                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Full Name</label>
+                                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Full Name</label>
                                         <input type="text" x-model="profileForm.name" required
                                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
                                     </div>
                                     <div class="md:col-span-6">
-                                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Email Address</label>
+                                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Email Address</label>
                                         <input type="email" x-model="profileForm.email" required
                                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
                                     </div>
                                     <div class="md:col-span-6">
-                                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">NIK / Employee ID</label>
+                                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">NIK / Employee ID</label>
                                         <input type="text" x-model="profileForm.nik" required
                                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
                                     </div>
                                     <div class="md:col-span-6">
-                                        <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Department</label>
+                                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Department</label>
                                         <select id="dept-select" x-model="profileForm.id_dept"
                                                 x-init="
                                                     $nextTick(() => {
@@ -438,7 +438,7 @@
                                         </select>
                                     </div>
                                     <div class="md:col-span-6">
-                                         <label class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Reset Password <span class="font-normal text-gray-400 lowercase normal-case">(leave blank to keep current)</span></label>
+                                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Reset Password <span class="font-normal text-gray-400 lowercase normal-case">(leave blank to keep current)</span></label>
                                          <input type="password" x-model="profileForm.password" placeholder="••••••••"
                                                 class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
                                      </div>
@@ -468,7 +468,7 @@
                         <div class="bg-white border border-gray-200">
                             <div class="px-5 py-3 bg-gray-50/75 border-b border-gray-200 flex items-center gap-2">
                                 <div class="w-1 h-4 bg-sky-500"></div>
-                                <h4 class="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Assigned Roles</h4>
+                                <h4 class="text-[10px] font-semibold tracking-wider text-gray-500">Assigned Roles</h4>
                             </div>
                             <div class="p-5 flex flex-wrap gap-1.5">
                                 <template x-for="role in roles" :key="role.id">
@@ -490,7 +490,7 @@
                         <div class="bg-white border border-gray-200">
                             <div class="px-5 py-3 bg-gray-50/75 border-b border-gray-200 flex items-center gap-2">
                                 <div class="w-1 h-4 bg-sky-500"></div>
-                                <h4 class="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Web Application Access & Permissions</h4>
+                                <h4 class="text-[10px] font-semibold tracking-wider text-gray-500">Web Application Access & Permissions</h4>
                             </div>
 
                             <div class="divide-y divide-gray-100">
@@ -534,9 +534,9 @@
                                             <table class="w-full text-left border-collapse text-xs">
                                                 <thead>
                                                     <tr class="bg-gray-50 border-b border-gray-200">
-                                                        <th class="py-2 px-5 text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-1/3">Menu / Feature</th>
+                                                        <th class="py-2 px-5 text-[10px] font-semibold tracking-wider text-gray-500 w-1/3">Menu / Feature</th>
                                                         <template x-for="perm in availablePermissions" :key="perm.id">
-                                                            <th class="py-2 px-3 text-center text-[10px] font-semibold uppercase tracking-wider text-gray-500" x-text="perm.permission_name"></th>
+                                                            <th class="py-2 px-3 text-center text-[10px] font-semibold tracking-wider text-gray-500" x-text="perm.permission_name"></th>
                                                         </template>
                                                     </tr>
                                                 </thead>

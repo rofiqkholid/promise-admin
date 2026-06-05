@@ -7,8 +7,8 @@
                 <a href="{{ route('admin.index') }}" class="flex items-center gap-3">
                     <img src="{{ asset('assets/image/logo-promise.png') }}" alt="PROMISE" style="height: 32px;" class="w-auto">
                     <div class="flex flex-col justify-center">
-                        <span class="text-sm font-bold text-white uppercase tracking-widest leading-none">PROMISE</span>
-                        <span class="text-[10px] font-bold text-blue-100 uppercase tracking-widest border border-white/20 px-1.5 py-0.5 mt-1 rounded-xs leading-none text-center">Admin</span>
+                        <span class="text-sm font-bold text-white tracking-widest leading-none">PROMISE</span>
+                        <span class="text-[10px] font-bold text-blue-100 tracking-widest border border-white/20 px-1.5 py-0.5 mt-1 rounded-xs leading-none text-center">Admin</span>
                     </div>
                 </a>
             </div>
@@ -104,7 +104,7 @@
                 <div x-data="{ openProfile: false }" class="relative">
                     <button @click="openProfile = !openProfile" @click.outside="openProfile = false"
                             class="flex items-center gap-2.5 p-1 px-2.5 rounded-xs transition-colors bg-white/10 hover:bg-white/15 text-white border border-white/5">
-                        <div class="h-7 w-7 rounded-xs bg-white/20 text-white flex items-center justify-center font-bold text-xs uppercase border border-white/20">
+                        <div class="h-7 w-7 rounded-xs bg-white/20 text-white flex items-center justify-center font-bold text-xs border border-white/20">
                             {{ strtoupper(substr(Auth::user()->name ?? 'U', 0, 1)) }}
                         </div>
                         <div class="text-left shrink-0">
@@ -166,7 +166,7 @@
         </div>
         <!-- Switch App (Mobile) -->
         <div class="border-t border-white/10 py-3 px-6">
-            <p class="text-[9px] font-bold text-blue-300 uppercase tracking-widest mb-2.5">Switch App</p>
+            <p class="text-[9px] font-bold text-blue-300 tracking-widest mb-2.5">Switch App</p>
             <div class="grid grid-cols-4 gap-2">
                 <a href="{{ env('APP_DRAWING_URL', 'http://localhost:8081') }}" class="flex flex-col items-center justify-center p-2 rounded-xs bg-white/5 hover:bg-white/10 border border-white/5 transition-colors">
                     <i class="fa-solid fa-pen-ruler text-white text-xs mb-1"></i>

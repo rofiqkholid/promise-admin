@@ -3,7 +3,7 @@
     <!-- Title / Logo Header (Desktop) -->
     <div class="mb-8">
         <div class="hidden lg:block mb-4">
-            <img src="{{ asset('assets/image/logo-promise.png') }}" alt="Promise Logo" class="h-10 w-auto object-contain">
+            <img src="{{ asset('assets/image/logo-promise.png') }}" alt="Promise Logo" class="h-32 w-auto object-contain">
         </div>
         <h2 class="text-xl font-bold text-slate-800 tracking-tight">Sign In</h2>
         <p class="text-xs text-gray-400 mt-1">Please enter your enterprise credentials to access the console.</p>
@@ -17,7 +17,7 @@
 
         <!-- NIK -->
         <div>
-            <label for="nik" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">NIK / Employee ID</label>
+            <label for="nik" class="block text-[10px] font-bold tracking-wider text-slate-500 mb-1.5">NIK / Employee ID</label>
             <div class="relative flex items-center">
                 <span class="absolute left-3 text-slate-400 text-xs">
                     <i class="fa-solid fa-user"></i>
@@ -37,7 +37,7 @@
         <!-- Password -->
         <div>
             <div class="flex justify-between items-center mb-1.5">
-                <label for="password" class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Password</label>
+                <label for="password" class="block text-[10px] font-bold tracking-wider text-slate-500">Password</label>
                 @if (Route::has('password.request'))
                     <a class="text-[10px] text-slate-400 hover:text-[#0c4da2] transition-colors" href="{{ route('password.request') }}">
                         Forgot password?
@@ -72,7 +72,7 @@
         <!-- Submit Button -->
         <div class="pt-2">
             <button type="submit" :disabled="loading"
-                    class="w-full py-2.5 px-4 text-xs font-bold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors tracking-wider uppercase flex items-center justify-center gap-2 disabled:opacity-50">
+                    class="w-full py-2.5 px-4 text-xs font-bold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors tracking-wider flex items-center justify-center gap-2 disabled:opacity-50">
                 <template x-if="loading">
                     <svg class="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </template>

@@ -10,7 +10,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
         <!-- FontAwesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -28,7 +28,7 @@
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
         <style>
-            body { font-family: 'Inter', sans-serif; }
+            body { font-family: 'Outfit', sans-serif; }
             .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
             .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
             .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; }
@@ -117,7 +117,7 @@
             }
         </style>
     </head>
-    <body class="antialiased bg-gray-50 text-gray-800" style="font-family: 'Inter', sans-serif;">
+    <body class="antialiased bg-gray-50 text-gray-800" style="font-family: 'Outfit', sans-serif;">
         <div class="min-h-screen flex flex-col">
             @include('layouts.navigation')
 
@@ -139,7 +139,7 @@
             <footer class="bg-white border-t border-gray-200 mt-auto py-4 shrink-0">
                 <div class="w-full px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-gray-400">
                     <div class="flex items-center gap-1.5">
-                        <span class="font-bold text-gray-500 uppercase tracking-wider">PROMISE</span>
+                        <span class="font-bold text-gray-500 tracking-wider">PROMISE</span>
                         <span>&copy; {{ date('Y') }} Summit Adyawinsa Indonesia. All rights reserved.</span>
                     </div>
                     <div class="flex items-center gap-4">
