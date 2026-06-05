@@ -3,13 +3,14 @@
         <div class="flex items-stretch h-12">
 
             <!-- Brand / Logo -->
-            <div class="flex items-center pr-8 border-r border-white/20">
-                <a href="{{ route('admin.index') }}" class="flex items-center gap-3">
-                    <img src="{{ asset('assets/image/logo-promise.png') }}" alt="PROMISE" style="height: 32px;" class="w-auto">
-                    <div class="flex flex-col justify-center">
-                        <span class="text-sm font-bold text-white tracking-widest leading-none">PROMISE</span>
-                        <span class="text-[10px] font-bold text-blue-100 tracking-widest border border-white/20 px-1.5 py-0.5 mt-1 rounded-xs leading-none text-center">Admin</span>
+            <div class="flex items-center pr-8">
+                <a href="{{ route('admin.index') }}" class="flex flex-col justify-center">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-base font-bold text-white tracking-tight">Promise</span>
+                        <div class="w-px h-3 bg-white/40 self-center translate-y-[2px]"></div>
+                        <span class="text-[10px] font-light text-blue-100">Admin</span>
                     </div>
+                    <span class="text-[10px] text-blue-200/80 leading-none mt-0.5 font-light">Project Management Integrated System Engineering</span>
                 </a>
             </div>
 
@@ -101,15 +102,21 @@
                     </div>
                 </div>
 
+                @php
+                    $userDept = null;
+                    if (Auth::check() && Auth::user()->id_dept) {
+                        $userDept = \DB::table('departments')->where('id', Auth::user()->id_dept)->first();
+                    }
+                @endphp
                 <div x-data="{ openProfile: false }" class="relative">
                     <button @click="openProfile = !openProfile" @click.outside="openProfile = false"
-                            class="flex items-center gap-2.5 p-1 px-2.5 rounded-xs transition-colors bg-white/10 hover:bg-white/15 text-white border border-white/5">
-                        <div class="h-7 w-7 rounded-xs bg-white/20 text-white flex items-center justify-center font-bold text-xs border border-white/20">
-                            {{ strtoupper(substr(Auth::user()->name ?? 'U', 0, 1)) }}
+                            class="flex items-center gap-2.5 p-1 transition-colors text-white focus:outline-none hover:text-white/80">
+                        <div class="text-right shrink-0">
+                            <p class="text-xs font-semibold leading-none text-white">{{ Auth::user()->name }}</p>
+                            <p class="text-[10px] text-blue-200 mt-1 leading-none">{{ $userDept ? $userDept->code : (Auth::user()->nik ?? 'Admin') }}</p>
                         </div>
-                        <div class="text-left shrink-0">
-                            <p class="text-xs font-semibold leading-none">{{ Auth::user()->name }}</p>
-                            <p class="text-[9px] text-blue-200 mt-1 leading-none">{{ Auth::user()->nik ?? 'Admin' }}</p>
+                        <div class="h-8 w-8 rounded-full border border-white/20 bg-white/20 text-white flex items-center justify-center">
+                            <i class="fa-solid fa-user text-xs"></i>
                         </div>
                         <i class="fa-solid fa-chevron-down text-[10px] text-blue-200 transition-transform duration-200" :class="{'rotate-180': openProfile}"></i>
                     </button>

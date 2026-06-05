@@ -117,7 +117,7 @@
             }
         </style>
     </head>
-    <body class="antialiased bg-gray-50 text-gray-800" style="font-family: 'Outfit', sans-serif;">
+    <body class="antialiased bg-gray-50 text-gray-900" style="font-family: 'Outfit', sans-serif;">
         <div class="min-h-screen flex flex-col">
             @include('layouts.navigation')
 

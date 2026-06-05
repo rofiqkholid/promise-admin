@@ -1,16 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-3">
-            <div class="w-1 h-5 bg-sky-500"></div>
-            <h2 class="text-sm font-semibold text-gray-800 tracking-wide ">User Management Console</h2>
-        </div>
+        <h2 class="text-sm font-semibold text-gray-800 tracking-wide">User Management Console</h2>
     </x-slot>
 
     <div class="px-6 py-6" x-data="adminConsole()">
 
         <!-- Toast -->
-        <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-800 text-white text-xs py-2.5 px-4 font-medium flex items-center gap-2 border-l-4 border-sky-400">
-            <svg class="w-3.5 h-3.5 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-800 text-white text-xs py-2.5 px-4 font-medium flex items-center gap-2 border-l-4 border-[#0c4da2]">
+            <svg class="w-3.5 h-3.5 text-[#0c4da2] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
             <span id="toast-message">Success!</span>
@@ -54,18 +51,18 @@
                     <div>
                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Full Name</label>
                         <input type="text" x-model="userModal.form.name" required placeholder="e.g. John Doe"
-                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
+                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                     </div>
                     <div>
                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Email Address</label>
                         <input type="email" x-model="userModal.form.email" required placeholder="e.g. johndoe@promise.com"
-                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
+                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">NIK / Employee ID</label>
                             <input type="text" x-model="userModal.form.nik" required placeholder="e.g. NIK123"
-                                   class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
+                                   class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                         </div>
                         <div>
                             <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Department</label>
@@ -81,7 +78,7 @@
                                             }
                                         });
                                     "
-                                    class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none bg-white text-gray-800">
+                                    class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none bg-white text-gray-800">
                                 <option value="">— No Department —</option>
                                 <template x-for="dept in departments" :key="dept.id">
                                     <option :value="dept.id" x-text="dept.name + ' (' + dept.code + ')'"></option>
@@ -92,13 +89,13 @@
                     <div>
                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Password</label>
                         <input type="password" x-model="userModal.form.password" required placeholder="••••••••"
-                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
+                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                     </div>
                     <div class="flex items-center gap-6 pt-1">
                         <label class="inline-flex items-center cursor-pointer select-none">
                             <div class="relative">
                                 <input type="checkbox" x-model="userModal.form.is_active" class="sr-only peer">
-                                <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-sky-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
+                                <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-[#0c4da2] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
                             </div>
                             <span class="text-xs font-semibold text-gray-700 ml-2">Active Status</span>
                         </label>
@@ -123,7 +120,7 @@
             <!-- Left Panel: User List -->
             <div class="lg:col-span-4 border-r border-slate-300 bg-white flex flex-col h-[350px] lg:h-[calc(100vh-120px)]">
                 <!-- Filters Row -->
-                <div class="px-3 py-2 border-b border-slate-300 bg-slate-100 flex items-center justify-between gap-1.5 shrink-0">
+                <div class="h-[44px] px-3 border-b border-slate-300 bg-slate-100 flex items-center justify-between gap-1.5 shrink-0">
                     <div class="flex items-center gap-1.5 flex-1 min-w-0">
                         <!-- Title Label -->
                         <span class="text-[10px] font-bold text-slate-500 tracking-wider shrink-0 flex items-center gap-1 mr-1">
@@ -134,12 +131,12 @@
                         <div class="relative" x-data="{ open: false }" @click.outside="open = false">
                             <button @click="open = !open" 
                                     class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
-                                    :class="selectedDepts.length > 0 ? 'bg-sky-50 border-sky-300 text-sky-700 font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
+                                    :class="selectedDepts.length > 0 ? 'bg-blue-50/50 border-blue-200 text-[#0c4da2] font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
                                     title="Filter by Department">
                                 <i class="fa-solid fa-building text-[10px]"></i>
                                 <span class="font-medium">Dept</span>
                                 <template x-if="selectedDepts.length > 0">
-                                    <span class="ml-0.5 bg-sky-200 text-sky-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedDepts.length"></span>
+                                    <span class="ml-0.5 bg-blue-100 text-blue-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedDepts.length"></span>
                                 </template>
                             </button>
                             <div x-show="open" 
@@ -151,7 +148,7 @@
                                 </div>
                                 <template x-for="dept in departments" :key="dept.id">
                                     <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
-                                        <input type="checkbox" :value="dept.id" x-model="selectedDepts" @change="filterUsers()" class="rounded border-gray-300 text-sky-600 focus:ring-sky-500 h-3.5 w-3.5 mr-2">
+                                        <input type="checkbox" :value="dept.id" x-model="selectedDepts" @change="filterUsers()" class="rounded border-gray-300 text-[#0c4da2] focus:ring-[#0c4da2] h-3.5 w-3.5 mr-2">
                                         <span class="text-[11px] text-gray-700 truncate" x-text="dept.code"></span>
                                     </label>
                                 </template>
@@ -162,12 +159,12 @@
                         <div class="relative" x-data="{ open: false }" @click.outside="open = false">
                             <button @click="open = !open" 
                                     class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
-                                    :class="selectedRoles.length > 0 ? 'bg-sky-50 border-sky-300 text-sky-700 font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
+                                    :class="selectedRoles.length > 0 ? 'bg-blue-50/50 border-blue-200 text-[#0c4da2] font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
                                     title="Filter by Role">
                                 <i class="fa-solid fa-user-shield text-[10px]"></i>
                                 <span class="font-medium">Role</span>
                                 <template x-if="selectedRoles.length > 0">
-                                    <span class="ml-0.5 bg-sky-200 text-sky-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedRoles.length"></span>
+                                    <span class="ml-0.5 bg-blue-100 text-blue-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedRoles.length"></span>
                                 </template>
                             </button>
                             <div x-show="open" 
@@ -179,7 +176,7 @@
                                 </div>
                                 <template x-for="role in roles" :key="role.id">
                                     <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
-                                        <input type="checkbox" :value="role.id" x-model="selectedRoles" @change="filterUsers()" class="rounded border-gray-300 text-sky-600 focus:ring-sky-500 h-3.5 w-3.5 mr-2">
+                                        <input type="checkbox" :value="role.id" x-model="selectedRoles" @change="filterUsers()" class="rounded border-gray-300 text-[#0c4da2] focus:ring-[#0c4da2] h-3.5 w-3.5 mr-2">
                                         <span class="text-[11px] text-gray-700 truncate" x-text="role.role_name"></span>
                                     </label>
                                 </template>
@@ -190,12 +187,12 @@
                         <div class="relative" x-data="{ open: false }" @click.outside="open = false">
                             <button @click="open = !open" 
                                     class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
-                                    :class="selectedStatuses.length > 0 ? 'bg-sky-50 border-sky-300 text-sky-700 font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
+                                    :class="selectedStatuses.length > 0 ? 'bg-blue-50/50 border-blue-200 text-[#0c4da2] font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
                                     title="Filter by Status">
                                 <i class="fa-solid fa-toggle-on text-[10px]"></i>
                                 <span class="font-medium">Status</span>
                                 <template x-if="selectedStatuses.length > 0">
-                                    <span class="ml-0.5 bg-sky-200 text-sky-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedStatuses.length"></span>
+                                    <span class="ml-0.5 bg-blue-100 text-blue-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedStatuses.length"></span>
                                 </template>
                             </button>
                             <div x-show="open" 
@@ -206,11 +203,11 @@
                                     <button @click="selectedStatuses = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
                                 </div>
                                 <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
-                                    <input type="checkbox" value="active" x-model="selectedStatuses" @change="filterUsers()" class="rounded border-gray-300 text-sky-600 focus:ring-sky-500 h-3.5 w-3.5 mr-2">
+                                    <input type="checkbox" value="active" x-model="selectedStatuses" @change="filterUsers()" class="rounded border-gray-300 text-[#0c4da2] focus:ring-[#0c4da2] h-3.5 w-3.5 mr-2">
                                     <span class="text-[11px] text-gray-700">Active</span>
                                 </label>
                                 <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
-                                    <input type="checkbox" value="inactive" x-model="selectedStatuses" @change="filterUsers()" class="rounded border-gray-300 text-sky-600 focus:ring-sky-500 h-3.5 w-3.5 mr-2">
+                                    <input type="checkbox" value="inactive" x-model="selectedStatuses" @change="filterUsers()" class="rounded border-gray-300 text-[#0c4da2] focus:ring-[#0c4da2] h-3.5 w-3.5 mr-2">
                                     <span class="text-[11px] text-gray-700">Inactive</span>
                                 </label>
                             </div>
@@ -220,12 +217,12 @@
                         <div class="relative" x-data="{ open: false }" @click.outside="open = false">
                             <button @click="open = !open" 
                                     class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
-                                    :class="selectedScopes.length > 0 ? 'bg-sky-50 border-sky-300 text-sky-700 font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
+                                    :class="selectedScopes.length > 0 ? 'bg-blue-50/50 border-blue-200 text-[#0c4da2] font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
                                     title="Filter by Scope">
                                 <i class="fa-solid fa-cubes text-[10px]"></i>
                                 <span class="font-medium">Scope</span>
                                 <template x-if="selectedScopes.length > 0">
-                                    <span class="ml-0.5 bg-sky-200 text-sky-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedScopes.length"></span>
+                                    <span class="ml-0.5 bg-blue-100 text-blue-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedScopes.length"></span>
                                 </template>
                             </button>
                             <div x-show="open" 
@@ -237,7 +234,7 @@
                                 </div>
                                 <template x-for="scope in scopes" :key="scope.id">
                                     <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
-                                        <input type="checkbox" :value="scope.id" x-model="selectedScopes" @change="filterUsers()" class="rounded border-gray-300 text-sky-600 focus:ring-sky-500 h-3.5 w-3.5 mr-2">
+                                        <input type="checkbox" :value="scope.id" x-model="selectedScopes" @change="filterUsers()" class="rounded border-gray-300 text-[#0c4da2] focus:ring-[#0c4da2] h-3.5 w-3.5 mr-2">
                                         <span class="text-[11px] text-gray-700 truncate" x-text="scope.scope_name"></span>
                                     </label>
                                 </template>
@@ -255,7 +252,7 @@
                     </button>
                 </div>
                 <!-- Search & Action -->
-                <div class="p-3 border-b border-slate-300 bg-slate-50 flex items-center gap-2">
+                <div class="h-[52px] px-3 border-b border-slate-300 bg-slate-50 flex items-center gap-2 shrink-0">
                     <div class="flex-1 flex items-center gap-2 border border-slate-300 bg-white px-3 h-8">
                         <template x-if="!isSearching">
                             <svg class="h-3.5 w-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,7 +260,7 @@
                             </svg>
                         </template>
                         <template x-if="isSearching">
-                            <svg class="animate-spin h-3.5 w-3.5 text-sky-500 shrink-0" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <svg class="animate-spin h-3.5 w-3.5 text-[#0c4da2] shrink-0" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         </template>
                         <input type="text"
                                x-model="searchQuery"
@@ -290,7 +287,7 @@
                     <template x-for="user in filteredUsers" :key="user.id">
                         <div @click="selectUser(user)"
                              class="px-4 py-3 cursor-pointer transition-all flex items-start gap-3 border-l-4 border-y"
-                             :class="selectedUser && selectedUser.id === user.id ? 'bg-sky-50 border-l-sky-600 border-y-sky-200 relative z-10' : 'border-l-transparent border-y-transparent hover:bg-gray-50/50'">
+                             :class="selectedUser && selectedUser.id === user.id ? 'bg-blue-50/50 border-l-[#0c4da2] border-y-blue-100 relative z-10' : 'border-l-transparent border-y-transparent hover:bg-gray-50/50'">
                             <!-- Profile alphabet initial -->
                             <div class="w-8 h-8 bg-[#0c4da2] text-white flex items-center justify-center shrink-0 font-bold text-xs rounded-xs" x-text="user.name ? user.name.charAt(0) : 'U'">
                             </div>
@@ -306,8 +303,8 @@
                                         <p class="text-[10px] text-gray-500 truncate mt-0.5" x-text="user.email"></p>
                                     </div>
                                     <div class="flex flex-col items-end gap-1 shrink-0 ml-3">
-                                        <span class="text-[9px] font-mono bg-gray-100 text-gray-600 px-1.5 py-0.5 border border-slate-300 shrink-0" x-text="user.nik || '-'"></span>
-                                        <span class="text-[9px] font-bold bg-sky-50 text-sky-700 border border-sky-200 px-1.5 py-0.5 shrink-0 tracking-wider" x-text="getDepartmentName(user.id_dept)"></span>
+                                        <span class="text-[10px] text-gray-500 shrink-0" x-text="user.nik || '-'"></span>
+                                        <span class="text-[10px] font-bold text-[#0c4da2] shrink-0" x-text="getDepartmentName(user.id_dept)"></span>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap gap-1 mt-2">
@@ -358,24 +355,26 @@
                 <div x-show="selectedUser" class="flex flex-col h-full lg:overflow-hidden" style="display: none;">
 
                     <!-- User Header -->
-                    <div class="px-6 py-4 border-b border-slate-300 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0">
+                    <div class="h-[96px] px-6 border-b border-slate-300 bg-slate-50/50 flex items-center justify-between gap-4 shrink-0">
                         <div class="flex items-center gap-4">
                             <!-- Avatar / Initial -->
                             <div class="w-12 h-12 bg-[#0c4da2] text-white flex items-center justify-center shrink-0 font-bold text-base rounded-xs border border-[#083c80] " x-text="selectedUser ? selectedUser.name.charAt(0) : ''">
                             </div>
-                            <div>
-                                <h3 class="text-sm font-bold text-slate-900 tracking-tight" x-text="selectedUser ? selectedUser.name : ''"></h3>
-                                <div class="text-[10px] text-slate-500 flex items-center gap-1 mt-0.5">
-                                    <i class="fa-regular fa-envelope text-slate-400"></i>
-                                    <span x-text="selectedUser ? selectedUser.email : ''"></span>
+                            <div class="flex items-center gap-6">
+                                <div>
+                                    <h3 class="text-base font-bold text-slate-900 tracking-tight leading-tight" x-text="selectedUser ? selectedUser.name : ''"></h3>
+                                    <div class="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5 leading-none">
+                                        <i class="fa-regular fa-envelope text-slate-400"></i>
+                                        <span x-text="selectedUser ? selectedUser.email : ''"></span>
+                                    </div>
                                 </div>
-                                <div class="flex flex-wrap items-center gap-2 mt-1.5">
-                                    <span class="inline-flex items-center gap-1 text-[9px] font-mono font-semibold bg-slate-100 text-slate-700 border border-slate-300 px-2 py-0.5 rounded-xs" title="NIK">
+                                <div class="flex flex-col gap-1">
+                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-500" title="NIK">
                                         <i class="fa-solid fa-id-card text-slate-400"></i>
                                         <span x-text="selectedUser ? selectedUser.nik : ''"></span>
                                     </span>
-                                    <span class="inline-flex items-center gap-1.5 text-[9px] font-bold bg-sky-50 text-sky-700 border border-sky-200 px-2.5 py-0.5 rounded-xs tracking-wider" title="Department">
-                                        <i class="fa-solid fa-building text-sky-500"></i>
+                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#0c4da2]" title="Department">
+                                        <i class="fa-solid fa-building text-[#0c4da2]"></i>
                                         <span x-text="getDepartmentName(selectedUser ? selectedUser.id_dept : null)"></span>
                                     </span>
                                 </div>
@@ -397,25 +396,24 @@
                         <!-- SECTION 1: Profile Form -->
                         <div class="bg-white border border-gray-200">
                             <div class="px-5 py-3 bg-gray-50/75 border-b border-gray-200 flex items-center gap-2">
-                                <div class="w-1 h-4 bg-sky-500"></div>
-                                <h4 class="text-[10px] font-semibold tracking-wider text-gray-500">Profile Information</h4>
+                                <h4 class="text-xs font-bold text-gray-700">Profile Information</h4>
                             </div>
                             <form @submit.prevent="saveProfile()" class="p-5">
                                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
                                     <div class="md:col-span-6">
                                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Full Name</label>
                                         <input type="text" x-model="profileForm.name" required
-                                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
+                                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                                     </div>
                                     <div class="md:col-span-6">
                                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Email Address</label>
                                         <input type="email" x-model="profileForm.email" required
-                                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
+                                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                                     </div>
                                     <div class="md:col-span-6">
                                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">NIK / Employee ID</label>
                                         <input type="text" x-model="profileForm.nik" required
-                                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
+                                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                                     </div>
                                     <div class="md:col-span-6">
                                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Department</label>
@@ -430,7 +428,7 @@
                                                         $('#dept-select').val(value).trigger('change.select2');
                                                     });
                                                 "
-                                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none bg-white text-gray-800">
+                                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none bg-white text-gray-800">
                                             <option value="">— No Department —</option>
                                             <template x-for="dept in departments" :key="dept.id">
                                                 <option :value="dept.id" x-text="dept.name + ' (' + dept.code + ')'"></option>
@@ -440,13 +438,13 @@
                                     <div class="md:col-span-6">
                                          <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Reset Password <span class="font-normal text-gray-400 lowercase normal-case">(leave blank to keep current)</span></label>
                                          <input type="password" x-model="profileForm.password" placeholder="••••••••"
-                                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors bg-white text-gray-800">
+                                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                                      </div>
                                      <div class="md:col-span-3 flex items-center pt-5">
                                          <label class="inline-flex items-center cursor-pointer select-none">
                                              <div class="relative">
                                                  <input type="checkbox" x-model="profileForm.is_active" class="sr-only peer">
-                                                 <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-sky-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
+                                                 <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-[#0c4da2] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
                                              </div>
                                              <span class="text-xs font-semibold text-gray-700 ml-2">Active Status</span>
                                          </label>
@@ -467,8 +465,7 @@
                         <!-- SECTION 2: Roles Assignment (Global) -->
                         <div class="bg-white border border-gray-200">
                             <div class="px-5 py-3 bg-gray-50/75 border-b border-gray-200 flex items-center gap-2">
-                                <div class="w-1 h-4 bg-sky-500"></div>
-                                <h4 class="text-[10px] font-semibold tracking-wider text-gray-500">Assigned Roles</h4>
+                                <h4 class="text-xs font-bold text-gray-700">Assigned Roles</h4>
                             </div>
                             <div class="p-5 flex flex-wrap gap-1.5">
                                 <template x-for="role in roles" :key="role.id">
@@ -476,7 +473,7 @@
                                         <input type="checkbox"
                                                :checked="isRoleSelectedGlobal(role.id)"
                                                @change="toggleRoleGlobal(role, $event.target.checked)"
-                                               class="h-3 w-3 text-sky-500 border-gray-300 cursor-pointer">
+                                               class="h-3 w-3 text-[#0c4da2] border-gray-300 cursor-pointer">
                                         <span x-text="role.role_name" class="font-medium"></span>
                                     </label>
                                 </template>
@@ -489,23 +486,24 @@
                         <!-- SECTION 3: Scope Access -->
                         <div class="bg-white border border-gray-200">
                             <div class="px-5 py-3 bg-gray-50/75 border-b border-gray-200 flex items-center gap-2">
-                                <div class="w-1 h-4 bg-sky-500"></div>
-                                <h4 class="text-[10px] font-semibold tracking-wider text-gray-500">Web Application Access & Permissions</h4>
+                                <h4 class="text-xs font-bold text-gray-700">Web Application Access & Permissions</h4>
                             </div>
 
                             <div class="divide-y divide-gray-100">
                             <template x-for="scope in scopes" :key="scope.id">
                                 <div>
                                     <!-- Scope Row -->
-                                    <div class="px-5 py-3 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors">
+                                    <div @click="if (isScopeAssigned(scope.id)) expandedScope = (expandedScope === scope.id ? null : scope.id)"
+                                         :class="isScopeAssigned(scope.id) ? 'cursor-pointer' : ''"
+                                         class="px-5 py-3 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors select-none">
                                         <div class="flex items-center gap-3">
-                                            <label class="inline-flex items-center cursor-pointer">
+                                            <label class="inline-flex items-center cursor-pointer" @click.stop>
                                                 <div class="relative">
                                                     <input type="checkbox"
                                                            :checked="isScopeAssigned(scope.id)"
                                                            @change="toggleScopeAccess(scope.id, $event.target.checked)"
                                                            class="sr-only peer">
-                                                    <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-sky-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
+                                                    <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-[#0c4da2] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
                                                 </div>
                                             </label>
                                             <div>
@@ -514,8 +512,7 @@
                                             </div>
                                         </div>
                                         <button x-show="isScopeAssigned(scope.id)"
-                                                @click="expandedScope = (expandedScope === scope.id ? null : scope.id)"
-                                                class="text-[10px] font-medium text-sky-600 hover:text-sky-800 flex items-center gap-1 border border-sky-200 px-2.5 py-1 hover:bg-sky-50 transition-colors">
+                                                class="text-[10px] font-medium text-[#0c4da2] hover:text-blue-800 flex items-center gap-1 border border-blue-200 px-2.5 py-1 hover:bg-blue-50/50 transition-colors pointer-events-none">
                                             <span x-text="expandedScope === scope.id ? 'Hide Details' : 'Override Permissions'"></span>
                                             <svg class="w-3 h-3 transition-transform" :class="expandedScope === scope.id ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -560,7 +557,7 @@
                                                                             <div class="inline-flex items-center cursor-not-allowed">
                                                                                 <div class="relative">
                                                                                     <input type="checkbox" checked disabled class="sr-only peer">
-                                                                                    <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-sky-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-200 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4 opacity-75" title="Inherited from Role (Cannot be disabled)"></div>
+                                                                                    <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-blue-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-200 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4 opacity-75" title="Inherited from Role (Cannot be disabled)"></div>
                                                                                 </div>
                                                                             </div>
                                                                         </template>
@@ -572,7 +569,7 @@
                                                                                            :checked="getOverrideStatus(scope.id, menu.id, perm.id) === 'ALLOW'"
                                                                                            @change="updateOverride(scope.id, menu.id, perm.id, $event.target.checked ? 'ALLOW' : 'INHERIT')"
                                                                                            class="sr-only peer">
-                                                                                    <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-sky-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
+                                                                                    <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-[#0c4da2] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
                                                                                 </div>
                                                                             </label>
                                                                         </template>
@@ -812,7 +809,7 @@
                     return { 'app_drawing': 'Drawing', 'app_inventory': 'Inventory', 'app_npc': 'NPC', 'app_dashboard': 'Dashboard' }[scopeId] || scopeId;
                 },
                 getScopeColorClass(scopeId) {
-                    return { 'app_drawing': 'bg-sky-50 text-sky-700 border-sky-200', 'app_inventory': 'bg-emerald-50 text-emerald-700 border-emerald-200', 'app_npc': 'bg-amber-50 text-amber-700 border-amber-200', 'app_dashboard': 'bg-purple-50 text-purple-700 border-purple-200' }[scopeId] || 'bg-gray-50 text-gray-700 border-gray-200';
+                    return { 'app_drawing': 'bg-blue-50/50 text-[#0c4da2] border-blue-200', 'app_inventory': 'bg-emerald-50 text-emerald-700 border-emerald-200', 'app_npc': 'bg-amber-50 text-amber-700 border-amber-200', 'app_dashboard': 'bg-purple-50 text-purple-700 border-purple-200' }[scopeId] || 'bg-gray-50 text-gray-700 border-gray-200';
                 },
 
                 // --- Permission Override Helpers ---
