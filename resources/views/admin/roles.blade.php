@@ -71,6 +71,9 @@
                             <option :value="sc.id" x-text="sc.scope_name" :selected="roleModal.form.scope_id === sc.id"></option>
                         </template>
                     </select>
+                    <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Description</label>
+                    <textarea x-model="roleModal.form.description" placeholder="e.g. Access permissions for drawing users"
+                              class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors mb-4" rows="2"></textarea>
                     <div class="flex justify-end gap-2">
                         <button type="button" @click="roleModal.open = false" :disabled="savingForm"
                                 class="px-4 py-2 text-xs font-medium border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50">Cancel</button>
@@ -188,6 +191,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-semibold text-gray-900" x-text="role.role_name"></p>
+                                    <p class="text-[9px] text-gray-500 italic leading-none mt-0.5" x-text="role.description || '-'"></p>
                                     <div class="flex items-center gap-1.5 mt-1 flex-wrap">
                                         <span class="text-[9px] text-gray-400 font-mono" x-text="'ID: ' + role.id"></span>
                                         <span class="text-[8px] font-bold px-1.5 py-0.5 border rounded-xs tracking-wider"
@@ -361,7 +365,7 @@
                 saving: false,
                 savingForm: false,
                 toast: { show: false, message: '', type: 'success' },
-                roleModal: { open: false, mode: 'create', form: { id: null, role_name: '' } },
+                roleModal: { open: false, mode: 'create', form: { id: null, role_name: '', scope_id: '', description: '' } },
                 deleteModal: { open: false, type: '', id: null, itemName: '' },
                 permissionModal: { open: false, form: { permission_name: '', description: '' } },
 
@@ -465,11 +469,11 @@
 
                 openAddRoleModal() {
                     this.savingForm = false;
-                    this.roleModal = { open: true, mode: 'create', form: { id: null, role_name: '', scope_id: '' } };
+                    this.roleModal = { open: true, mode: 'create', form: { id: null, role_name: '', scope_id: '', description: '' } };
                 },
                 openEditRoleModal(role) {
                     this.savingForm = false;
-                    this.roleModal = { open: true, mode: 'edit', form: { id: role.id, role_name: role.role_name, scope_id: role.scope_id || '' } };
+                    this.roleModal = { open: true, mode: 'edit', form: { id: role.id, role_name: role.role_name, scope_id: role.scope_id || '', description: role.description || '' } };
                 },
 
                 submitRoleForm() {
@@ -492,7 +496,8 @@
                         headers: headers,
                         body: JSON.stringify({ 
                             role_name: this.roleModal.form.role_name,
-                            scope_id: this.roleModal.form.scope_id || null
+                            scope_id: this.roleModal.form.scope_id || null,
+                            description: this.roleModal.form.description || null
                         })
                     }).then(r => r.json()).then(data => {
                         this.savingForm = false;

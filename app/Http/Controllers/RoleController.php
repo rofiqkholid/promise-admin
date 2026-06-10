@@ -50,6 +50,7 @@ class RoleController extends Controller
         $data = $request->validate([
             'role_name' => 'required|string|max:150|unique:roles,role_name',
             'scope_id' => 'nullable|string|exists:scopes,id',
+            'description' => 'nullable|string|max:255',
         ]);
 
         Role::create($data);
@@ -62,6 +63,7 @@ class RoleController extends Controller
         $data = $request->validate([
             'role_name' => 'required|string|max:150|unique:roles,role_name,' . $role->id,
             'scope_id' => 'nullable|string|exists:scopes,id',
+            'description' => 'nullable|string|max:255',
         ]);
 
         $role->update($data);
