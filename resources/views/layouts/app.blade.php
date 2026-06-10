@@ -137,9 +137,10 @@
 
             <!-- Footer (Scrollable) -->
             <footer class="bg-white border-t border-gray-200 mt-auto py-4 shrink-0">
-                <div class="w-full px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-gray-400">
-                    <div class="flex items-center gap-1.5">
+                <div class="w-full px-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-gray-400 text-center md:text-left">
+                    <div class="flex flex-col sm:flex-row items-center gap-1.5">
                         <span class="font-bold text-gray-500 tracking-wider">PROMISE</span>
+                        <span class="hidden sm:inline text-gray-300">|</span>
                         <span>&copy; {{ date('Y') }} Summit Adyawinsa Indonesia. All rights reserved.</span>
                     </div>
                     <div class="flex items-center gap-4">

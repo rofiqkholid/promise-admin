@@ -3,7 +3,7 @@
         <h2 class="text-sm font-semibold text-gray-800 tracking-wide">User Management Console</h2>
     </x-slot>
 
-    <div class="px-6 py-6" x-data="adminConsole()">
+    <div class="px-3 py-3 md:px-6 md:py-6" x-data="adminConsole()">
 
         <!-- Toast -->
         <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-800 text-white text-xs py-2.5 px-4 font-medium flex items-center gap-2 border-l-4 border-[#0c4da2]">
@@ -118,18 +118,19 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-0 border border-slate-300 min-h-[calc(100vh-120px)]">
 
             <!-- Left Panel: User List -->
-            <div class="lg:col-span-4 border-r border-slate-300 bg-white flex flex-col h-[350px] lg:h-[calc(100vh-120px)]">
+            <div class="lg:col-span-4 border-r border-slate-300 bg-white flex-col lg:h-[calc(100vh-120px)]"
+                 :class="selectedUser ? 'hidden lg:flex' : 'flex h-[calc(100vh-120px)] lg:h-[calc(100vh-120px)]'">
                 <!-- Filters Row -->
-                <div class="h-[44px] px-3 border-b border-slate-300 bg-slate-100 flex items-center justify-between gap-1.5 shrink-0">
-                    <div class="flex items-center gap-1.5 flex-1 min-w-0">
+                <div class="min-h-[44px] py-1.5 md:py-0 px-3 border-b border-slate-300 bg-slate-100 flex flex-wrap md:flex-nowrap items-center justify-between gap-1.5 shrink-0 relative z-30">
+                    <div class="flex flex-wrap items-center gap-1.5 flex-1">
                         <!-- Title Label -->
                         <span class="text-[10px] font-bold text-slate-500 tracking-wider shrink-0 flex items-center gap-1 mr-1">
                             <i class="fa-solid fa-filter text-[9px]"></i> Filter:
                         </span>
 
                         <!-- Department Filter -->
-                        <div class="relative" x-data="{ open: false }" @click.outside="open = false">
-                            <button @click="open = !open" 
+                        <div class="relative" x-data="{ open: false, search: '' }" @click.outside="open = false; search = ''">
+                            <button @click="open = !open; if(!open) search = '';" 
                                     class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
                                     :class="selectedDepts.length > 0 ? 'bg-blue-50/50 border-blue-200 text-[#0c4da2] font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
                                     title="Filter by Department">
@@ -142,11 +143,14 @@
                             <div x-show="open" 
                                  class="absolute left-0 mt-1 w-48 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
                                  style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
-                                <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-200 flex justify-between items-center">
+                                <div class="px-2 pb-1.5 mb-1 border-b border-slate-200 flex justify-between items-center">
                                     <span class="text-[9px] font-bold text-slate-400 ">Dept Filter</span>
-                                    <button @click="selectedDepts = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
+                                    <button @click="selectedDepts = []; search = ''; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
                                 </div>
-                                <template x-for="dept in departments" :key="dept.id">
+                                <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-100">
+                                    <input type="text" x-model="search" placeholder="Search dept..." class="w-full text-[10px] px-2 py-0.5 border border-slate-200 focus:border-[#0c4da2] focus:ring-0 focus:outline-none h-6 bg-slate-50/50">
+                                </div>
+                                <template x-for="dept in departments.filter(d => d.code.toLowerCase().includes(search.toLowerCase()) || d.name.toLowerCase().includes(search.toLowerCase()))" :key="dept.id">
                                     <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
                                         <input type="checkbox" :value="dept.id" x-model="selectedDepts" @change="filterUsers()" class="rounded border-gray-300 text-[#0c4da2] focus:ring-[#0c4da2] h-3.5 w-3.5 mr-2">
                                         <span class="text-[11px] text-gray-700 truncate" x-text="dept.code"></span>
@@ -156,8 +160,8 @@
                         </div>
 
                         <!-- Role Filter -->
-                        <div class="relative" x-data="{ open: false }" @click.outside="open = false">
-                            <button @click="open = !open" 
+                        <div class="relative" x-data="{ open: false, search: '' }" @click.outside="open = false; search = ''">
+                            <button @click="open = !open; if(!open) search = '';" 
                                     class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
                                     :class="selectedRoles.length > 0 ? 'bg-blue-50/50 border-blue-200 text-[#0c4da2] font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
                                     title="Filter by Role">
@@ -170,11 +174,14 @@
                             <div x-show="open" 
                                  class="absolute left-0 mt-1 w-48 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
                                  style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
-                                <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-200 flex justify-between items-center">
+                                <div class="px-2 pb-1.5 mb-1 border-b border-slate-200 flex justify-between items-center">
                                     <span class="text-[9px] font-bold text-slate-400 ">Role Filter</span>
-                                    <button @click="selectedRoles = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
+                                    <button @click="selectedRoles = []; search = ''; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
                                 </div>
-                                <template x-for="role in roles" :key="role.id">
+                                <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-100">
+                                    <input type="text" x-model="search" placeholder="Search role..." class="w-full text-[10px] px-2 py-0.5 border border-slate-200 focus:border-[#0c4da2] focus:ring-0 focus:outline-none h-6 bg-slate-50/50">
+                                </div>
+                                <template x-for="role in roles.filter(r => r.role_name.toLowerCase().includes(search.toLowerCase()))" :key="role.id">
                                     <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
                                         <input type="checkbox" :value="role.id" x-model="selectedRoles" @change="filterUsers()" class="rounded border-gray-300 text-[#0c4da2] focus:ring-[#0c4da2] h-3.5 w-3.5 mr-2">
                                         <span class="text-[11px] text-gray-700 truncate" x-text="role.role_name"></span>
@@ -214,8 +221,8 @@
                         </div>
 
                         <!-- Scope Filter -->
-                        <div class="relative" x-data="{ open: false }" @click.outside="open = false">
-                            <button @click="open = !open" 
+                        <div class="relative" x-data="{ open: false, search: '' }" @click.outside="open = false; search = ''">
+                            <button @click="open = !open; if(!open) search = '';" 
                                     class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
                                     :class="selectedScopes.length > 0 ? 'bg-blue-50/50 border-blue-200 text-[#0c4da2] font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
                                     title="Filter by Scope">
@@ -228,11 +235,14 @@
                             <div x-show="open" 
                                  class="absolute right-0 mt-1 w-44 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
                                  style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
-                                <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-200 flex justify-between items-center">
+                                <div class="px-2 pb-1.5 mb-1 border-b border-slate-200 flex justify-between items-center">
                                     <span class="text-[9px] font-bold text-slate-400 ">Scope Filter</span>
-                                    <button @click="selectedScopes = []; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
+                                    <button @click="selectedScopes = []; search = ''; filterUsers();" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
                                 </div>
-                                <template x-for="scope in scopes" :key="scope.id">
+                                <div class="px-2 pb-1.5 mb-1.5 border-b border-slate-100">
+                                    <input type="text" x-model="search" placeholder="Search scope..." class="w-full text-[10px] px-2 py-0.5 border border-slate-200 focus:border-[#0c4da2] focus:ring-0 focus:outline-none h-6 bg-slate-50/50">
+                                </div>
+                                <template x-for="scope in scopes.filter(s => s.scope_name.toLowerCase().includes(search.toLowerCase()) || s.id.toLowerCase().includes(search.toLowerCase()))" :key="scope.id">
                                     <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
                                         <input type="checkbox" :value="scope.id" x-model="selectedScopes" @change="filterUsers()" class="rounded border-gray-300 text-[#0c4da2] focus:ring-[#0c4da2] h-3.5 w-3.5 mr-2">
                                         <span class="text-[11px] text-gray-700 truncate" x-text="scope.scope_name"></span>
@@ -287,7 +297,7 @@
                     <template x-for="user in filteredUsers" :key="user.id">
                         <div @click="selectUser(user)"
                              class="px-4 py-3 cursor-pointer transition-all flex items-start gap-3 border-l-4 border-y"
-                             :class="selectedUser && selectedUser.id === user.id ? 'bg-blue-50/50 border-l-[#0c4da2] border-y-blue-100 relative z-10' : 'border-l-transparent border-y-transparent hover:bg-gray-50/50'">
+                             :class="selectedUser && selectedUser.id === user.id ? 'bg-blue-50 border-l-[#0c4da2] border-y-blue-100 relative z-10' : 'border-l-transparent border-y-transparent hover:bg-gray-50/50'">
                             <!-- Profile alphabet initial -->
                             <div class="w-8 h-8 bg-[#0c4da2] text-white flex items-center justify-center shrink-0 font-bold text-xs rounded-xs" x-text="user.name ? user.name.charAt(0) : 'U'">
                             </div>
@@ -338,7 +348,8 @@
             </div>
 
             <!-- Right Panel: User Config -->
-            <div class="lg:col-span-8 flex flex-col bg-white h-auto lg:h-[calc(100vh-120px)]">
+            <div class="lg:col-span-8 flex-col bg-white lg:h-[calc(100vh-120px)]"
+                 :class="selectedUser ? 'flex h-[calc(100vh-120px)] lg:h-[calc(100vh-120px)]' : 'hidden lg:flex'">
 
                 <!-- Empty State -->
                 <div x-show="!selectedUser" class="flex-1 flex flex-col items-center justify-center text-center bg-gray-50">
@@ -355,38 +366,58 @@
                 <div x-show="selectedUser" class="flex flex-col h-full lg:overflow-hidden" style="display: none;">
 
                     <!-- User Header -->
-                    <div class="h-[96px] px-6 border-b border-slate-300 bg-slate-50/50 flex items-center justify-between gap-4 shrink-0">
-                        <div class="flex items-center gap-4">
-                            <!-- Avatar / Initial -->
-                            <div class="w-12 h-12 bg-[#0c4da2] text-white flex items-center justify-center shrink-0 font-bold text-base rounded-xs border border-[#083c80] " x-text="selectedUser ? selectedUser.name.charAt(0) : ''">
-                            </div>
-                            <div class="flex items-center gap-6">
-                                <div>
-                                    <h3 class="text-base font-bold text-slate-900 tracking-tight leading-tight" x-text="selectedUser ? selectedUser.name : ''"></h3>
-                                    <div class="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5 leading-none">
-                                        <i class="fa-regular fa-envelope text-slate-400"></i>
-                                        <span x-text="selectedUser ? selectedUser.email : ''"></span>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col gap-1">
-                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-500" title="NIK">
-                                        <i class="fa-solid fa-id-card text-slate-400"></i>
-                                        <span x-text="selectedUser ? selectedUser.nik : ''"></span>
-                                    </span>
-                                    <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#0c4da2]" title="Department">
-                                        <i class="fa-solid fa-building text-[#0c4da2]"></i>
-                                        <span x-text="getDepartmentName(selectedUser ? selectedUser.id_dept : null)"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2 self-start md:self-center">
+                    <div class="flex flex-col md:h-[96px] border-b border-slate-300 bg-slate-50/50 shrink-0">
+                        <!-- Mobile Top Actions Bar (Back & Delete) -->
+                        <div class="flex md:hidden items-center justify-between px-4 py-2 border-b border-slate-200/80 bg-white">
+                            <!-- Mobile Back Button -->
+                            <button @click="selectedUser = null; profileForm.password = '';" class="h-8 px-2.5 rounded-xs border border-slate-300 bg-white hover:bg-slate-50 flex items-center justify-center text-slate-600 transition-colors gap-1.5 text-xs font-semibold select-none" title="Back to List">
+                                <i class="fa-solid fa-arrow-left text-xs"></i>
+                                <span>Back</span>
+                            </button>
+                            <!-- Delete Button -->
                             <button @click="triggerDeleteUser(selectedUser)"
-                                    class="h-8 px-3 rounded-xs border border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center gap-1.5 transition-colors shrink-0 text-xs font-semibold"
+                                    class="h-8 px-3 rounded-xs border border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center gap-1.5 transition-colors text-xs font-semibold select-none"
                                     title="Delete User">
                                 <i class="fa-solid fa-trash-can text-[10px]"></i>
                                 <span>Delete</span>
                             </button>
+                        </div>
+
+                        <!-- Header Content (Avatar & Name/Details) -->
+                        <div class="flex-1 px-4 md:px-6 py-3 md:py-0 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
+                                <!-- Avatar / Initial -->
+                                <div class="w-10 h-10 md:w-12 md:h-12 bg-[#0c4da2] text-white flex items-center justify-center shrink-0 font-bold text-sm md:text-base rounded-xs border border-[#083c80] " x-text="selectedUser ? selectedUser.name.charAt(0) : ''">
+                                </div>
+                                <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 min-w-0 flex-1">
+                                    <div class="min-w-0">
+                                        <h3 class="text-sm md:text-base font-bold text-slate-900 tracking-tight leading-tight truncate" x-text="selectedUser ? selectedUser.name : ''"></h3>
+                                        <div class="text-[10px] md:text-[11px] text-slate-500 flex items-center gap-1 mt-0.5 leading-none truncate">
+                                            <i class="fa-regular fa-envelope text-slate-400"></i>
+                                            <span class="truncate" x-text="selectedUser ? selectedUser.email : ''"></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-row md:flex-col items-center md:items-start gap-3 md:gap-0.5 text-[10px] md:text-[11px] flex-wrap">
+                                        <span class="inline-flex items-center gap-1 font-semibold text-slate-500" title="NIK">
+                                            <i class="fa-solid fa-id-card text-slate-400"></i>
+                                            <span x-text="selectedUser ? selectedUser.nik : ''"></span>
+                                        </span>
+                                        <span class="inline-flex items-center gap-1 font-bold text-[#0c4da2]" title="Department">
+                                            <i class="fa-solid fa-building text-[#0c4da2]"></i>
+                                            <span x-text="getDepartmentName(selectedUser ? selectedUser.id_dept : null)"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Desktop Delete Button -->
+                            <div class="hidden md:flex items-center gap-2 shrink-0">
+                                <button @click="triggerDeleteUser(selectedUser)"
+                                        class="h-8 px-3 rounded-xs border border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center gap-1.5 transition-colors shrink-0 text-xs font-semibold"
+                                        title="Delete User">
+                                    <i class="fa-solid fa-trash-can text-[10px]"></i>
+                                    <span>Delete</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -495,32 +526,28 @@
                                     <!-- Scope Row -->
                                     <div @click="if (isScopeAssigned(scope.id)) expandedScope = (expandedScope === scope.id ? null : scope.id)"
                                          :class="isScopeAssigned(scope.id) ? 'cursor-pointer' : ''"
-                                         class="px-5 py-3 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors select-none">
-                                        <div class="flex items-center gap-3">
-                                            <label class="inline-flex items-center cursor-pointer" @click.stop>
-                                                <div class="relative">
-                                                    <input type="checkbox"
-                                                           :checked="isScopeAssigned(scope.id)"
-                                                           @change="toggleScopeAccess(scope.id, $event.target.checked)"
-                                                           class="sr-only peer">
-                                                    <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-[#0c4da2] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
-                                                </div>
-                                            </label>
-                                            <div>
-                                                <p class="text-xs font-semibold text-gray-800" x-text="scope.scope_name"></p>
-                                                <p class="text-[10px] text-gray-400 font-mono" x-text="scope.id"></p>
+                                         class="px-3 sm:px-5 py-3 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors select-none gap-2">
+                                        <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                                            <div class="relative cursor-default shrink-0 select-none" @click.stop title="Status is controlled by Assigned Roles">
+                                                <input type="checkbox"
+                                                       :checked="isScopeAssigned(scope.id)"
+                                                       disabled
+                                                       class="sr-only peer">
+                                                <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-[#0c4da2] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4 opacity-80"></div>
+                                            </div>
+                                            <div class="min-w-0 flex-1">
+                                                <p class="text-xs font-semibold text-gray-800 truncate" x-text="scope.scope_name"></p>
+                                                <p class="text-[10px] text-gray-400 font-mono truncate" x-text="scope.id"></p>
                                             </div>
                                         </div>
                                         <button x-show="isScopeAssigned(scope.id)"
-                                                class="text-[10px] font-medium text-[#0c4da2] hover:text-blue-800 flex items-center gap-1 border border-blue-200 px-2.5 py-1 hover:bg-blue-50/50 transition-colors pointer-events-none">
-                                            <span x-text="expandedScope === scope.id ? 'Hide Details' : 'Override Permissions'"></span>
-                                            <svg class="w-3 h-3 transition-transform" :class="expandedScope === scope.id ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                class="text-[9px] sm:text-[10px] font-medium text-[#0c4da2] hover:text-blue-800 flex items-center gap-1 border border-blue-200 px-2 py-0.5 sm:px-2.5 sm:py-1 hover:bg-blue-50/50 transition-colors pointer-events-none shrink-0">
+                                            <span x-text="expandedScope === scope.id ? 'Hide' : 'Override' + (window.innerWidth < 640 ? '' : ' Permissions')"></span>
+                                            <svg class="w-3 h-3 transition-transform shrink-0" :class="expandedScope === scope.id ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                             </svg>
                                         </button>
                                     </div>
-
-
 
                                     <!-- Permissions Override Table -->
                                     <div x-show="isScopeAssigned(scope.id) && expandedScope === scope.id" class="border-t border-gray-200 overflow-x-auto">
@@ -768,7 +795,7 @@
                             this.availablePermissions = data.permissions;
                             this.userRolePermissions = data.role_permissions;
                             this.userOverrides = data.overrides;
-                            this.userRolesMap[user.id] = data.assignments;
+                            this.userRolesMap = { ...this.userRolesMap, [user.id]: data.assignments };
                             this.isLoadingPermissions = false;
                         }).catch(() => { this.isLoadingPermissions = false; });
                 },
@@ -789,11 +816,7 @@
                 },
                 // --- Global Role Helpers ---
                 getRoleScope(role) {
-                    if (role.scope_id) return role.scope_id;
-                    if (role.role_name.startsWith('Inv ')) return 'app_inventory';
-                    if (role.role_name.startsWith('Dashboard ')) return 'app_dashboard';
-                    if (role.role_name.startsWith('NPC ')) return 'app_npc';
-                    return 'app_drawing';
+                    return role.scope_id;
                 },
                 isRoleSelectedGlobal(roleId) {
                     if (!this.selectedUser) return false;
@@ -854,7 +877,7 @@
                     });
                 },
 
-                toggleScopeAccess(scopeId, checked) { this.sendScopeRoleUpdate(scopeId, null, checked); },
+
                 sendScopeRoleUpdate(scopeId, roleId, status) {
                     const userId = this.selectedUser.id;
                     fetch('{{ url('/admin/update-scope-role') }}', {
@@ -865,7 +888,7 @@
                             fetch(`{{ url('/admin/user-permissions') }}/${userId}`).then(r => r.json()).then(d => {
                                 this.userRolePermissions = d.role_permissions;
                                 this.userOverrides = d.overrides;
-                                this.userRolesMap[userId] = d.assignments;
+                                this.userRolesMap = { ...this.userRolesMap, [userId]: d.assignments };
                             });
                             this.showToast('Access updated');
                         }
@@ -893,4 +916,15 @@
             };
         }
     </script>
+    <style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
 </x-app-layout>

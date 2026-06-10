@@ -49,6 +49,7 @@ class RoleController extends Controller
     {
         $data = $request->validate([
             'role_name' => 'required|string|max:150|unique:roles,role_name',
+            'scope_id' => 'nullable|string|exists:scopes,id',
         ]);
 
         Role::create($data);
@@ -60,6 +61,7 @@ class RoleController extends Controller
     {
         $data = $request->validate([
             'role_name' => 'required|string|max:150|unique:roles,role_name,' . $role->id,
+            'scope_id' => 'nullable|string|exists:scopes,id',
         ]);
 
         $role->update($data);
@@ -69,7 +71,20 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
-        $role->delete();
+        DB::transaction(function () use ($role) {
+            // Clean up legacy tables to avoid foreign key constraint errors
+            if (DB::getSchemaBuilder()->hasTable('user_roles')) {
+                DB::table('user_roles')->where('role_id', $role->id)->delete();
+            }
+            if (DB::getSchemaBuilder()->hasTable('inv_user_roles')) {
+                DB::table('inv_user_roles')->where('role_id', $role->id)->delete();
+            }
+            if (DB::getSchemaBuilder()->hasTable('npc_user_roles')) {
+                DB::table('npc_user_roles')->where('role_id', $role->id)->delete();
+            }
+
+            $role->delete();
+        });
 
         return response()->json(['success' => true, 'message' => 'Role deleted successfully']);
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\UserAccess;
+
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -21,7 +21,7 @@ class AdminController extends Controller
         if (is_string($selectedStatuses)) $selectedStatuses = array_filter(explode(',', $selectedStatuses));
         if (is_string($selectedScopes)) $selectedScopes = array_filter(explode(',', $selectedScopes));
 
-        $users = User::with('access')
+        $users = User::query()
             ->when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
@@ -84,10 +84,7 @@ class AdminController extends Controller
 
         $scopes = \DB::table('scopes')->where('is_active', 1)->get();
         $roles = \DB::table('roles')
-            ->leftJoin('role_scope_permissions', 'roles.id', '=', 'role_scope_permissions.role_id')
-            ->select('roles.id', 'roles.role_name')
-            ->selectRaw('MIN(role_scope_permissions.scope_id) as scope_id')
-            ->groupBy('roles.id', 'roles.role_name')
+            ->select('id', 'role_name', 'scope_id')
             ->get();
         $departments = \DB::table('departments')->get();
 
@@ -155,8 +152,8 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'user_id' => 'required|integer|exists:users,id',
-            'scope_id' => 'required|string|exists:scopes,id',
-            'role_id' => 'nullable|integer|exists:roles,id',
+            'scope_id' => 'nullable|string|exists:scopes,id',
+            'role_id' => 'required|integer|exists:roles,id',
             'status' => 'required|boolean',
         ]);
 
@@ -165,72 +162,39 @@ class AdminController extends Controller
         $roleId = $data['role_id'];
         $status = $data['status'];
 
-        \DB::transaction(function () use ($userId, $scopeId, $roleId, $status) {
-            // 1. Sync legacy t1000_sso_user_access_app column for backward compatibility
-            $accessColumnMap = [
-                'app_drawing' => 'app_drawing',
-                'app_inventory' => 'app_inventory',
-                'app_npc' => 'app_npc',
-                'app_dashboard' => 'app_dashboard',
-            ];
+        $role = \DB::table('roles')->where('id', $roleId)->first();
+        if (!$role) {
+            return response()->json(['success' => false, 'message' => 'Role not found'], 404);
+        }
+        $isGlobal = is_null($role->scope_id);
 
-            if (isset($accessColumnMap[$scopeId])) {
-                $hasAccess = $status;
-                if (!is_null($roleId) && !$status) {
-                    $remainingRolesCount = \DB::table('user_scope_roles')
-                        ->where('user_id', $userId)
-                        ->where('scope_id', $scopeId)
-                        ->where('role_id', '!=', $roleId)
-                        ->count();
-                    $hasAccess = $remainingRolesCount > 0;
-                }
-                UserAccess::updateOrCreate(
-                    ['id_user' => $userId],
-                    [$accessColumnMap[$scopeId] => $hasAccess ? 1 : 0]
-                );
-            }
+        if (!$isGlobal && !$scopeId) {
+            return response()->json(['success' => false, 'message' => 'Scope is required for scope-specific roles'], 400);
+        }
 
-            // 2. Update user_scope_roles pivot table
-            if (is_null($roleId)) {
-                if ($status) {
-                    $exists = \DB::table('user_scope_roles')
-                        ->where('user_id', $userId)
-                        ->where('scope_id', $scopeId)
-                        ->exists();
-                    if (!$exists) {
-                        $defaultRoleId = \DB::table('roles')->where('role_name', 'Viewer')->value('id')
-                            ?? 22;
+        \DB::transaction(function () use ($userId, $scopeId, $roleId, $status, $isGlobal) {
+            $scopes = $isGlobal 
+                ? \DB::table('scopes')->where('is_active', 1)->pluck('id')->toArray() 
+                : [$scopeId];
 
-                        \DB::table('user_scope_roles')->insert([
-                            'user_id' => $userId,
-                            'scope_id' => $scopeId,
-                            'role_id' => $defaultRoleId
-                        ]);
-                    }
-                } else {
-                    \DB::table('user_scope_roles')
-                        ->where('user_id', $userId)
-                        ->where('scope_id', $scopeId)
-                        ->delete();
-                }
-            } else {
+            foreach ($scopes as $scId) {
                 if ($status) {
                     $existsRole = \DB::table('user_scope_roles')
                         ->where('user_id', $userId)
-                        ->where('scope_id', $scopeId)
+                        ->where('scope_id', $scId)
                         ->where('role_id', $roleId)
                         ->exists();
                     if (!$existsRole) {
                         \DB::table('user_scope_roles')->insert([
                             'user_id' => $userId,
-                            'scope_id' => $scopeId,
+                            'scope_id' => $scId,
                             'role_id' => $roleId
                         ]);
                     }
                 } else {
                     \DB::table('user_scope_roles')
                         ->where('user_id', $userId)
-                        ->where('scope_id', $scopeId)
+                        ->where('scope_id', $scId)
                         ->where('role_id', $roleId)
                         ->delete();
                 }
@@ -252,11 +216,7 @@ class AdminController extends Controller
 
         \DB::transaction(function () use ($users, $data, $scopeId) {
             foreach ($users as $user) {
-                // 1. Legacy update
-                UserAccess::updateOrCreate(
-                    ['id_user' => $user->id],
-                    [$data['app'] => $data['status']]
-                );
+                // 1. Legacy update removed for simplification
 
                 // 2. Unified scope-role update
                 if ($data['status']) {

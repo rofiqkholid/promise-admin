@@ -13,6 +13,20 @@ class RbacDataSeeder extends Seeder
      */
     public function run(): void
     {
+        // 0. Update existing roles scope_id
+        $existingRoles = DB::table('roles')->get();
+        foreach ($existingRoles as $r) {
+            $scope = 'app_drawing';
+            if (str_starts_with($r->role_name, 'Inv ')) {
+                $scope = 'app_inventory';
+            } elseif (str_starts_with($r->role_name, 'Dashboard ')) {
+                $scope = 'app_dashboard';
+            } elseif ($r->role_name === 'NPC' || str_starts_with($r->role_name, 'NPC ')) {
+                $scope = 'app_npc';
+            }
+            DB::table('roles')->where('id', $r->id)->update(['scope_id' => $scope]);
+        }
+
         // 1. Seed Scopes
         $scopes = [
             [
@@ -128,12 +142,15 @@ class RbacDataSeeder extends Seeder
 
                     $newId = DB::table('roles')->insertGetId([
                         'role_name' => $nameToUse,
+                        'scope_id' => 'app_inventory',
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now(),
                     ]);
                     $roleIdMapping[$invRole->id] = $newId;
                 } else {
                     $roleIdMapping[$invRole->id] = $globalRole->id;
+                    // Ensure scope_id is updated for global role if not set
+                    DB::table('roles')->where('id', $globalRole->id)->update(['scope_id' => 'app_inventory']);
                 }
             }
         }
@@ -149,29 +166,14 @@ class RbacDataSeeder extends Seeder
                     continue;
                 }
 
-                $access = DB::table('t1000_sso_user_access_app')->where('id_user', $ur->user_id)->first();
-                if ($access) {
-                    if ($access->app_drawing) {
-                        DB::table('user_scope_roles')->updateOrInsert([
-                            'user_id' => $ur->user_id,
-                            'scope_id' => 'app_drawing',
-                            'role_id' => $ur->role_id,
-                        ]);
-                    }
-                    if ($access->app_npc) {
-                        DB::table('user_scope_roles')->updateOrInsert([
-                            'user_id' => $ur->user_id,
-                            'scope_id' => 'app_npc',
-                            'role_id' => $ur->role_id,
-                        ]);
-                    }
-                    if ($access->app_dashboard) {
-                        DB::table('user_scope_roles')->updateOrInsert([
-                            'user_id' => $ur->user_id,
-                            'scope_id' => 'app_dashboard',
-                            'role_id' => $ur->role_id,
-                        ]);
-                    }
+                $role = DB::table('roles')->where('id', $ur->role_id)->first();
+                if ($role) {
+                    $scopeId = $role->scope_id ?? 'app_drawing';
+                    DB::table('user_scope_roles')->updateOrInsert([
+                        'user_id' => $ur->user_id,
+                        'scope_id' => $scopeId,
+                        'role_id' => $ur->role_id,
+                    ]);
                 }
             }
         }

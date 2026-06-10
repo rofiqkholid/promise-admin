@@ -27,10 +27,7 @@ class User extends Authenticatable
         'is_active',
     ];
 
-    public function access()
-    {
-        return $this->hasOne(UserAccess::class, 'id_user');
-    }
+
 
     /**
      * The attributes that should be hidden for serialization.

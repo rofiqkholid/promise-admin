@@ -63,6 +63,14 @@
                     <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Role Name</label>
                     <input type="text" x-model="roleModal.form.role_name" required placeholder="e.g. Inv Operator"
                            class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors mb-4">
+                    <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Application Scope</label>
+                    <select x-model="roleModal.form.scope_id"
+                            class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors mb-4 bg-white">
+                        <option value="">— Global / All Scopes —</option>
+                        <template x-for="sc in scopes" :key="sc.id">
+                            <option :value="sc.id" x-text="sc.scope_name" :selected="roleModal.form.scope_id === sc.id"></option>
+                        </template>
+                    </select>
                     <div class="flex justify-end gap-2">
                         <button type="button" @click="roleModal.open = false" :disabled="savingForm"
                                 class="px-4 py-2 text-xs font-medium border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50">Cancel</button>
@@ -180,10 +188,11 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-semibold text-gray-900" x-text="role.role_name"></p>
-                                    <div class="flex items-center gap-2 mt-1">
+                                    <div class="flex items-center gap-1.5 mt-1 flex-wrap">
                                         <span class="text-[9px] text-gray-400 font-mono" x-text="'ID: ' + role.id"></span>
-                                        <span class="text-[8px] font-bold px-1.5 py-0.5 border border-slate-200 rounded-xs tracking-wider bg-slate-100 text-slate-600"
-                                              x-text="role.total_scopes + (role.total_scopes === 1 ? ' Scope' : ' Scopes')"></span>
+                                        <span class="text-[8px] font-bold px-1.5 py-0.5 border rounded-xs tracking-wider"
+                                              :class="getRoleScopeBadgeClass(role.scope_id)"
+                                              x-text="getRoleScopeName(role.scope_id)"></span>
                                     </div>
                                 </div>
                             </div>
@@ -456,11 +465,11 @@
 
                 openAddRoleModal() {
                     this.savingForm = false;
-                    this.roleModal = { open: true, mode: 'create', form: { id: null, role_name: '' } };
+                    this.roleModal = { open: true, mode: 'create', form: { id: null, role_name: '', scope_id: '' } };
                 },
                 openEditRoleModal(role) {
                     this.savingForm = false;
-                    this.roleModal = { open: true, mode: 'edit', form: { id: role.id, role_name: role.role_name } };
+                    this.roleModal = { open: true, mode: 'edit', form: { id: role.id, role_name: role.role_name, scope_id: role.scope_id || '' } };
                 },
 
                 submitRoleForm() {
@@ -481,7 +490,10 @@
                     fetch(url, {
                         method: 'POST',
                         headers: headers,
-                        body: JSON.stringify({ role_name: this.roleModal.form.role_name })
+                        body: JSON.stringify({ 
+                            role_name: this.roleModal.form.role_name,
+                            scope_id: this.roleModal.form.scope_id || null
+                        })
                     }).then(r => r.json()).then(data => {
                         this.savingForm = false;
                         if (data.success) { this.showToast(data.message); this.roleModal.open = false; window.location.reload(); }
@@ -490,6 +502,21 @@
                         this.savingForm = false;
                         this.showToast('Operation failed', 'error');
                     });
+                },
+
+                getRoleScopeName(scopeId) {
+                    if (!scopeId) return 'Global';
+                    const sc = this.scopes.find(s => s.id === scopeId);
+                    return sc ? sc.scope_name.replace(' Management', '') : scopeId;
+                },
+                getRoleScopeBadgeClass(scopeId) {
+                    if (!scopeId) return 'bg-slate-100 text-slate-700 border-slate-200';
+                    return {
+                        'app_drawing': 'bg-blue-50 text-blue-700 border-blue-200',
+                        'app_inventory': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                        'app_npc': 'bg-amber-50 text-amber-700 border-amber-200',
+                        'app_dashboard': 'bg-purple-50 text-purple-700 border-purple-200'
+                    }[scopeId] || 'bg-gray-50 text-gray-700 border-gray-200';
                 },
 
 

@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    protected $fillable = ['role_name'];
+    protected $fillable = ['role_name', 'scope_id'];
+
+    public function scope()
+    {
+        return $this->belongsTo(Scope::class, 'scope_id');
+    }
 }
