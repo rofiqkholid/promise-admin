@@ -91,13 +91,6 @@
                                 <span class="text-[9px] font-semibold text-gray-700 leading-tight">All Dashboard</span>
                             </a>
 
-                            <a href="{{ env('APP_PORTAL_URL', 'http://localhost:8080') }}"
-                                class="flex flex-col items-center justify-center p-1.5 rounded-xs hover:bg-slate-50 transition-all duration-200 group text-center">
-                                <div class="w-9 h-9 rounded-xs flex items-center justify-center bg-emerald-50 text-emerald-600 mb-1 group-hover:scale-105 transition-transform shadow-xs">
-                                    <i class="fa-solid fa-house text-xs"></i>
-                                </div>
-                                <span class="text-[9px] font-semibold text-gray-700 leading-tight">Portal</span>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -186,10 +179,6 @@
                 <a href="{{ env('APP_NPC_URL', 'http://localhost:8083') }}" class="flex flex-col items-center justify-center p-2 rounded-xs bg-white/5 hover:bg-white/10 border border-white/5 transition-colors">
                     <i class="fa-solid fa-users-gear text-white text-xs mb-1"></i>
                     <span class="text-[8px] font-semibold text-blue-200">NPC</span>
-                </a>
-                <a href="{{ env('APP_PORTAL_URL', 'http://localhost:8080') }}" class="flex flex-col items-center justify-center p-2 rounded-xs bg-white/5 hover:bg-white/10 border border-white/5 transition-colors">
-                    <i class="fa-solid fa-house text-white text-xs mb-1"></i>
-                    <span class="text-[8px] font-semibold text-blue-200">Portal</span>
                 </a>
             </div>
         </div>

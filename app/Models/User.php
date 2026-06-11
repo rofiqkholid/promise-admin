@@ -27,6 +27,11 @@ class User extends Authenticatable
         'is_active',
     ];
 
+    public function getAuthIdentifierName()
+    {
+        return 'nik';
+    }
+
 
 
     /**
