@@ -540,7 +540,10 @@ class AdminController extends Controller
         // 5. Active online users (last 15 minutes)
         $activeTime = time() - (15 * 60);
         $onlineUsers = \DB::table('sessions')
-            ->join('users', 'users.id', '=', 'sessions.user_id')
+            ->join('users', function ($join) {
+                $join->on(\DB::raw('CAST(users.id AS VARCHAR(50))'), '=', 'sessions.user_id')
+                     ->orOn('users.nik', '=', 'sessions.user_id');
+            })
             ->leftJoin('departments', 'departments.id', '=', 'users.id_dept')
             ->where('sessions.last_activity', '>=', $activeTime)
             ->select('users.name', 'users.nik', 'departments.code as dept_code', 'departments.name as dept_name', \DB::raw('MAX(sessions.last_activity) as last_activity'))
@@ -621,7 +624,10 @@ class AdminController extends Controller
         // ── Active online users (last 15 minutes) ──────────────────────────────
         $activeTime = time() - (15 * 60);
         $onlineUsers = \DB::table('sessions')
-            ->join('users', 'users.id', '=', 'sessions.user_id')
+            ->join('users', function ($join) {
+                $join->on(\DB::raw('CAST(users.id AS VARCHAR(50))'), '=', 'sessions.user_id')
+                     ->orOn('users.nik', '=', 'sessions.user_id');
+            })
             ->leftJoin('departments', 'departments.id', '=', 'users.id_dept')
             ->where('sessions.last_activity', '>=', $activeTime)
             ->select('users.name', 'users.nik', 'departments.code as dept_code', 'departments.name as dept_name', \DB::raw('MAX(sessions.last_activity) as last_activity'))
