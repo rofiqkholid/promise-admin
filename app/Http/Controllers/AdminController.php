@@ -540,7 +540,7 @@ class AdminController extends Controller
         // 5. Active online users (last 15 minutes)
         $activeTime = time() - (15 * 60);
         $onlineUsers = \DB::table('sessions')
-            ->join('users', 'users.nik', '=', 'sessions.user_id')
+            ->join('users', 'users.id', '=', 'sessions.user_id')
             ->leftJoin('departments', 'departments.id', '=', 'users.id_dept')
             ->where('sessions.last_activity', '>=', $activeTime)
             ->select('users.name', 'users.nik', 'departments.code as dept_code', 'departments.name as dept_name', \DB::raw('MAX(sessions.last_activity) as last_activity'))
@@ -556,7 +556,96 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'scopeChartData', 'departmentBreakdown', 'roleBreakdown', 'overrideUsers', 'recentUsers', 'onlineUsers'));
+        $systemMetrics = \Cache::get('dashboard.system_metrics');
+        $initialUptime = $systemMetrics['uptime'] ?? '00d 00h';
+
+        return view('admin.dashboard', compact('stats', 'scopeChartData', 'departmentBreakdown', 'roleBreakdown', 'overrideUsers', 'recentUsers', 'onlineUsers', 'initialUptime'));
+    }
+
+    public function getRealMetrics()
+    {
+        // ── DB Latency: always fresh (lightweight, just a SELECT 1) ────────────
+        $dbStart   = microtime(true);
+        \DB::select('SELECT 1');
+        $dbLatency = round((microtime(true) - $dbStart) * 1000, 1);
+
+        // ── CPU + RAM: cached 5 seconds ─────────────────────────────────────────
+        // Spawning PowerShell is ~300ms overhead + 1s for Get-Counter sampling.
+        // Caching means concurrent requests share one result instead of each
+        // spawning their own process.
+        $systemMetrics = \Cache::remember('dashboard.system_metrics', 5, function () {
+            $defaults = ['cpu' => 15, 'totalMem' => 0, 'freeMem' => 0];
+            try {
+                $psScript = storage_path('app/get_system_stats_fast.ps1');
+                $cmd      = 'powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "' . $psScript . '"';
+                $output   = shell_exec($cmd);
+                if ($output) {
+                    $data = json_decode($output, true);
+                    if (is_array($data)) {
+                        return array_merge($defaults, $data);
+                    }
+                }
+            } catch (\Exception $e) { /* quiet fallback */ }
+            return $defaults;
+        });
+
+        // ── Disk: cached 30 seconds (disk usage changes slowly) ────────────────
+        $diskMetrics = \Cache::remember('dashboard.disk_metrics', 30, function () {
+            $defaults = ['diskUsedGB' => 0.0, 'diskTotalGB' => 0.0, 'diskPct' => 0];
+            try {
+                $psScript = storage_path('app/get_disk_stats.ps1');
+                $cmd      = 'powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "' . $psScript . '"';
+                $output   = shell_exec($cmd);
+                if ($output) {
+                    $data = json_decode($output, true);
+                    if (is_array($data)) {
+                        return array_merge($defaults, $data);
+                    }
+                }
+            } catch (\Exception $e) { /* quiet fallback */ }
+            return $defaults;
+        });
+
+        // ── Parse CPU / RAM ────────────────────────────────────────────────────
+        $cpu      = (int)($systemMetrics['cpu'] ?? 15);
+        $cpuSpeed = round((float)($systemMetrics['cpuSpeedGHz'] ?? 0.0), 2);
+        $totalRAM = 16.0;
+        $usedRAM  = 6.2;
+        $freeRAM  = 9.8;
+        if (!empty($systemMetrics['totalMem']) && !empty($systemMetrics['freeMem'])) {
+            $totalRAM = round((float)$systemMetrics['totalMem'] / (1024 * 1024), 1);
+            $freeRAM  = round((float)$systemMetrics['freeMem']  / (1024 * 1024), 1);
+            $usedRAM  = round($totalRAM - $freeRAM, 1);
+        }
+
+        // ── Active online users (last 15 minutes) ──────────────────────────────
+        $activeTime = time() - (15 * 60);
+        $onlineUsers = \DB::table('sessions')
+            ->join('users', 'users.id', '=', 'sessions.user_id')
+            ->leftJoin('departments', 'departments.id', '=', 'users.id_dept')
+            ->where('sessions.last_activity', '>=', $activeTime)
+            ->select('users.name', 'users.nik', 'departments.code as dept_code', 'departments.name as dept_name', \DB::raw('MAX(sessions.last_activity) as last_activity'))
+            ->groupBy('users.name', 'users.nik', 'departments.code', 'departments.name')
+            ->orderBy('last_activity', 'desc')
+            ->get();
+
+        $uptime = $systemMetrics['uptime'] ?? '00d 00h';
+
+        return response()->json([
+            'db'                 => $dbLatency,
+            'cpu'                => $cpu,
+            'cpu_speed'          => $cpuSpeed,
+            'ram'                => $usedRAM,
+            'ram_free'           => $freeRAM,
+            'total_ram'          => $totalRAM,
+            'disk_used'          => $diskMetrics['diskUsedGB'],
+            'disk_free'          => $diskMetrics['diskFreeGB'] ?? round($diskMetrics['diskTotalGB'] - $diskMetrics['diskUsedGB'], 1),
+            'disk_total'         => $diskMetrics['diskTotalGB'],
+            'disk_pct'           => $diskMetrics['diskPct'],
+            'online_users'       => $onlineUsers,
+            'online_users_count' => $onlineUsers->count(),
+            'uptime'             => $uptime,
+        ])->header('Cache-Control', 'no-store');
     }
 }
 

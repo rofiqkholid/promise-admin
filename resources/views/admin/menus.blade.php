@@ -1,12 +1,160 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-3">
-            <div class="w-1 h-5 bg-sky-500"></div>
-            <h2 class="text-sm font-semibold text-gray-800 tracking-wide ">Menus Master Catalog</h2>
-        </div>
+        <h2 class="text-sm font-semibold text-gray-800 tracking-wide ">Menus Master Catalog</h2>
     </x-slot>
 
-    <div class="px-6 py-6" x-data="menuConsole()">
+    <style>
+        /* Force DataTable Header styles and borders */
+        .dataTables_wrapper table.dataTable {
+            border-collapse: collapse !important;
+            border: 1px solid #e2e8f0 !important;
+            margin-top: 4px !important;
+            margin-bottom: 8px !important;
+        }
+        .dataTables_wrapper table.dataTable thead {
+            background-color: #f8fafc !important;
+        }
+        .dataTables_wrapper table.dataTable thead th {
+            background-color: #f8fafc !important;
+            border-bottom: 2px solid #cbd5e1 !important;
+            border-top: 1px solid #e2e8f0 !important;
+            border-left: 1px solid #e2e8f0 !important;
+            border-right: 1px solid #e2e8f0 !important;
+            color: #475569 !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            font-size: 10px !important;
+            letter-spacing: 0.05em !important;
+            padding: 10px 14px !important;
+            text-align: center !important;
+        }
+        .dataTables_wrapper table.dataTable tbody td {
+            border-bottom: 1px solid #e2e8f0 !important;
+            border-left: 1px solid #e2e8f0 !important;
+            border-right: 1px solid #e2e8f0 !important;
+            padding: 8px 14px !important;
+        }
+        .dataTables_wrapper table.dataTable tbody tr:hover {
+            background-color: #f8fafc !important;
+        }
+        .dataTables_wrapper .dataTables_length {
+            white-space: nowrap !important;
+        }
+        
+        /* Top search and length wrapper divider styling */
+        .dataTables_wrapper .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0px !important;
+            background-color: transparent !important;
+            border: none !important;
+        }
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #cbd5e1 !important;
+            padding: 5px 10px !important;
+            font-size: 11px !important;
+            outline: none !important;
+            background-color: #ffffff !important;
+            border-radius: 2px !important;
+            margin-left: 0.5em !important;
+        }
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: #0c4da2 !important;
+            box-shadow: 0 0 0 1px #0c4da2 !important;
+        }
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #cbd5e1 !important;
+            padding: 4px 24px 4px 8px !important;
+            font-size: 11px !important;
+            outline: none !important;
+            background-color: #ffffff !important;
+            border-radius: 2px !important;
+        }
+        .dataTables_wrapper .dataTables_length select:focus {
+            border-color: #0c4da2 !important;
+        }
+        
+        /* Bottom pagination styles */
+        .dataTables_wrapper .bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0px !important;
+            background-color: transparent !important;
+            border: none !important;
+            font-size: 11px !important;
+            color: #64748b !important;
+        }
+
+        /* Style DataTables pagination buttons to match theme */
+        .dataTables_wrapper .dataTables_paginate {
+            margin-top: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 2px !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border: 1px solid #cbd5e1 !important;
+            background: #ffffff !important;
+            color: #475569 !important;
+            padding: 4px 9px !important;
+            margin: 0 !important;
+            border-radius: 2px !important;
+            font-size: 11px !important;
+            cursor: pointer !important;
+            transition: all 0.15s ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current, 
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            background: #0c4da2 !important;
+            border-color: #0c4da2 !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.disabled) {
+            background: #083c80 !important;
+            border-color: #083c80 !important;
+            color: #ffffff !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+            background: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+            color: #cbd5e1 !important;
+            cursor: not-allowed !important;
+        }
+        
+        @media (max-width: 640px) {
+            .dataTables_wrapper .top {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 8px !important;
+                padding-bottom: 12px !important;
+            }
+            .dataTables_wrapper .dataTables_filter {
+                width: 100% !important;
+                text-align: left !important;
+            }
+            .dataTables_wrapper .dataTables_filter input {
+                width: 100% !important;
+                margin-left: 0 !important;
+            }
+            .dataTables_wrapper .bottom {
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 8px !important;
+            }
+        }
+        .dataTables_wrapper table.dataTable tbody td.menu-title-cell {
+            padding-left: 0px !important;
+        }
+    </style>
+
+    <div class="px-3 py-3 md:px-6 md:py-6" x-data="menuConsole()">
 
         <!-- Toast -->
         <div x-show="toast.show"
@@ -21,7 +169,7 @@
              style="display: none;">
             <span x-text="toast.message"></span>
             <button @click="toast.show = false" class="ml-2 text-gray-400 hover:text-gray-600">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <i class="fa-solid fa-xmark text-xs"></i>
             </button>
         </div>
 
@@ -33,7 +181,7 @@
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
                     <h3 class="text-xs font-semibold tracking-wider text-gray-600">Confirm Delete</h3>
                     <button @click="deleteModal.open = false" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
                 <div class="p-5">
@@ -56,7 +204,7 @@
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
                     <h3 class="text-xs font-semibold tracking-wider text-gray-600" x-text="menuModal.mode === 'create' ? 'Add New Menu Item' : 'Edit Menu Item'"></h3>
                     <button @click="menuModal.open = false" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
                 <form @submit.prevent="submitMenuForm()" class="p-5 overflow-y-auto flex-1">
@@ -64,7 +212,7 @@
                         <div class="sm:col-span-2">
                             <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Menu Title</label>
                             <input type="text" x-model="menuModal.form.title" required placeholder="e.g. Stock Opname"
-                                   class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
+                                   class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors">
                         </div>
                         <div>
                             <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Application Scope</label>
@@ -83,7 +231,7 @@
                                             $('#scope-select').val(value).trigger('change.select2');
                                         });
                                     "
-                                    class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none bg-white">
+                                    class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none bg-white">
                                 <template x-for="sc in scopes" :key="sc.id">
                                     <option :value="sc.id" x-text="sc.scope_name"></option>
                                 </template>
@@ -106,7 +254,7 @@
                                             $('#parent-menu-select').val(value).trigger('change.select2');
                                         });
                                     "
-                                    class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none bg-white">
+                                    class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none bg-white">
                                 <option value="">— None (Top-Level) —</option>
                                 <template x-for="pm in parentMenus" :key="pm.id">
                                     <option :value="pm.id" x-text="pm.title"></option>
@@ -116,27 +264,27 @@
                         <div>
                             <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Route / URL</label>
                             <input type="text" x-model="menuModal.form.route" placeholder="e.g. inventory.stock.index"
-                                   class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors">
+                                   class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-[#0c4da2] focus:outline-none transition-colors">
                         </div>
                         <div>
                             <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Icon Class</label>
                             <input type="text" x-model="menuModal.form.icon" placeholder="e.g. fa-solid fa-box"
-                                   class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors">
+                                   class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-[#0c4da2] focus:outline-none transition-colors">
                         </div>
                         <div>
                             <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Sort Order</label>
                             <input type="number" x-model="menuModal.form.sort_order" required
-                                   class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
+                                   class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors">
                         </div>
                         <div class="flex items-center gap-6 pt-3">
                             <label class="flex items-center gap-2 cursor-pointer select-none">
                                 <input type="checkbox" x-model="menuModal.form.is_active"
-                                       class="h-3.5 w-3.5 border-gray-300 text-sky-600 focus:ring-0 cursor-pointer">
+                                       class="h-3.5 w-3.5 border-gray-300 text-[#0c4da2] focus:ring-[#0c4da2] cursor-pointer">
                                 <span class="text-xs text-gray-700">Active</span>
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer select-none">
                                 <input type="checkbox" x-model="menuModal.form.is_visible"
-                                       class="h-3.5 w-3.5 border-gray-300 text-sky-600 focus:ring-0 cursor-pointer">
+                                       class="h-3.5 w-3.5 border-gray-300 text-[#0c4da2] focus:ring-[#0c4da2] cursor-pointer">
                                 <span class="text-xs text-gray-700">Visible</span>
                             </label>
                         </div>
@@ -164,7 +312,7 @@
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between shrink-0">
                     <h3 class="text-xs font-semibold tracking-wider text-gray-600">Manage Application Scopes</h3>
                     <button @click="scopeModal.open = false" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
                 <div class="flex-1 overflow-y-auto custom-scrollbar">
@@ -201,11 +349,11 @@
                     <p class="text-[10px] font-semibold tracking-wider text-gray-500 mb-2.5">Register New Scope</p>
                     <form @submit.prevent="submitScopeForm()" class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
                         <input type="text" x-model="scopeModal.form.id" required placeholder="app_billing"
-                               class="flex-1 text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors">
+                               class="flex-1 text-xs border border-gray-300 py-2 px-3 font-mono focus:border-[#0c4da2] focus:outline-none transition-colors">
                         <input type="text" x-model="scopeModal.form.scope_name" required placeholder="Billing App"
-                               class="flex-1 text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
+                               class="flex-1 text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors">
                         <label class="flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-                            <input type="checkbox" x-model="scopeModal.form.is_active" class="h-3.5 w-3.5 border-gray-300 text-sky-600">
+                            <input type="checkbox" x-model="scopeModal.form.is_active" class="h-3.5 w-3.5 border-gray-300 text-[#0c4da2] focus:ring-[#0c4da2]">
                             <span class="text-xs text-gray-600">Active</span>
                         </label>
                         <button type="submit" :disabled="saving" class="px-4 py-2 text-xs font-medium bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors whitespace-nowrap flex items-center gap-1.5 disabled:opacity-50">
@@ -220,45 +368,45 @@
         </div>
 
         <!-- Main Content -->
-        <div class="bg-white border border-gray-200" style="min-height: calc(100vh - 120px);">
+        <div class="bg-white border border-slate-300 flex flex-col" style="min-height: calc(100vh - 120px);">
 
             <!-- Toolbar -->
-            <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div class="px-5 py-3 border-b border-slate-300 bg-slate-50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shrink-0">
                 <div>
-                    <p class="text-xs font-semibold text-gray-800">Application Menu Hierarchies</p>
+                    <h3 class="text-sm md:text-base font-bold text-gray-800 tracking-wider">Application Menu Hierarchies</h3>
                     <p class="text-[10px] text-gray-500 mt-0.5">Manage sidebar routing, icons, and display configurations per scope.</p>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 shrink-0">
                     <button @click="openManageScopesModal()"
-                            class="px-3 py-1.5 text-[10px] font-medium border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors">
+                            class="px-3 h-8 text-xs font-semibold border border-slate-300 text-slate-600 bg-white hover:bg-slate-50 transition-colors rounded-xs flex items-center justify-center">
                         Manage Scopes
                     </button>
                     <button @click="openAddMenuModal()"
-                            class="px-3 py-1.5 text-[10px] font-medium bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors">
+                            class="px-3 h-8 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors flex items-center justify-center gap-1 rounded-xs">
                         + Add Menu Item
                     </button>
                 </div>
             </div>
 
             <!-- Scope Tabs -->
-            <div class="border-b border-gray-200 flex overflow-x-auto bg-white">
+            <div class="border-b border-slate-300 flex overflow-x-auto bg-slate-50 shrink-0 h-[44px]">
                 <template x-for="sc in scopes" :key="sc.id">
                     <button @click="currentScopeId = sc.id"
-                            class="px-5 py-2.5 text-[10px] font-semibold tracking-wider border-b-2 transition-colors whitespace-nowrap"
+                            class="px-6 h-full text-[11px] font-semibold tracking-wider border-b-2 transition-all flex items-center gap-2"
                             :class="currentScopeId === sc.id
-                                ? 'text-sky-600 border-sky-500 bg-sky-50/30'
-                                : 'text-gray-500 border-transparent hover:text-gray-800 hover:border-gray-300'"
+                                ? 'text-[#0c4da2] border-[#0c4da2] bg-white font-semibold'
+                                : 'text-gray-500 border-transparent hover:bg-gray-100/50 hover:text-gray-800'"
                             x-text="sc.scope_name">
                     </button>
                 </template>
             </div>
 
             <!-- Menu Table -->
-            <div class="p-5 bg-white relative">
+            <div class="p-4 bg-white relative">
                 <!-- Custom Loader Overlay -->
                 <div x-show="isLoadingMenus" class="absolute inset-0 bg-white/75 flex flex-col items-center justify-center z-10" style="display: none;">
                     <div class="text-center text-xs text-gray-400">
-                        <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-sky-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-[#0c4da2]" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         <span>Loading menus...</span>
                     </div>
                 </div>
@@ -344,6 +492,7 @@
                             },
                             {
                                 data: 'title',
+                                className: 'menu-title-cell',
                                 render: function(data, type, row) {
                                     const indent = row.parent_id ? 'padding-left: 32px' : 'padding-left: 20px';
                                     const prefix = row.parent_id ? '<span class="text-gray-300 select-none text-[10px] mr-2">└</span>' : '';
@@ -383,7 +532,7 @@
                                 data: 'is_visible',
                                 className: 'text-center',
                                 render: function(data) {
-                                    const badgeClass = data ? 'bg-sky-50 text-sky-700 border-sky-200' : 'bg-gray-100 text-gray-600 border-gray-200';
+                                    const badgeClass = data ? 'bg-blue-50 text-[#0c4da2] border-blue-200' : 'bg-gray-100 text-gray-600 border-gray-200';
                                     const text = data ? 'Visible' : 'Hidden';
                                     return `<span class="text-[9px] font-medium px-1.5 py-0.5 border ${badgeClass}">${text}</span>`;
                                 }
@@ -395,20 +544,20 @@
                                 render: function(data, type, row) {
                                     return `<div class="flex items-center justify-center gap-2">
                                                 <button onclick="window.editMenuAjax(${row.id})" 
-                                                        class="w-7 h-7 bg-sky-50 border border-sky-200 text-sky-600 hover:bg-sky-600 hover:text-white transition-colors flex items-center justify-center rounded-xs cursor-pointer" 
+                                                        class="w-7 h-7 bg-blue-50 border border-blue-200 text-[#0c4da2] hover:bg-[#0c4da2] hover:text-white transition-colors flex items-center justify-center rounded-xs cursor-pointer" 
                                                         title="Edit Menu">
                                                     <i class="fa-solid fa-pen text-xs"></i>
                                                 </button>
                                                 <button onclick="window.deleteMenuAjax(${row.id})" 
                                                         class="w-7 h-7 bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-600 hover:text-white transition-colors flex items-center justify-center rounded-xs cursor-pointer" 
                                                         title="Delete Menu">
-                                                    <i class="fa-solid fa-trash text-xs"></i>
+                                                    <i class="fa-solid fa-trash-can text-xs"></i>
                                                 </button>
                                             </div>`;
                                 }
                             }
                         ],
-                        pageLength: 25,
+                        pageLength: 10,
                         ordering: false,
                         language: {
                             searchPlaceholder: "Search menus...",

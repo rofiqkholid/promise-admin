@@ -13,10 +13,28 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $scope = $request->input('scope');
+
+        if (is_string($scope)) {
+            $scope = array_filter(explode(',', $scope));
+        }
 
         $rolesQuery = Role::orderBy('role_name')
             ->when($search, function($query, $search) {
                 return $query->where('role_name', 'like', "%{$search}%");
+            })
+            ->when(!empty($scope), function($query) use ($scope) {
+                return $query->where(function($q) use ($scope) {
+                    if (in_array('global', $scope)) {
+                        $q->whereNull('scope_id');
+                        $otherScopes = array_filter($scope, function($s) { return $s !== 'global'; });
+                        if (!empty($otherScopes)) {
+                            $q->orWhereIn('scope_id', $otherScopes);
+                        }
+                    } else {
+                        $q->whereIn('scope_id', $scope);
+                    }
+                });
             });
 
         $roles = $rolesQuery->paginate(15)->withQueryString();
@@ -26,6 +44,10 @@ class RoleController extends Controller
                 ->where('role_id', $role->id)
                 ->distinct('scope_id')
                 ->count('scope_id');
+            $role->total_users = DB::table('user_scope_roles')
+                ->where('role_id', $role->id)
+                ->distinct('user_id')
+                ->count('user_id');
             return $role;
         });
 

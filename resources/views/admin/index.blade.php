@@ -498,16 +498,48 @@
                             <div class="px-5 py-3 bg-gray-50/75 border-b border-gray-200 flex items-center gap-2">
                                 <h4 class="text-xs font-bold text-gray-700">Assigned Roles</h4>
                             </div>
-                            <div class="p-5 flex flex-wrap gap-1.5">
-                                <template x-for="role in roles" :key="role.id">
-                                    <label class="inline-flex items-center gap-1.5 px-2.5 py-1.5 border border-gray-300 text-[10px] text-gray-700 cursor-pointer hover:bg-gray-50 transition-colors select-none bg-white">
-                                        <input type="checkbox"
-                                               :checked="isRoleSelectedGlobal(role.id)"
-                                               @change="toggleRoleGlobal(role, $event.target.checked)"
-                                               class="h-3 w-3 text-[#0c4da2] border-gray-300 cursor-pointer">
-                                        <span x-text="role.role_name" class="font-medium"></span>
-                                    </label>
+                            <div class="p-5 space-y-4">
+                                <template x-for="scope in scopes" :key="scope.id">
+                                    <div x-show="roles.some(r => r.scope_id === scope.id)" class="space-y-2">
+                                        <!-- Scope Title / Divider -->
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider" x-text="scope.scope_name"></span>
+                                            <div class="flex-1 border-t border-gray-100"></div>
+                                        </div>
+                                        <!-- Roles Checkbox List -->
+                                        <div class="flex flex-wrap gap-1.5">
+                                            <template x-for="role in roles.filter(r => r.scope_id === scope.id)" :key="role.id">
+                                                <label class="inline-flex items-center gap-1.5 px-2.5 py-1.5 border border-gray-300 text-[10px] text-gray-700 cursor-pointer hover:bg-gray-50 transition-colors select-none bg-white">
+                                                    <input type="checkbox"
+                                                           :checked="isRoleSelectedGlobal(role.id)"
+                                                           @change="toggleRoleGlobal(role, $event.target.checked)"
+                                                           class="h-3 w-3 text-[#0c4da2] border-gray-300 cursor-pointer">
+                                                    <span x-text="role.role_name" class="font-medium"></span>
+                                                </label>
+                                            </template>
+                                        </div>
+                                    </div>
                                 </template>
+
+                                <!-- Roles with no scope (if any) -->
+                                <div x-show="roles.some(r => !r.scope_id)" class="space-y-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Global / Others</span>
+                                        <div class="flex-1 border-t border-gray-100"></div>
+                                    </div>
+                                    <div class="flex flex-wrap gap-1.5">
+                                        <template x-for="role in roles.filter(r => !r.scope_id)" :key="role.id">
+                                            <label class="inline-flex items-center gap-1.5 px-2.5 py-1.5 border border-gray-300 text-[10px] text-gray-700 cursor-pointer hover:bg-gray-50 transition-colors select-none bg-white">
+                                                <input type="checkbox"
+                                                       :checked="isRoleSelectedGlobal(role.id)"
+                                                       @change="toggleRoleGlobal(role, $event.target.checked)"
+                                                       class="h-3 w-3 text-[#0c4da2] border-gray-300 cursor-pointer">
+                                                <span x-text="role.role_name" class="font-medium"></span>
+                                            </label>
+                                        </template>
+                                    </div>
+                                </div>
+
                                 <template x-if="roles.length === 0">
                                     <span class="text-[10px] text-gray-400 italic">No roles defined. Create roles first.</span>
                                 </template>

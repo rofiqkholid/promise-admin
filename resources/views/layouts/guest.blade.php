@@ -7,6 +7,10 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Favicon / Brand Logo -->
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+        <link rel="icon" href="{{ asset('assets/image/logo-promise.png') }}" type="image/png">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,10 +28,10 @@
         </style>
     </head>
     <body class="text-gray-900 antialiased bg-slate-50">
-        <div class="min-h-screen flex">
+        <div class="min-h-screen grid grid-cols-1 lg:grid-cols-12">
             
             <!-- Left Side: Branding and Hero Panel (Visible on lg screens) -->
-            <div class="hidden lg:flex lg:w-[55%] xl:w-[60%] relative overflow-hidden flex-col justify-between p-12 text-white">
+            <div class="hidden lg:flex lg:col-span-7 xl:col-span-8 relative overflow-hidden flex-col justify-between p-12 text-white">
                 <!-- Decorative background elements -->
                 <div class="absolute inset-0 bg-gradient-to-b from-[#123b96] to-[#0f2f7a]"></div>
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.18),transparent_18rem),radial-gradient(circle_at_80%_85%,rgba(14,165,233,0.16),transparent_16rem)]"></div>
@@ -73,12 +77,12 @@
             </div>
 
             <!-- Right Side: Login Form Panel -->
-            <div class="w-full lg:w-[45%] xl:w-[40%] flex flex-col justify-center bg-white p-8 md:p-12 xl:p-16 relative">
-                
-
+            <div class="w-full lg:col-span-5 xl:col-span-4 flex flex-col justify-center bg-gradient-to-b from-slate-50 to-slate-100 p-8 md:p-12 xl:p-16 relative border-t lg:border-t-0 lg:border-l border-slate-200">
+                <!-- Subtle grid background on the right side -->
+                <div class="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.015)_1px,transparent_1px)] bg-[size:44px_44px] pointer-events-none"></div>
 
                 <!-- Inner Form Container -->
-                <div class="w-full max-w-[360px] mx-auto">
+                <div class="w-full max-w-[360px] mx-auto relative z-10">
                     {{ $slot }}
                 </div>
 

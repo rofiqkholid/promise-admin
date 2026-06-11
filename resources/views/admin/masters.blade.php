@@ -1,12 +1,157 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-3">
-            <div class="w-1 h-5 bg-sky-500"></div>
-            <h2 class="text-sm font-semibold text-gray-800 tracking-wide ">Master Data Configurations</h2>
-        </div>
+        <h2 class="text-sm font-semibold text-gray-800 tracking-wide">Master Data Configurations</h2>
     </x-slot>
 
-    <div class="px-6 py-6" x-data="masterConsole()">
+    <style>
+        /* Force DataTable Header styles and borders */
+        .dataTables_wrapper table.dataTable {
+            border-collapse: collapse !important;
+            border: 1px solid #e2e8f0 !important;
+            margin-top: 4px !important;
+            margin-bottom: 8px !important;
+        }
+        .dataTables_wrapper table.dataTable thead {
+            background-color: #f8fafc !important;
+        }
+        .dataTables_wrapper table.dataTable thead th {
+            background-color: #f8fafc !important;
+            border-bottom: 2px solid #cbd5e1 !important;
+            border-top: 1px solid #e2e8f0 !important;
+            border-left: 1px solid #e2e8f0 !important;
+            border-right: 1px solid #e2e8f0 !important;
+            color: #475569 !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            font-size: 10px !important;
+            letter-spacing: 0.05em !important;
+            padding: 10px 14px !important;
+            text-align: center !important;
+        }
+        .dataTables_wrapper table.dataTable tbody td {
+            border-bottom: 1px solid #e2e8f0 !important;
+            border-left: 1px solid #e2e8f0 !important;
+            border-right: 1px solid #e2e8f0 !important;
+            padding: 8px 14px !important;
+        }
+        .dataTables_wrapper table.dataTable tbody tr:hover {
+            background-color: #f8fafc !important;
+        }
+        .dataTables_wrapper .dataTables_length {
+            white-space: nowrap !important;
+        }
+        
+        /* Top search and length wrapper divider styling */
+        .dataTables_wrapper .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0px !important;
+            background-color: transparent !important;
+            border: none !important;
+        }
+        
+        @media (max-width: 640px) {
+            .dataTables_wrapper .top {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 8px !important;
+                padding-bottom: 12px !important;
+            }
+            .dataTables_wrapper .dataTables_filter {
+                width: 100% !important;
+                text-align: left !important;
+            }
+            .dataTables_wrapper .dataTables_filter input {
+                width: 100% !important;
+                margin-left: 0 !important;
+            }
+            .dataTables_wrapper .bottom {
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 8px !important;
+            }
+        }
+        .dataTables_wrapper .dataTables_filter input {
+            border: 1px solid #cbd5e1 !important;
+            padding: 5px 10px !important;
+            font-size: 11px !important;
+            outline: none !important;
+            background-color: #ffffff !important;
+            border-radius: 2px !important;
+            margin-left: 0.5em !important;
+        }
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: #0c4da2 !important;
+            box-shadow: 0 0 0 1px #0c4da2 !important;
+        }
+        .dataTables_wrapper .dataTables_length select {
+            border: 1px solid #cbd5e1 !important;
+            padding: 4px 24px 4px 8px !important;
+            font-size: 11px !important;
+            outline: none !important;
+            background-color: #ffffff !important;
+            border-radius: 2px !important;
+        }
+        .dataTables_wrapper .dataTables_length select:focus {
+            border-color: #0c4da2 !important;
+        }
+        
+        /* Bottom pagination styles */
+        .dataTables_wrapper .bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0px !important;
+            background-color: transparent !important;
+            border: none !important;
+            font-size: 11px !important;
+            color: #64748b !important;
+        }
+
+        /* Style DataTables pagination buttons to match theme */
+        .dataTables_wrapper .dataTables_paginate {
+            margin-top: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 2px !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border: 1px solid #cbd5e1 !important;
+            background: #ffffff !important;
+            color: #475569 !important;
+            padding: 4px 9px !important;
+            margin: 0 !important;
+            border-radius: 2px !important;
+            font-size: 11px !important;
+            cursor: pointer !important;
+            transition: all 0.15s ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current, 
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            background: #0c4da2 !important;
+            border-color: #0c4da2 !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.disabled) {
+            background: #083c80 !important;
+            border-color: #083c80 !important;
+            color: #ffffff !important;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+            background: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+            color: #cbd5e1 !important;
+            cursor: not-allowed !important;
+        }
+    </style>
+
+    <div class="px-3 py-3 md:px-6 md:py-6" x-data="masterConsole()">
 
         <!-- Toast Notification -->
         <div x-show="toast.show"
@@ -21,7 +166,7 @@
              style="display: none;">
             <span x-text="toast.message"></span>
             <button @click="toast.show = false" class="ml-2 text-gray-400 hover:text-gray-600">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <i class="fa-solid fa-xmark text-xs"></i>
             </button>
         </div>
 
@@ -33,7 +178,7 @@
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
                     <h3 class="text-xs font-semibold tracking-wider text-gray-600">Confirm Delete</h3>
                     <button @click="deleteModal.open = false" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
                 <div class="p-5">
@@ -54,21 +199,21 @@
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
                     <h3 class="text-xs font-semibold tracking-wider text-gray-600" x-text="deptModal.mode === 'create' ? 'Add Department' : 'Edit Department'"></h3>
                     <button @click="deptModal.open = false" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
                 <form @submit.prevent="submitDept()" class="p-5 space-y-4 overflow-y-auto flex-1">
                     <div>
                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Code</label>
-                        <input type="text" x-model="deptModal.form.code" required placeholder="e.g. ICT" :disabled="deptModal.mode === 'edit' ? false : false"
-                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
+                        <input type="text" x-model="deptModal.form.code" required placeholder="e.g. ICT"
+                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                     </div>
                     <div>
                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Name</label>
                         <input type="text" x-model="deptModal.form.name" required placeholder="e.g. Information Technology"
-                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
+                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                     </div>
-                    <div class="flex justify-end gap-2 pt-2">
+                    <div class="flex justify-end gap-2 pt-2 border-t border-gray-100">
                         <button type="button" @click="deptModal.open = false" :disabled="saving"
                                 class="px-4 py-2 text-xs font-medium border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50">Cancel</button>
                         <button type="submit" :disabled="saving"
@@ -89,30 +234,30 @@
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
                     <h3 class="text-xs font-semibold tracking-wider text-gray-600" x-text="scopeModal.mode === 'create' ? 'Add Scope' : 'Edit Scope'"></h3>
                     <button @click="scopeModal.open = false" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
                 <form @submit.prevent="submitScope()" class="p-5 space-y-4 overflow-y-auto flex-1">
                     <div>
                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Scope ID</label>
                         <input type="text" x-model="scopeModal.form.id" required placeholder="e.g. app_billing" :disabled="scopeModal.mode === 'edit'"
-                               class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors disabled:bg-gray-50">
+                               class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800 disabled:bg-gray-50">
                     </div>
                     <div>
                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Scope Name</label>
                         <input type="text" x-model="scopeModal.form.scope_name" required placeholder="e.g. Billing App"
-                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
+                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                     </div>
                     <div>
                         <label class="inline-flex items-center cursor-pointer select-none pt-1">
                             <div class="relative">
                                 <input type="checkbox" x-model="scopeModal.form.is_active" class="sr-only peer">
-                                <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-sky-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
+                                <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-[#0c4da2] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
                             </div>
                             <span class="text-xs font-semibold text-gray-700 ml-2">Active Status</span>
                         </label>
                     </div>
-                    <div class="flex justify-end gap-2 pt-2">
+                    <div class="flex justify-end gap-2 pt-2 border-t border-gray-100">
                         <button type="button" @click="scopeModal.open = false" :disabled="saving"
                                 class="px-4 py-2 text-xs font-medium border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50">Cancel</button>
                         <button type="submit" :disabled="saving"
@@ -133,21 +278,21 @@
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
                     <h3 class="text-xs font-semibold tracking-wider text-gray-600" x-text="permModal.mode === 'create' ? 'Add Permission Action' : 'Edit Permission Action'"></h3>
                     <button @click="permModal.open = false" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
                 <form @submit.prevent="submitPerm()" class="p-5 space-y-4 overflow-y-auto flex-1">
                     <div>
                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Action Name</label>
                         <input type="text" x-model="permModal.form.permission_name" required placeholder="e.g. approve"
-                               class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors">
+                               class="w-full text-xs border border-gray-300 py-2 px-3 font-mono focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                     </div>
                     <div>
                         <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Description</label>
                         <input type="text" x-model="permModal.form.description" placeholder="e.g. Can approve documents"
-                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors">
+                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
                     </div>
-                    <div class="flex justify-end gap-2 pt-2">
+                    <div class="flex justify-end gap-2 pt-2 border-t border-gray-100">
                         <button type="button" @click="permModal.open = false" :disabled="saving"
                                 class="px-4 py-2 text-xs font-medium border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50">Cancel</button>
                         <button type="submit" :disabled="saving"
@@ -163,24 +308,24 @@
         </div>
 
         <!-- Master Tabs Layout -->
-        <div class="bg-white border border-gray-200 flex flex-col" style="min-height: calc(100vh - 120px);">
+        <div class="bg-white border border-slate-300 flex flex-col" style="min-height: calc(100vh - 120px);">
             
             <!-- Tab Headers -->
-            <div class="border-b border-gray-200 flex overflow-x-auto bg-gray-50 shrink-0">
+            <div class="border-b border-slate-300 flex overflow-x-auto bg-slate-50 shrink-0 h-[44px]">
                 <button @click="activeTab = 'departments'"
-                        class="px-6 py-3.5 text-xs font-bold tracking-wider border-b-2 transition-all flex items-center gap-2"
-                        :class="activeTab === 'departments' ? 'text-sky-600 border-sky-500 bg-white' : 'text-gray-500 border-transparent hover:bg-gray-100/50 hover:text-gray-800'">
-                    <i class="fa-solid fa-building text-slate-400"></i> Departments
+                        class="px-6 h-full text-[11px] font-semibold tracking-wider border-b-2 transition-all flex items-center gap-2"
+                        :class="activeTab === 'departments' ? 'text-[#0c4da2] border-[#0c4da2] bg-white font-semibold' : 'text-gray-500 border-transparent hover:bg-gray-100/50 hover:text-gray-800'">
+                    <i class="fa-solid fa-building"></i> Departments
                 </button>
                 <button @click="activeTab = 'scopes'"
-                        class="px-6 py-3.5 text-xs font-bold tracking-wider border-b-2 transition-all flex items-center gap-2"
-                        :class="activeTab === 'scopes' ? 'text-sky-600 border-sky-500 bg-white' : 'text-gray-500 border-transparent hover:bg-gray-100/50 hover:text-gray-800'">
-                    <i class="fa-solid fa-layer-group text-slate-400"></i> Application Scopes
+                        class="px-6 h-full text-[11px] font-semibold tracking-wider border-b-2 transition-all flex items-center gap-2"
+                        :class="activeTab === 'scopes' ? 'text-[#0c4da2] border-[#0c4da2] bg-white font-semibold' : 'text-gray-500 border-transparent hover:bg-gray-100/50 hover:text-gray-800'">
+                    <i class="fa-solid fa-layer-group"></i> Application Scopes
                 </button>
                 <button @click="activeTab = 'permissions'"
-                        class="px-6 py-3.5 text-xs font-bold tracking-wider border-b-2 transition-all flex items-center gap-2"
-                        :class="activeTab === 'permissions' ? 'text-sky-600 border-sky-500 bg-white' : 'text-gray-500 border-transparent hover:bg-gray-100/50 hover:text-gray-800'">
-                    <i class="fa-solid fa-key text-slate-400"></i> Action Permissions
+                        class="px-6 h-full text-[11px] font-semibold tracking-wider border-b-2 transition-all flex items-center gap-2"
+                        :class="activeTab === 'permissions' ? 'text-[#0c4da2] border-[#0c4da2] bg-white font-semibold' : 'text-gray-500 border-transparent hover:bg-gray-100/50 hover:text-gray-800'">
+                    <i class="fa-solid fa-key"></i> Action Permissions
                 </button>
             </div>
 
@@ -188,18 +333,18 @@
             <div x-show="activeTab === 'departments'" class="p-5 flex-1 flex flex-col">
                 <div class="flex items-center justify-between mb-4 shrink-0">
                     <div>
-                        <h3 class="text-xs font-bold text-gray-800 tracking-wider">Master Departments</h3>
+                        <h3 class="text-sm md:text-base font-bold text-gray-800 tracking-wider">Master Departments</h3>
                         <p class="text-[10px] text-gray-400 mt-0.5">Manage user organization structure groups and codes.</p>
                     </div>
-                    <button @click="openAddDept()" class="px-3.5 py-1.5 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors flex items-center gap-1.5 rounded-xs">
+                    <button @click="openAddDept()" class="px-3 h-8 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors flex items-center justify-center gap-1 rounded-xs">
                         <i class="fa-solid fa-plus text-[10px]"></i> Add Department
                     </button>
                 </div>
-                <div class="p-5 bg-white relative">
+                <div class="p-4 bg-white border border-slate-300 relative">
                     <!-- Custom Loader Overlay -->
                     <div x-show="isLoadingDepts" class="absolute inset-0 bg-white/75 flex flex-col items-center justify-center z-10" style="display: none;">
                         <div class="text-center text-xs text-gray-400">
-                            <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-sky-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-[#0c4da2]" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                             <span>Loading departments...</span>
                         </div>
                     </div>
@@ -224,18 +369,18 @@
             <div x-show="activeTab === 'scopes'" class="p-5 flex-1 flex flex-col" style="display: none;">
                 <div class="flex items-center justify-between mb-4 shrink-0">
                     <div>
-                        <h3 class="text-xs font-bold text-gray-800 tracking-wider">Master Application Scopes</h3>
+                        <h3 class="text-sm md:text-base font-bold text-gray-800 tracking-wider">Master Application Scopes</h3>
                         <p class="text-[10px] text-gray-400 mt-0.5">Configure system modules, sub-apps, and scope bindings.</p>
                     </div>
-                    <button @click="openAddScope()" class="px-3.5 py-1.5 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors flex items-center gap-1.5 rounded-xs">
+                    <button @click="openAddScope()" class="px-3 h-8 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors flex items-center justify-center gap-1 rounded-xs">
                         <i class="fa-solid fa-plus text-[10px]"></i> Add Scope
                     </button>
                 </div>
-                <div class="p-5 bg-white relative">
+                <div class="p-4 bg-white border border-slate-300 relative">
                     <!-- Custom Loader Overlay -->
                     <div x-show="isLoadingScopes" class="absolute inset-0 bg-white/75 flex flex-col items-center justify-center z-10" style="display: none;">
                         <div class="text-center text-xs text-gray-400">
-                            <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-sky-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-[#0c4da2]" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                             <span>Loading scopes...</span>
                         </div>
                     </div>
@@ -260,18 +405,18 @@
             <div x-show="activeTab === 'permissions'" class="p-5 flex-1 flex flex-col" style="display: none;">
                 <div class="flex items-center justify-between mb-4 shrink-0">
                     <div>
-                        <h3 class="text-xs font-bold text-gray-800 tracking-wider">Master Action Permissions</h3>
+                        <h3 class="text-sm md:text-base font-bold text-gray-800 tracking-wider">Master Action Permissions</h3>
                         <p class="text-[10px] text-gray-400 mt-0.5">Manage action keywords used across permission assignment matrices.</p>
                     </div>
-                    <button @click="openAddPerm()" class="px-3.5 py-1.5 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors flex items-center gap-1.5 rounded-xs">
+                    <button @click="openAddPerm()" class="px-3 h-8 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors flex items-center justify-center gap-1 rounded-xs">
                         <i class="fa-solid fa-plus text-[10px]"></i> Add Action
                     </button>
                 </div>
-                <div class="p-5 bg-white relative font-normal">
+                <div class="p-4 bg-white border border-slate-300 relative font-normal">
                     <!-- Custom Loader Overlay -->
                     <div x-show="isLoadingPerms" class="absolute inset-0 bg-white/75 flex flex-col items-center justify-center z-10" style="display: none;">
                         <div class="text-center text-xs text-gray-400">
-                            <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-sky-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-[#0c4da2]" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                             <span>Loading permissions...</span>
                         </div>
                     </div>
@@ -360,7 +505,7 @@
                                     }
                                 },
                                 { data: 'id', className: 'font-mono text-gray-400 py-2 px-4' },
-                                { data: 'code', className: 'font-bold text-sky-700 font-mono py-2 px-4' },
+                                { data: 'code', className: 'font-bold text-[#0c4da2] font-mono py-2 px-4' },
                                 { data: 'name', className: 'text-gray-700 font-medium py-2 px-4' },
                                 {
                                     data: null,
@@ -369,14 +514,14 @@
                                     render: function(data, type, row) {
                                         return `<div class="flex items-center justify-center gap-2">
                                                     <button onclick="window.editDeptAjax(${row.id})" 
-                                                            class="w-7 h-7 bg-sky-50 border border-sky-200 text-sky-600 hover:bg-sky-600 hover:text-white transition-colors flex items-center justify-center rounded-xs cursor-pointer" 
+                                                            class="w-7 h-7 bg-blue-50 border border-blue-200 text-[#0c4da2] hover:bg-[#0c4da2] hover:text-white transition-colors flex items-center justify-center rounded-xs cursor-pointer" 
                                                             title="Edit">
                                                         <i class="fa-solid fa-pen text-xs"></i>
                                                     </button>
                                                     <button onclick="window.deleteDeptAjax(${row.id})" 
                                                             class="w-7 h-7 bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-600 hover:text-white transition-colors flex items-center justify-center rounded-xs cursor-pointer" 
                                                             title="Delete">
-                                                        <i class="fa-solid fa-trash text-xs"></i>
+                                                        <i class="fa-solid fa-trash-can text-xs"></i>
                                                     </button>
                                                 </div>`;
                                     }

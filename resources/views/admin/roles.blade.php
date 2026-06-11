@@ -1,12 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center gap-3">
-            <div class="w-1 h-5 bg-sky-500"></div>
-            <h2 class="text-sm font-semibold text-gray-800 tracking-wide ">Roles & Permission Matrix</h2>
-        </div>
+        <h2 class="text-sm font-semibold text-gray-800 tracking-wide">Roles & Permission Matrix</h2>
     </x-slot>
 
-    <div class="px-6 py-6" x-data="roleConsole()">
+    <div class="px-3 py-3 md:px-6 md:py-6" x-data="roleConsole()">
 
         <!-- Toast -->
         <div x-show="toast.show"
@@ -21,7 +18,7 @@
              style="display: none;">
             <span x-text="toast.message"></span>
             <button @click="toast.show = false" class="ml-2 text-gray-400 hover:text-gray-600">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <i class="fa-solid fa-xmark text-xs"></i>
             </button>
         </div>
 
@@ -33,7 +30,7 @@
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
                     <h3 class="text-xs font-semibold tracking-wider text-gray-600">Confirm Delete</h3>
                     <button @click="deleteModal.open = false" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
                 <div class="p-5">
@@ -56,25 +53,31 @@
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
                     <h3 class="text-xs font-semibold tracking-wider text-gray-600" x-text="roleModal.mode === 'create' ? 'Add New Role' : 'Edit Role'"></h3>
                     <button @click="roleModal.open = false" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
-                <form @submit.prevent="submitRoleForm()" class="p-5 overflow-y-auto flex-1">
-                    <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Role Name</label>
-                    <input type="text" x-model="roleModal.form.role_name" required placeholder="e.g. Inv Operator"
-                           class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors mb-4">
-                    <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Application Scope</label>
-                    <select x-model="roleModal.form.scope_id"
-                            class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors mb-4 bg-white">
-                        <option value="">— Global / All Scopes —</option>
-                        <template x-for="sc in scopes" :key="sc.id">
-                            <option :value="sc.id" x-text="sc.scope_name" :selected="roleModal.form.scope_id === sc.id"></option>
-                        </template>
-                    </select>
-                    <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Description</label>
-                    <textarea x-model="roleModal.form.description" placeholder="e.g. Access permissions for drawing users"
-                              class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors mb-4" rows="2"></textarea>
-                    <div class="flex justify-end gap-2">
+                <form @submit.prevent="submitRoleForm()" class="p-5 overflow-y-auto flex-1 space-y-4">
+                    <div>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Role Name</label>
+                        <input type="text" x-model="roleModal.form.role_name" required placeholder="e.g. Inv Operator"
+                               class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Application Scope</label>
+                        <select x-model="roleModal.form.scope_id"
+                                class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800">
+                            <option value="">— Global / All Scopes —</option>
+                            <template x-for="sc in scopes" :key="sc.id">
+                                <option :value="sc.id" x-text="sc.scope_name" :selected="roleModal.form.scope_id === sc.id"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold tracking-wider text-gray-500 mb-1.5">Description</label>
+                        <textarea x-model="roleModal.form.description" placeholder="e.g. Access permissions for drawing users"
+                                  class="w-full text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors bg-white text-gray-800" rows="2"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-2 pt-2 border-t border-gray-100">
                         <button type="button" @click="roleModal.open = false" :disabled="savingForm"
                                 class="px-4 py-2 text-xs font-medium border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50">Cancel</button>
                         <button type="submit" :disabled="savingForm"
@@ -97,7 +100,7 @@
                 <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between shrink-0">
                     <h3 class="text-xs font-semibold tracking-wider text-gray-600">Manage Permission Actions</h3>
                     <button @click="permissionModal.open = false" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
                 <div class="flex-1 overflow-y-auto custom-scrollbar">
@@ -128,9 +131,9 @@
                     <p class="text-[10px] font-semibold tracking-wider text-gray-500 mb-2.5">Add New Permission</p>
                     <form @submit.prevent="submitPermissionForm()" class="flex flex-col sm:flex-row gap-2">
                         <input type="text" x-model="permissionModal.form.permission_name" required placeholder="e.g. approve" :disabled="savingForm"
-                               class="flex-1 text-xs border border-gray-300 py-2 px-3 font-mono focus:border-sky-500 focus:outline-none transition-colors disabled:opacity-50">
+                               class="flex-1 text-xs border border-gray-300 py-2 px-3 font-mono focus:border-[#0c4da2] focus:outline-none transition-colors disabled:opacity-50">
                         <input type="text" x-model="permissionModal.form.description" placeholder="Description" :disabled="savingForm"
-                               class="flex-1 text-xs border border-gray-300 py-2 px-3 focus:border-sky-500 focus:outline-none transition-colors disabled:opacity-50">
+                               class="flex-1 text-xs border border-gray-300 py-2 px-3 focus:border-[#0c4da2] focus:outline-none transition-colors disabled:opacity-50">
                         <button type="submit" :disabled="savingForm" class="px-4 py-2 text-xs font-medium bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors whitespace-nowrap flex items-center gap-1.5 disabled:opacity-50">
                             <template x-if="savingForm">
                                 <svg class="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -143,33 +146,70 @@
         </div>
 
         <!-- Main Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-0 border border-gray-200" style="min-height: calc(100vh - 120px);">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-0 border border-slate-300 min-h-[calc(100vh-120px)]">
 
             <!-- Left Panel: Roles List -->
-            <div class="lg:col-span-4 border-r border-gray-200 flex flex-col bg-white h-[350px] lg:h-[calc(100vh-120px)]">
-                <div class="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between shrink-0">
-                    <span class="text-[10px] font-semibold tracking-wider text-gray-500">Roles Catalog</span>
-                    <div class="flex items-center gap-1.5">
+            <div class="lg:col-span-4 border-r border-slate-300 bg-white flex-col lg:h-[calc(100vh-120px)]"
+                 :class="selectedRole ? 'hidden lg:flex' : 'flex h-[calc(100vh-120px)] lg:h-[calc(100vh-120px)]'">
+                
+                <div class="h-[56px] px-3 border-b border-slate-300 bg-slate-100 flex items-center justify-between shrink-0">
+                    <div class="flex items-center gap-1.5 flex-1 min-w-0 mr-2">
+                        <span class="text-[10px] font-bold text-slate-500 tracking-wider shrink-0 hidden sm:inline mr-1">Filter:</span>
+                        
+                        <!-- Scope Filter Dropdown -->
+                        <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+                            <button @click="open = !open" 
+                                    class="h-7 px-2 border rounded-sm flex items-center justify-center gap-1 transition-colors text-[10px]"
+                                    :class="selectedScopeFilter.length > 0 ? 'bg-blue-50/50 border-blue-200 text-[#0c4da2] font-semibold' : 'bg-white border-slate-300 text-gray-600 hover:bg-gray-50'"
+                                    title="Filter by Scope">
+                                <i class="fa-solid fa-cubes text-[10px]"></i>
+                                <span class="font-medium">Scope</span>
+                                <template x-if="selectedScopeFilter.length > 0">
+                                    <span class="ml-0.5 bg-blue-100 text-blue-800 text-[8px] px-1 rounded-full font-bold" x-text="selectedScopeFilter.length"></span>
+                                </template>
+                            </button>
+                            <div x-show="open" 
+                                 class="absolute left-0 mt-1 w-44 bg-white border border-slate-300 shadow-md rounded-sm py-1 text-xs custom-scrollbar"
+                                 style="max-height: 12rem; overflow-y: auto; z-index: 9999; display: none;">
+                                <div class="px-2 pb-1.5 mb-1 border-b border-slate-200 flex justify-between items-center">
+                                    <span class="text-[9px] font-bold text-slate-400 ">Scope Filter</span>
+                                    <button @click="selectedScopeFilter = []; filterRoles(); open = false;" class="text-[9px] text-rose-500 hover:text-rose-700 font-semibold transition-colors">Reset</button>
+                                </div>
+                                <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
+                                    <input type="checkbox" value="global" x-model="selectedScopeFilter" @change="filterRoles()" class="rounded border-slate-300 text-[#0c4da2] focus:ring-[#0c4da2] h-3.5 w-3.5 mr-2">
+                                    <span class="text-[11px] text-gray-700">Global</span>
+                                </label>
+                                <template x-for="sc in scopes" :key="sc.id">
+                                    <label class="flex items-center px-3 py-1.5 hover:bg-gray-50 cursor-pointer select-none">
+                                        <input type="checkbox" :value="sc.id" x-model="selectedScopeFilter" @change="filterRoles()" class="rounded border-slate-300 text-[#0c4da2] focus:ring-[#0c4da2] h-3.5 w-3.5 mr-2">
+                                        <span class="text-[11px] text-gray-700 truncate" x-text="sc.scope_name.replace(' Management', '')"></span>
+                                    </label>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0">
                         <button @click="openManagePermissionsModal()"
-                                class="px-2.5 py-1.5 text-[10px] font-medium border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors">
+                                class="px-3 h-8 text-xs font-semibold border border-slate-300 text-slate-600 bg-white hover:bg-slate-50 transition-colors flex items-center justify-center gap-1 rounded-xs">
                             Permissions
                         </button>
                         <button @click="openAddRoleModal()"
-                                class="px-2.5 py-1.5 text-[10px] font-medium bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors">
-                            + Add Role
+                                class="px-3 h-8 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors flex items-center justify-center gap-1 rounded-xs">
+                            <i class="fa-solid fa-plus text-[9px]"></i> Add
                         </button>
                     </div>
                 </div>
 
-                <div class="p-3 border-b border-gray-200 bg-gray-50">
-                    <div class="flex items-center gap-2 border border-gray-300 bg-white px-3 h-8">
+                <!-- Search -->
+                <div class="h-[52px] px-3 border-b border-slate-300 bg-slate-50 flex items-center gap-2 shrink-0">
+                    <div class="flex-1 flex items-center gap-2 border border-slate-300 bg-white px-3 h-8">
                         <template x-if="!isSearching">
                             <svg class="h-3.5 w-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                             </svg>
                         </template>
                         <template x-if="isSearching">
-                            <svg class="animate-spin h-3.5 w-3.5 text-sky-500 shrink-0" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <svg class="animate-spin h-3.5 w-3.5 text-[#0c4da2] shrink-0" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         </template>
                         <input type="text"
                                x-model="searchQuery"
@@ -179,39 +219,51 @@
                     </div>
                 </div>
 
-                <div class="flex-1 overflow-y-auto custom-scrollbar divide-y divide-gray-100"
+                <!-- Count Header -->
+                <div class="h-[40px] px-4 bg-slate-50 border-b border-slate-300 flex justify-between items-center text-[10px] text-gray-500 font-bold tracking-wider select-none shrink-0">
+                    <span>Role List</span>
+                    <span class="text-slate-400 lowercase normal-case font-medium" x-text="roles.length + ' roles listed'"></span>
+                </div>
+
+                <!-- Role List -->
+                <div class="flex-1 overflow-y-auto custom-scrollbar divide-y divide-gray-100 bg-white"
                      @scroll="if ($el.scrollTop + $el.clientHeight >= $el.scrollHeight - 20) { loadMoreRoles() }">
                     <template x-for="role in roles" :key="role.id">
                         <div @click="selectRole(role)"
-                             class="px-4 py-3 cursor-pointer transition-colors hover:bg-gray-50 flex items-center justify-between group"
-                             :class="selectedRole && selectedRole.id === role.id ? 'bg-sky-50 border-l-4 border-sky-500' : 'border-l-4 border-transparent'">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 border border-slate-200 rounded-xs">
-                                    <i class="fa-solid fa-shield-halved text-xs"></i>
+                             class="px-4 py-3 cursor-pointer transition-all flex items-start justify-between border-l-4 border-y group"
+                             :class="selectedRole && selectedRole.id === role.id ? 'bg-blue-50 border-l-[#0c4da2] border-y-blue-100 relative z-10' : 'border-l-transparent border-y-transparent hover:bg-gray-50/50'">
+                            <div class="flex items-start gap-3 min-w-0 flex-1">
+                                <div class="w-8 h-8 bg-[#0c4da2] text-white flex items-center justify-center shrink-0 font-bold text-xs rounded-xs border border-[#083c80]">
+                                    <i class="fa-solid fa-user-shield text-[11px]"></i>
                                 </div>
-                                <div>
-                                    <p class="text-xs font-semibold text-gray-900" x-text="role.role_name"></p>
-                                    <p class="text-[9px] text-gray-500 italic leading-none mt-0.5" x-text="role.description || '-'"></p>
-                                    <div class="flex items-center gap-1.5 mt-1 flex-wrap">
-                                        <span class="text-[9px] text-gray-400 font-mono" x-text="'ID: ' + role.id"></span>
-                                        <span class="text-[8px] font-bold px-1.5 py-0.5 border rounded-xs tracking-wider"
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-xs font-semibold text-gray-900 truncate" x-text="role.role_name"></p>
+                                    <p class="text-[10px] text-gray-500 truncate mt-0.5" x-text="role.description || '-'"></p>
+                                    <div class="flex items-center gap-1.5 mt-2 flex-wrap">
+                                        <span class="text-[9px] text-gray-400 font-mono font-medium" x-text="'ID: ' + role.id"></span>
+                                        <span class="text-[9px] font-semibold px-1.5 py-0.5 border"
                                               :class="getRoleScopeBadgeClass(role.scope_id)"
                                               x-text="getRoleScopeName(role.scope_id)"></span>
+                                        <span class="text-[9px] text-slate-500 font-semibold flex items-center gap-1 bg-slate-100/80 px-1.5 py-0.5 border border-slate-200 rounded-xs" title="Total Users assigned to this Role">
+                                            <i class="fa-solid fa-users text-[8px] text-slate-400"></i>
+                                            <span x-text="(role.total_users || 0) + ' Users'"></span>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-                             <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-2">
+                            <!-- Actions Hover -->
+                            <div class="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-3">
                                  <button @click.stop="openEditRoleModal(role)" 
-                                         class="w-6 h-6 bg-sky-50 border border-sky-200 text-sky-600 hover:bg-sky-600 hover:text-white transition-colors flex items-center justify-center rounded-xs cursor-pointer"
+                                         class="w-7 h-7 bg-blue-50 border border-blue-200 text-[#0c4da2] hover:bg-[#0c4da2] hover:text-white transition-colors flex items-center justify-center rounded-xs cursor-pointer"
                                          title="Edit Role">
                                      <i class="fa-solid fa-pen text-[10px]"></i>
                                  </button>
                                  <button @click.stop="triggerDeleteRole(role)" 
-                                         class="w-6 h-6 bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-600 hover:text-white transition-colors flex items-center justify-center rounded-xs cursor-pointer"
+                                         class="w-7 h-7 bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-600 hover:text-white transition-colors flex items-center justify-center rounded-xs cursor-pointer"
                                          title="Delete Role">
                                      <i class="fa-solid fa-trash-can text-[10px]"></i>
                                  </button>
-                             </div>
+                            </div>
                         </div>
                     </template>
                     <div x-show="roles.length === 0" class="p-8 text-center text-xs text-gray-400">No roles defined yet.</div>
@@ -230,7 +282,8 @@
             </div>
 
             <!-- Right Panel: Permission Matrix -->
-            <div class="lg:col-span-8 flex flex-col bg-white h-auto lg:h-[calc(100vh-120px)]">
+            <div class="lg:col-span-8 flex-col bg-white lg:h-[calc(100vh-120px)]"
+                 :class="selectedRole ? 'flex h-[calc(100vh-120px)] lg:h-[calc(100vh-120px)]' : 'hidden lg:flex'">
 
                 <!-- Empty State -->
                 <div x-show="!selectedRole" class="flex-1 flex flex-col items-center justify-center text-center bg-gray-50">
@@ -246,25 +299,42 @@
                 <!-- Matrix Panel -->
                 <div x-show="selectedRole" class="flex flex-col h-full lg:overflow-hidden" style="display: none;">
 
+                    <!-- Mobile Top Actions Bar (Back) -->
+                    <div class="flex lg:hidden items-center justify-between px-4 py-2 border-b border-slate-200 bg-white">
+                        <button @click="selectedRole = null" class="h-8 px-2.5 rounded-xs border border-slate-300 bg-white hover:bg-slate-50 flex items-center justify-center text-slate-600 transition-colors gap-1.5 text-xs font-semibold select-none" title="Back to List">
+                            <i class="fa-solid fa-arrow-left text-xs"></i>
+                            <span>Back</span>
+                        </button>
+                    </div>
+
                     <!-- Panel Header -->
-                    <div class="px-5 py-3 border-b border-gray-200 bg-gray-50 shrink-0 flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-semibold text-gray-800" x-text="selectedRole ? selectedRole.role_name : ''"></p>
-                            <p class="text-[10px] text-gray-500 mt-0.5">Map menu access and action permissions per scope</p>
+                    <div class="h-[56px] border-b border-slate-300 bg-slate-50 flex flex-col justify-center px-4 shrink-0">
+                        <div class="flex items-center justify-between gap-4">
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <h3 class="text-sm md:text-base font-bold text-slate-800 truncate" x-text="selectedRole ? selectedRole.role_name : ''"></h3>
+                                    <span class="text-[10px] font-semibold text-slate-500 bg-slate-200/60 px-2 py-0.5 rounded-xs shrink-0" x-show="selectedRole" x-text="(selectedRole.total_users || 0) + ' Users'"></span>
+                                </div>
+                                <p class="text-[10px] text-slate-500 truncate mt-0.5" x-text="selectedRole && selectedRole.description ? selectedRole.description : 'No description provided'"></p>
+                            </div>
+                            <div class="text-[10px] font-bold text-[#0c4da2] flex items-center gap-1 shrink-0">
+                                <i class="fa-solid fa-cubes"></i>
+                                <span x-text="getRoleScopeName(selectedRole ? selectedRole.scope_id : null)"></span>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Scope Tabs -->
-                    <div class="border-b border-gray-200 flex items-center bg-white shrink-0 overflow-x-auto">
-                        <template x-for="sc in scopes" :key="sc.id">
+                    <div class="h-[52px] border-b border-slate-300 flex items-center bg-white shrink-0 overflow-x-auto">
+                        <template x-for="sc in scopes.filter(s => !selectedRole || !selectedRole.scope_id || selectedRole.scope_id === s.id)" :key="sc.id">
                             <button @click="changeScope(sc.id)"
-                                    class="px-4 py-2.5 text-[10px] font-semibold tracking-wider border-b-2 transition-colors whitespace-nowrap flex items-center gap-1.5"
+                                    class="h-full px-4 text-[11px] font-semibold tracking-wider border-b-2 transition-colors whitespace-nowrap flex items-center gap-1.5"
                                     :class="currentScopeId === sc.id
-                                        ? 'text-sky-600 border-sky-500 bg-sky-50/50'
+                                        ? 'text-[#0c4da2] border-[#0c4da2] bg-blue-50/50 font-semibold'
                                         : 'text-gray-500 border-transparent hover:text-gray-800 hover:border-gray-300'">
                                 <span x-text="sc.scope_name"></span>
                                 <template x-if="currentScopeId === sc.id">
-                                    <span class="bg-sky-100 text-sky-700 text-[9px] px-1.5 py-0.5 rounded-full font-bold leading-none" x-text="isLoadingPermissions ? '...' : rolePermissions.length"></span>
+                                    <span class="bg-blue-100 text-blue-800 text-[9px] px-1.5 py-0.5 rounded-full font-bold leading-none" x-text="isLoadingPermissions ? '...' : rolePermissions.length"></span>
                                 </template>
                             </button>
                         </template>
@@ -274,17 +344,17 @@
                     <div class="flex-1 overflow-y-auto custom-scrollbar overflow-x-auto">
                         <template x-if="isLoadingPermissions">
                             <div class="py-12 text-center text-xs text-gray-400">
-                                <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-sky-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-[#0c4da2]" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                                 <span>Loading permissions...</span>
                             </div>
                         </template>
                         <template x-if="!isLoadingPermissions">
                             <table class="w-full border-collapse text-xs">
-                                <thead class="sticky top-0 bg-gray-50 border-b border-gray-200 z-10">
-                                    <tr>
-                                        <th class="text-left px-5 py-2.5 text-[10px] font-semibold tracking-wider text-gray-500">Menu / Page</th>
+                                <thead class="sticky top-0 bg-slate-50 border-b border-slate-300 z-10">
+                                    <tr class="h-[40px]">
+                                        <th class="text-left px-5 text-[10px] font-bold tracking-wider text-gray-500 w-1/3">Menu / Page</th>
                                         <template x-for="p in permissions" :key="p.id">
-                                            <th class="px-3 py-2.5 text-center text-[10px] font-semibold tracking-wider text-gray-500" x-text="p.permission_name"></th>
+                                            <th class="px-3 text-center text-[10px] font-semibold tracking-wider text-gray-500" x-text="p.permission_name"></th>
                                         </template>
                                     </tr>
                                 </thead>
@@ -296,7 +366,7 @@
                                                 <div class="flex items-center gap-2">
                                                     <span x-show="menu.parent_id" class="text-gray-300 text-[10px]">└</span>
                                                     <template x-if="menu.icon">
-                                                        <i :class="menu.icon + ' text-slate-400 text-xs'"></i>
+                                                        <i :class="menu.icon + ' text-slate-400 text-xs shrink-0'"></i>
                                                     </template>
                                                     <span x-text="menu.title"></span>
                                                 </div>
@@ -309,7 +379,7 @@
                                                                     :checked="hasMatrixPermission(menu.id, p.id)"
                                                                     @change="toggleMatrixPermission(menu.id, p.id)"
                                                                     class="sr-only peer">
-                                                             <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-sky-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
+                                                             <div class="w-8 h-4 bg-gray-200 rounded-full peer-checked:bg-[#0c4da2] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:h-3 after:w-3 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div>
                                                          </div>
                                                      </label>
                                                  </td>
@@ -332,7 +402,7 @@
                     <div class="px-5 py-3 border-t border-gray-200 bg-gray-50 flex justify-end shrink-0">
                         <button @click="savePermissions()"
                                 :disabled="saving"
-                                class="px-5 py-2 text-xs font-medium bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors disabled:opacity-50 flex items-center gap-2">
+                                class="px-4 h-8 text-xs font-semibold bg-[#0c4da2] hover:bg-[#083c80] text-white transition-colors disabled:opacity-50 flex items-center justify-center gap-2 rounded-xs">
                             <template x-if="saving">
                                 <svg class="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                             </template>
@@ -353,6 +423,7 @@
                 menusByScope: @json($menusByScope),
 
                 searchQuery: '',
+                selectedScopeFilter: [],
                 nextPageUrl: '{{ $roles->nextPageUrl() }}',
                 isLoadingMore: false,
                 isSearching: false,
@@ -387,7 +458,7 @@
 
                 searchRoles() {
                     this.isSearching = true;
-                    fetch(`{{ url('/admin/roles') }}?search=${encodeURIComponent(this.searchQuery)}`, {
+                    fetch(`{{ url('/admin/roles') }}?search=${encodeURIComponent(this.searchQuery)}&scope=${encodeURIComponent(this.selectedScopeFilter.join(','))}`, {
                         headers: { 'Accept': 'application/json' }
                     })
                     .then(r => r.json())
@@ -423,6 +494,9 @@
                 selectRole(role) { 
                     this.selectedRole = role; 
                     this.rolePermissions = []; // Clear immediately to avoid stale state
+                    if (role.scope_id) {
+                        this.currentScopeId = role.scope_id;
+                    }
                     this.fetchRolePermissions(); 
                 },
                 changeScope(scopeId) { 
@@ -513,6 +587,10 @@
                     if (!scopeId) return 'Global';
                     const sc = this.scopes.find(s => s.id === scopeId);
                     return sc ? sc.scope_name.replace(' Management', '') : scopeId;
+                },
+                getScopeShortName(scopeId) {
+                    if (scopeId === 'global') return 'Global';
+                    return { 'app_drawing': 'Drawing', 'app_inventory': 'Inventory', 'app_npc': 'NPC', 'app_dashboard': 'Dashboard' }[scopeId] || scopeId;
                 },
                 getRoleScopeBadgeClass(scopeId) {
                     if (!scopeId) return 'bg-slate-100 text-slate-700 border-slate-200';
