@@ -796,8 +796,13 @@
                 confirmDeleteUser() {
                     const userId = this.deleteModal.userId;
                     fetch(`{{ url('/admin/users') }}/${userId}`, {
-                        method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json', 
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-HTTP-Method-Override': 'DELETE'
+                        },
+                        body: JSON.stringify({ _method: 'DELETE' })
                     })
                     .then(r => r.json())
                     .then(data => {
