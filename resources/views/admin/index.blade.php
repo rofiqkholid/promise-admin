@@ -763,10 +763,20 @@
                     this.saving = true;
                     fetch('{{ url('/admin/users') }}', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                        headers: { 
+                            'Content-Type': 'application/json', 
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                        },
                         body: JSON.stringify(this.userModal.form)
                     })
-                    .then(r => r.json())
+                    .then(async r => {
+                        const data = await r.json();
+                        if (!r.ok) {
+                            throw new Error(data.message || (data.errors ? Object.values(data.errors).flat().join(', ') : 'Validation failed'));
+                        }
+                        return data;
+                    })
                     .then(data => {
                         this.saving = false;
                         if (data.success) {
@@ -781,9 +791,9 @@
                             alert(data.message || 'Error occurred');
                         }
                     })
-                    .catch(() => {
+                    .catch((err) => {
                         this.saving = false;
-                        this.showToast('Operation failed', 'error');
+                        alert(err.message || 'Operation failed');
                     });
                 },
 
@@ -898,9 +908,22 @@
                 saveProfile() {
                     this.saving = true;
                     fetch('{{ url('/admin/update-profile') }}', {
-                        method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                        method: 'POST', 
+                        headers: { 
+                            'Content-Type': 'application/json', 
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                        },
                         body: JSON.stringify(this.profileForm)
-                    }).then(r => r.json()).then(data => {
+                    })
+                    .then(async r => {
+                        const data = await r.json();
+                        if (!r.ok) {
+                            throw new Error(data.message || (data.errors ? Object.values(data.errors).flat().join(', ') : 'Validation failed'));
+                        }
+                        return data;
+                    })
+                    .then(data => {
                         this.saving = false;
                         if (data.success) {
                             const idx = this.users.findIndex(u => u.id == this.selectedUser.id);
@@ -908,9 +931,9 @@
                             Object.assign(this.selectedUser, { name: this.profileForm.name, email: this.profileForm.email, nik: this.profileForm.nik, id_dept: this.profileForm.id_dept, is_active: this.profileForm.is_active ? 1 : 0 });
                             this.showToast('Profile updated successfully');
                         } else { alert(data.message || 'Error'); }
-                    }).catch(() => {
+                    }).catch((err) => {
                         this.saving = false;
-                        alert('Operation failed');
+                        alert(err.message || 'Operation failed');
                     });
                 },
 
