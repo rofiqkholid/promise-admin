@@ -88,7 +88,23 @@ class RoleController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
 
-        $role->update($data);
+        DB::transaction(function () use ($role, $data) {
+            $role->update($data);
+
+            if ($role->scope_id) {
+                // Delete user scope roles that don't match the new scope
+                DB::table('user_scope_roles')
+                    ->where('role_id', $role->id)
+                    ->where('scope_id', '!=', $role->scope_id)
+                    ->delete();
+
+                // Delete role scope permissions that don't match the new scope
+                DB::table('role_scope_permissions')
+                    ->where('role_id', $role->id)
+                    ->where('scope_id', '!=', $role->scope_id)
+                    ->delete();
+            }
+        });
 
         return response()->json(['success' => true, 'message' => 'Role updated successfully']);
     }

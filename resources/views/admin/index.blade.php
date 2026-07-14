@@ -511,7 +511,7 @@
                                             <template x-for="role in roles.filter(r => r.scope_id === scope.id)" :key="role.id">
                                                 <label class="inline-flex items-center gap-1.5 px-2.5 py-1.5 border border-gray-300 text-[10px] text-gray-700 cursor-pointer hover:bg-gray-50 transition-colors select-none bg-white">
                                                     <input type="checkbox"
-                                                           :checked="isRoleSelectedGlobal(role.id)"
+                                                           :checked="isRoleSelectedGlobal(role)"
                                                            @change="toggleRoleGlobal(role, $event.target.checked)"
                                                            class="h-3 w-3 text-[#0c4da2] border-gray-300 cursor-pointer">
                                                     <span x-text="role.role_name" class="font-medium"></span>
@@ -531,7 +531,7 @@
                                         <template x-for="role in roles.filter(r => !r.scope_id)" :key="role.id">
                                             <label class="inline-flex items-center gap-1.5 px-2.5 py-1.5 border border-gray-300 text-[10px] text-gray-700 cursor-pointer hover:bg-gray-50 transition-colors select-none bg-white">
                                                 <input type="checkbox"
-                                                       :checked="isRoleSelectedGlobal(role.id)"
+                                                       :checked="isRoleSelectedGlobal(role)"
                                                        @change="toggleRoleGlobal(role, $event.target.checked)"
                                                        class="h-3 w-3 text-[#0c4da2] border-gray-300 cursor-pointer">
                                                 <span x-text="role.role_name" class="font-medium"></span>
@@ -865,9 +865,13 @@
                 getRoleScope(role) {
                     return role.scope_id;
                 },
-                isRoleSelectedGlobal(roleId) {
+                isRoleSelectedGlobal(role) {
                     if (!this.selectedUser) return false;
-                    return this.getUserAssignments(this.selectedUser.id).some(a => a.role_id == roleId);
+                    const assignments = this.getUserAssignments(this.selectedUser.id);
+                    if (role.scope_id) {
+                        return assignments.some(a => a.role_id == role.id && a.scope_id === role.scope_id);
+                    }
+                    return assignments.some(a => a.role_id == role.id);
                 },
                 toggleRoleGlobal(role, checked) {
                     const scopeId = this.getRoleScope(role);

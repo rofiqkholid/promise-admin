@@ -216,7 +216,6 @@ class AdminController extends Controller
 
         \DB::transaction(function () use ($users, $data, $scopeId) {
             foreach ($users as $user) {
-                // 1. Legacy update removed for simplification
 
                 // 2. Unified scope-role update
                 if ($data['status']) {
